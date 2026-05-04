@@ -253,7 +253,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
       </div>
       <span class="period-label" id="periodSelectLabel">Week</span>
       <select class="period-select" id="periodSelect" onchange="onPeriodChange(this.value)"></select>
-      <button class="btn btn-sm btn-ghost" onclick="loadFromCloud()" title="Refresh">↻ Refresh</button>
+      <button class="btn btn-sm btn-ghost" onclick="loadFromCloud()">&#8635; Refresh</button>
     </div>
 
     <div class="summary-grid" id="summaryGrid"></div>
@@ -292,40 +292,40 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
 </div>
 
 <script>
-const ADMIN_PASSWORD='fuelled2026';
-const BIN_ID='69f8a158aaba8821976d267c';
-const API_KEY='$2a$10$So9.QCLzKj4eKbHDF2Qpbe9pCNlMjURr5monXKn6.l/UXP6KPQu26';
-const READ_URL='https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest';
-const WRITE_URL='https://api.jsonbin.io/v3/b/'+BIN_ID;
+var ADMIN_PASSWORD='fuelled2026';
+var BIN_ID='69f8a158aaba8821976d267c';
+var API_KEY='$2a$10$So9.QCLzKj4eKbHDF2Qpbe9pCNlMjURr5monXKn6.l/UXP6KPQu26';
+var READ_URL='https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest';
+var WRITE_URL='https://api.jsonbin.io/v3/b/'+BIN_ID;
 
-let isAdmin=false,selectedFbDriver=null,currentView='weekly',selectedWeekId=null,selectedMonth='April 2026',isSaving=false;
-let state={drivers:[],weeks:[],feedback:{}};
+var isAdmin=false,selectedFbDriver=null,currentView='weekly',selectedWeekId=null,selectedMonth='April 2026',isSaving=false;
+var state={drivers:[],weeks:[],feedback:{}};
 
-const AVATAR_COLORS=[
+var AVATAR_COLORS=[
   {bg:'#1A2E3D',txt:'#5AA0E8'},{bg:'#1E2D1E',txt:'#2DBF8A'},
   {bg:'#2D1E1A',txt:'#F05A28'},{bg:'#251D2E',txt:'#A07AE8'},
   {bg:'#2D261A',txt:'#F0A828'},{bg:'#2E1A1A',txt:'#E84848'},
-  {bg:'#1A2D2D',txt:'#28D4D4'},{bg:'#2D2D1A',txt:'#C8E828'},
+  {bg:'#1A2D2D',txt:'#28D4D4'},{bg:'#2D2D1A',txt:'#C8E828'}
 ];
-const FEEDBACK_CATS=[
+var FEEDBACK_CATS=[
   {key:'positive',label:'Positive',bg:'#0A2E1E',txt:'#2DBF8A'},
   {key:'coaching',label:'Coaching',bg:'#302008',txt:'#F0A828'},
   {key:'warning',label:'Warning',bg:'#2E0A0A',txt:'#E84848'},
-  {key:'general',label:'General',bg:'#1E1E1E',txt:'#9A9690'},
+  {key:'general',label:'General',bg:'#1E1E1E',txt:'#9A9690'}
 ];
-const METRIC_FIELDS=[
+var METRIC_FIELDS=[
   {key:'rolling_stop',label:'Rolling Stop'},
   {key:'following_close',label:'Following Close'},
   {key:'hard_accel',label:'Hard Accel'},
   {key:'hard_brake',label:'Hard Braking'},
   {key:'speeding',label:'Speeding'},
-  {key:'distracted',label:'Distracted Driving'},
+  {key:'distracted',label:'Distracted Driving'}
 ];
-const AVAILABLE_MONTHS=['April 2026','May 2026','June 2026','July 2026'];
+var AVAILABLE_MONTHS=['April 2026','May 2026','June 2026','July 2026'];
 
 function ac(i){return AVATAR_COLORS[i%8];}
-function catStyle(k){return FEEDBACK_CATS.find(c=>c.key===k)||FEEDBACK_CATS[3];}
-function getInitials(n){return n.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2);}
+function catStyle(k){return FEEDBACK_CATS.find(function(c){return c.key===k;})||FEEDBACK_CATS[3];}
+function getInitials(n){return n.split(' ').map(function(p){return p[0];}).join('').toUpperCase().slice(0,2);}
 function scoreColor(s){if(!s&&s!==0)return'#444';if(s>=900)return'#2DBF8A';if(s>=850)return'#5AA0E8';if(s>=800)return'#F0A828';return'#E84848';}
 function scoreLabel(s){if(!s&&s!==0)return'No data';if(s>=900)return'Excellent';if(s>=850)return'Good';if(s>=800)return'Fair';return'At risk';}
 function formatDate(d){if(!d)return'';return new Date(d+'T00:00:00').toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'});}
@@ -334,8 +334,9 @@ function escHtml(str){return(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 function setSyncStatus(s,text){
   var dot=document.getElementById('syncDot'),txt=document.getElementById('syncText');
   if(!dot||!txt)return;
-  var styles={ok:'background:#2DBF8A;animation:none',loading:'background:#F0A828;animation:pulse 1s infinite',err:'background:#E84848;animation:none'};
-  dot.style.cssText='width:6px;height:6px;border-radius:50%;flex-shrink:0;'+styles[s];
+  if(s==='ok'){dot.style.cssText='width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#2DBF8A;animation:none';}
+  else if(s==='loading'){dot.style.cssText='width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#F0A828;animation:pulse 1s infinite';}
+  else{dot.style.cssText='width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#E84848;animation:none';}
   txt.textContent=text;
 }
 
@@ -347,59 +348,59 @@ function getDefaultData(){
       {id:'d3',name:'Jackson Reid',truck:'Truck 03 — Sierra 2500'},
       {id:'d4',name:'Will Nguyen',truck:'Truck 04 — Silverado 2500'},
       {id:'d5',name:'Dylan Torres',truck:'Truck 05 — Ram 2500'},
-      {id:'d6',name:"Paddy O'Brien",truck:'Truck 06 — F-250'},
+      {id:'d6',name:'Paddy OBrien',truck:'Truck 06 — F-250'}
     ],
     weeks:[
-      {id:'w1',label:'Apr 1–7, 2026',month:'April 2026',scores:{
+      {id:'w1',label:'Apr 1\u20137, 2026',month:'April 2026',scores:{
         d1:{score:908,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},
         d2:{score:932,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},
         d3:{score:871,rolling_stop:1,following_close:2,hard_accel:2,hard_brake:2,speeding:1,distracted:0,notes:''},
         d4:{score:854,rolling_stop:1,following_close:1,hard_accel:1,hard_brake:3,speeding:2,distracted:1,notes:''},
         d5:{score:883,rolling_stop:0,following_close:1,hard_accel:2,hard_brake:2,speeding:1,distracted:0,notes:''},
-        d6:{score:791,rolling_stop:2,following_close:3,hard_accel:3,hard_brake:5,speeding:4,distracted:2,notes:'Flagged'},
+        d6:{score:791,rolling_stop:2,following_close:3,hard_accel:3,hard_brake:5,speeding:4,distracted:2,notes:'Flagged'}
       }},
-      {id:'w2',label:'Apr 8–14, 2026',month:'April 2026',scores:{
+      {id:'w2',label:'Apr 8\u201314, 2026',month:'April 2026',scores:{
         d1:{score:921,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},
         d2:{score:944,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:0,speeding:0,distracted:0,notes:'Clean week'},
         d3:{score:862,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:0,notes:''},
         d4:{score:841,rolling_stop:0,following_close:2,hard_accel:2,hard_brake:3,speeding:2,distracted:1,notes:''},
         d5:{score:897,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},
-        d6:{score:808,rolling_stop:1,following_close:2,hard_accel:2,hard_brake:4,speeding:3,distracted:1,notes:'Improving'},
+        d6:{score:808,rolling_stop:1,following_close:2,hard_accel:2,hard_brake:4,speeding:3,distracted:1,notes:'Improving'}
       }},
-      {id:'w3',label:'Apr 15–21, 2026',month:'April 2026',scores:{
+      {id:'w3',label:'Apr 15\u201321, 2026',month:'April 2026',scores:{
         d1:{score:918,rolling_stop:0,following_close:1,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},
         d2:{score:927,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},
         d3:{score:878,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:''},
         d4:{score:856,rolling_stop:1,following_close:1,hard_accel:1,hard_brake:2,speeding:2,distracted:0,notes:''},
         d5:{score:901,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},
-        d6:{score:823,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:1,notes:''},
+        d6:{score:823,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:1,notes:''}
       }},
-      {id:'w4',label:'Apr 22–28, 2026',month:'April 2026',scores:{
+      {id:'w4',label:'Apr 22\u201328, 2026',month:'April 2026',scores:{
         d1:{score:924,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},
         d2:{score:919,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:1,distracted:0,notes:''},
         d3:{score:884,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:''},
         d4:{score:867,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:'Progressing'},
         d5:{score:893,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},
-        d6:{score:836,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:0,notes:''},
+        d6:{score:836,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:0,notes:''}
       }},
-      {id:'w5',label:'Apr 29–May 1, 2026',month:'May 2026',scores:{
+      {id:'w5',label:'Apr 29\u2013May 1, 2026',month:'May 2026',scores:{
         d1:{score:931,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},
         d2:{score:941,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:0,speeding:0,distracted:0,notes:''},
         d3:{score:891,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},
         d4:{score:872,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},
         d5:{score:904,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},
-        d6:{score:848,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:'Steady improvement'},
-      }},
+        d6:{score:848,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:'Steady improvement'}
+      }}
     ],
     feedback:{
       d6:[
-        {id:'fb1',date:'2026-04-03',category:'warning',note:'Multiple speeding and hard braking events in Week 1. Reviewed dash cam footage — approach to highway on-ramps flagged. Discussion held April 4th.'},
-        {id:'fb2',date:'2026-04-14',category:'coaching',note:'Improvement in Week 2 but still elevated following distance events. Recommended 3-second rule refresher from Titan GPS course.'},
-        {id:'fb3',date:'2026-04-28',category:'positive',note:'Strong trend across the last two weeks. Score improved from 791 to 836. Acknowledged in team standup.'},
+        {id:'fb1',date:'2026-04-03',category:'warning',note:'Multiple speeding and hard braking events in Week 1. Reviewed dash cam footage. Discussion held April 4th.'},
+        {id:'fb2',date:'2026-04-14',category:'coaching',note:'Improvement in Week 2 but still elevated following distance events. Recommended 3-second rule refresher.'},
+        {id:'fb3',date:'2026-04-28',category:'positive',note:'Strong trend across the last two weeks. Score improved from 791 to 836. Acknowledged in team standup.'}
       ],
       d4:[
-        {id:'fb4',date:'2026-04-10',category:'coaching',note:'Hard braking events elevated across the first two weeks. Suggested smoother approach speeds at job sites and intersections.'},
-      ],
+        {id:'fb4',date:'2026-04-10',category:'coaching',note:'Hard braking events elevated across first two weeks. Suggested smoother approach speeds at job sites.'}
+      ]
     }
   };
 }
@@ -420,8 +421,8 @@ async function loadFromCloud(){
     var prefs=JSON.parse(localStorage.getItem('fuelled_prefs')||'{}');
     currentView=prefs.currentView||'weekly';
     selectedMonth=prefs.selectedMonth||'April 2026';
-    selectedWeekId=prefs.selectedWeekId||(state.weeks[state.weeks.length-1]?.id||null);
-    if(!state.weeks.find(w=>w.id===selectedWeekId))selectedWeekId=state.weeks[state.weeks.length-1]?.id||null;
+    selectedWeekId=prefs.selectedWeekId||(state.weeks[state.weeks.length-1]?state.weeks[state.weeks.length-1].id:null);
+    if(!state.weeks.find(function(w){return w.id===selectedWeekId;}))selectedWeekId=state.weeks[state.weeks.length-1]?state.weeks[state.weeks.length-1].id:null;
     setSyncStatus('ok','Live');
     document.getElementById('loadingScreen').style.display='none';
     document.getElementById('mainContent').style.display='block';
@@ -444,16 +445,16 @@ async function saveToCloud(){
     });
     if(!res.ok)throw new Error('fail');
     setSyncStatus('ok','Saved ✓');
-    setTimeout(()=>setSyncStatus('ok','Live'),2000);
+    setTimeout(function(){setSyncStatus('ok','Live');},2000);
   }catch(e){
-    setSyncStatus('err','Save failed — retry');
+    setSyncStatus('err','Save failed');
   }finally{
     isSaving=false;
   }
 }
 
 function savePrefs(){
-  localStorage.setItem('fuelled_prefs',JSON.stringify({currentView,selectedMonth,selectedWeekId}));
+  localStorage.setItem('fuelled_prefs',JSON.stringify({currentView:currentView,selectedMonth:selectedMonth,selectedWeekId:selectedWeekId}));
 }
 
 function tryLogin(){
@@ -499,62 +500,64 @@ function onPeriodChange(val){
 function renderPeriodSelect(){
   var sel=document.getElementById('periodSelect');
   if(currentView==='weekly'){
-    sel.innerHTML=state.weeks.map(w=>'<option value="'+w.id+'"'+(w.id===selectedWeekId?' selected':'')+'>'+w.label+'</option>').join('');
+    sel.innerHTML=state.weeks.map(function(w){return '<option value="'+w.id+'"'+(w.id===selectedWeekId?' selected':'')+'>'+w.label+'</option>';}).join('');
   }else{
-    var months=[...new Set(state.weeks.map(w=>w.month||'Unknown'))];
-    sel.innerHTML=months.map(m=>'<option value="'+m+'"'+(m===selectedMonth?' selected':'')+'>'+m+'</option>').join('');
+    var months=[];
+    state.weeks.forEach(function(w){if(w.month&&months.indexOf(w.month)<0)months.push(w.month);});
+    sel.innerHTML=months.map(function(m){return '<option value="'+m+'"'+(m===selectedMonth?' selected':'')+'>'+m+'</option>';}).join('');
   }
 }
-function currentWeek(){return state.weeks.find(w=>w.id===selectedWeekId);}
-function getScore(d){return currentView==='weekly'?(currentWeek()?.scores[d.id]?.score||null):monthlyAvg(d.id);}
+function currentWeek(){return state.weeks.find(function(w){return w.id===selectedWeekId;});}
+function getScore(d){return currentView==='weekly'?(currentWeek()&&currentWeek().scores[d.id]?currentWeek().scores[d.id].score:null):monthlyAvg(d.id);}
 function monthlyAvg(dId){
-  var wks=state.weeks.filter(w=>(w.month||'')===selectedMonth&&w.scores[dId]?.score!=null);
-  return wks.length?Math.round(wks.reduce((a,b)=>a+(b.scores[dId].score||0),0)/wks.length):null;
+  var wks=state.weeks.filter(function(w){return(w.month||'')===selectedMonth&&w.scores[dId]&&w.scores[dId].score!=null;});
+  return wks.length?Math.round(wks.reduce(function(a,b){return a+(b.scores[dId].score||0);},0)/wks.length):null;
 }
 function monthlyTotals(dId){
-  var wks=state.weeks.filter(w=>(w.month||'')===selectedMonth&&w.scores[dId]?.score!=null);
+  var wks=state.weeks.filter(function(w){return(w.month||'')===selectedMonth&&w.scores[dId]&&w.scores[dId].score!=null;});
   var t={};
-  METRIC_FIELDS.forEach(f=>{t[f.key]=wks.reduce((a,w)=>a+(w.scores[dId][f.key]||0),0);});
+  METRIC_FIELDS.forEach(function(f){t[f.key]=wks.reduce(function(a,w){return a+(w.scores[dId][f.key]||0);},0);});
   return t;
 }
-function getHistory(dId){return state.weeks.slice(-5).map(w=>{return{label:w.label,score:w.scores[dId]?.score||null}});}
+function getHistory(dId){return state.weeks.slice(-5).map(function(w){return{label:w.label,score:w.scores[dId]?w.scores[dId].score:null};});}
 
 function renderSummary(){
   var el=document.getElementById('summaryGrid');
-  var scores=state.drivers.map(d=>getScore(d)).filter(s=>s!=null);
-  var avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):null;
-  var excellent=scores.filter(s=>s>=900).length;
-  var atRisk=scores.filter(s=>s<800).length;
-  var topD=[...state.drivers].filter(d=>getScore(d)!=null).sort((a,b)=>(getScore(b)||0)-(getScore(a)||0))[0];
+  var scores=state.drivers.map(function(d){return getScore(d);}).filter(function(s){return s!=null;});
+  var avg=scores.length?Math.round(scores.reduce(function(a,b){return a+b;},0)/scores.length):null;
+  var excellent=scores.filter(function(s){return s>=900;}).length;
+  var atRisk=scores.filter(function(s){return s<800;}).length;
+  var topD=state.drivers.filter(function(d){return getScore(d)!=null;}).sort(function(a,b){return(getScore(b)||0)-(getScore(a)||0);})[0];
   el.innerHTML=
     '<div class="stat-card"><div class="stat-label">Fleet Avg</div><div class="stat-value" style="color:'+(avg?scoreColor(avg):'var(--text)')+'">'+( avg||'—')+'</div><div class="stat-sub">'+scores.length+' of '+state.drivers.length+' drivers scored</div></div>'+
     '<div class="stat-card"><div class="stat-label">Excellent</div><div class="stat-value" style="color:var(--green)">'+excellent+'</div><div class="stat-sub">Score 900+</div></div>'+
     '<div class="stat-card"><div class="stat-label">At Risk</div><div class="stat-value" style="color:'+(atRisk>0?'var(--red)':'var(--text)')+'">'+atRisk+'</div><div class="stat-sub">Score below 800</div></div>'+
     '<div class="stat-card"><div class="stat-label">Top Driver</div><div class="stat-value" style="font-size:18px">'+(topD?topD.name.split(' ')[0]:'—')+'</div><div class="stat-sub">'+(topD?getScore(topD):'')+'</div></div>'+
-    '<div class="stat-card"><div class="stat-label">'+(currentView==='weekly'?'Week':'Month')+'</div><div class="stat-value" style="font-size:13px;padding-top:5px">'+(currentView==='weekly'?(currentWeek()?.label||'—'):selectedMonth)+'</div><div class="stat-sub">'+state.weeks.length+' weeks tracked</div></div>';
+    '<div class="stat-card"><div class="stat-label">'+(currentView==='weekly'?'Week':'Month')+'</div><div class="stat-value" style="font-size:13px;padding-top:5px">'+(currentView==='weekly'?(currentWeek()?currentWeek().label:'—'):selectedMonth)+'</div><div class="stat-sub">'+state.weeks.length+' weeks tracked</div></div>';
 }
 
 function renderDriverGrid(){
   var g=document.getElementById('driverGrid');
   if(!state.drivers.length){g.innerHTML='<div class="empty-state">No drivers yet.</div>';return;}
-  var sorted=[...state.drivers].sort((a,b)=>(getScore(b)||0)-(getScore(a)||0));
-  var topId=sorted.find(d=>getScore(d)!=null)?.id;
-  g.innerHTML=sorted.map((d,rank)=>{
+  var sorted=state.drivers.slice().sort(function(a,b){return(getScore(b)||0)-(getScore(a)||0);});
+  var topId=sorted.find(function(d){return getScore(d)!=null;});
+  topId=topId?topId.id:null;
+  g.innerHTML=sorted.map(function(d,rank){
     var i=state.drivers.indexOf(d);
     var score=getScore(d);
-    var sc=currentView==='weekly'?currentWeek()?.scores[d.id]:null;
+    var sc=currentView==='weekly'&&currentWeek()?currentWeek().scores[d.id]:null;
     var metrics=currentView==='monthly'?monthlyTotals(d.id):null;
     var hist=getHistory(d.id);
     var circum=2*Math.PI*23;
     var pct=score?score/1000:0;
     var col=scoreColor(score);
     var isTop=d.id===topId&&score!=null;
-    var trendBars=hist.map(h=>{
+    var trendBars=hist.map(function(h){
       var ht=h.score?Math.round((h.score/1000)*34):3;
       var wkLabel=h.label?h.label.split('–')[0].trim().split(' ').pop()||'':'';
       return '<div class="trend-col"><div class="trend-bar-el" style="height:'+ht+'px;background:'+scoreColor(h.score)+';"></div><div class="trend-wk">'+wkLabel+'</div></div>';
     }).join('');
-    var metricRows=METRIC_FIELDS.map(f=>{
+    var metricRows=METRIC_FIELDS.map(function(f){
       var val=currentView==='weekly'?(sc!=null?sc[f.key]:null):(metrics!=null?metrics[f.key]:null);
       var cls=val>3?'bad':val>1?'warn':'';
       return '<div class="metric-box"><div class="metric-label">'+f.label+'</div><div class="metric-val '+cls+'">'+(val!=null?val:'—')+'</div></div>';
@@ -566,10 +569,9 @@ function renderDriverGrid(){
       '<div class="avatar" style="background:'+ac(i).bg+';color:'+ac(i).txt+'">'+getInitials(d.name)+'</div>'+
       '<div class="driver-info"><div class="driver-name">'+d.name+'</div><div class="driver-truck">'+(d.truck||'—')+'</div></div>'+
       '<div class="score-ring-wrap"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="23" fill="none" stroke="var(--bg3)" stroke-width="5.5"/>'+ringArc+'</svg>'+
-      '<div class="score-num" style="color:'+col+'">'+(score||'—')+'</div></div>'+
-      '</div>'+
+      '<div class="score-num" style="color:'+col+'">'+(score||'—')+'</div></div></div>'+
       '<div class="metrics-grid">'+metricRows+'</div>'+
-      '<div class="trend-section"><div class="trend-label">Recent trend (last 5 weeks)</div><div class="trend-bars">'+trendBars+'</div></div>'+
+      '<div class="trend-section"><div class="trend-label">Recent trend</div><div class="trend-bars">'+trendBars+'</div></div>'+
       '<div class="card-footer">'+
       (isTop?'<span class="status-pill" style="background:var(--accent-dim);color:var(--accent);">TOP DRIVER</span>':'<span class="rank-txt">#'+(rank+1)+' THIS '+(currentView==='weekly'?'WEEK':'MONTH')+'</span>')+
       (fbCount?'<span style="font-size:10px;color:var(--text3);font-family:var(--font-mono)">'+fbCount+' feedback</span>':'<span></span>')+
@@ -580,17 +582,17 @@ function renderDriverGrid(){
 
 function renderLeaderboard(){
   var el=document.getElementById('leaderboardEl');
-  var sorted=[...state.drivers].map(d=>{return{d:d,score:getScore(d)}}).filter(x=>x.score!=null).sort((a,b)=>b.score-a.score);
+  var sorted=state.drivers.map(function(d){return{d:d,score:getScore(d)};}).filter(function(x){return x.score!=null;}).sort(function(a,b){return b.score-a.score;});
   if(!sorted.length){el.innerHTML='<div class="empty-state">No scores yet.</div>';return;}
   var rankSymbols=['🥇','🥈','🥉'];
-  var prevWeekIdx=state.weeks.findIndex(w=>w.id===selectedWeekId)-1;
+  var prevWeekIdx=state.weeks.findIndex(function(w){return w.id===selectedWeekId;})-1;
   var prevWeek=prevWeekIdx>=0?state.weeks[prevWeekIdx]:null;
-  var rows=sorted.map((x,i)=>{
+  var rows=sorted.map(function(x,i){
     var d=x.d,score=x.score;
     var idx=state.drivers.indexOf(d);
     var col=scoreColor(score);
     var pct=Math.round((score/1000)*100);
-    var prevScore=prevWeek?.scores[d.id]?.score||null;
+    var prevScore=prevWeek&&prevWeek.scores[d.id]?prevWeek.scores[d.id].score:null;
     var diff=prevScore!=null?score-prevScore:null;
     var trendStr=diff!=null?(diff>0?'+'+diff:diff===0?'–':''+diff):'—';
     var trendCol=diff!=null?(diff>0?'var(--green)':diff===0?'var(--text3)':'var(--red)'):'var(--text3)';
@@ -600,8 +602,7 @@ function renderLeaderboard(){
       '<div><div class="lb-name">'+d.name+'</div><div class="lb-sub">'+(d.truck||'')+'</div></div>'+
       '<div class="lb-bar-col"><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div></div>'+
       '<div class="lb-trend" style="color:'+trendCol+'">'+trendStr+'</div>'+
-      '<div class="lb-score" style="color:'+col+'">'+score+'</div>'+
-      '</div>';
+      '<div class="lb-score" style="color:'+col+'">'+score+'</div></div>';
   }).join('');
   el.innerHTML='<div class="lb-wrap"><div class="lb-header-row"><div class="lb-hcell">Rank</div><div></div><div class="lb-hcell">Driver</div><div class="lb-hcell lb-bar-col">Score bar</div><div class="lb-hcell lb-trend-col">vs prev wk</div><div class="lb-hcell" style="text-align:right">Score</div></div>'+rows+'</div>';
 }
@@ -609,9 +610,9 @@ function renderLeaderboard(){
 function renderFeedback(){
   if(!state.drivers.length)return;
   if(!selectedFbDriver)selectedFbDriver=state.drivers[0].id;
-  document.getElementById('fbSidebar').innerHTML=state.drivers.map((d,i)=>{
+  document.getElementById('fbSidebar').innerHTML=state.drivers.map(function(d,i){
     var count=(state.feedback[d.id]||[]).length;
-    return '<div class="fb-sidebar-item'+(d.id===selectedFbDriver?' active':'')+'" onclick="selectFbDriver(''+d.id+'')">'+
+    return '<div class="fb-sidebar-item'+(d.id===selectedFbDriver?' active':'')+'" onclick="selectFbDriver(\'' +d.id+ '\')">'+
       '<div class="avatar" style="width:32px;height:32px;font-size:11px;background:'+ac(i).bg+';color:'+ac(i).txt+'">'+getInitials(d.name)+'</div>'+
       '<div><div class="fb-sidebar-name">'+d.name+'</div><div class="fb-sidebar-count">'+count+' item'+(count!==1?'s':'')+'</div></div></div>';
   }).join('');
@@ -620,7 +621,7 @@ function renderFeedback(){
 function selectFbDriver(id){selectedFbDriver=id;renderFeedback();}
 function renderFbPanel(){
   var panel=document.getElementById('fbPanel');
-  var d=state.drivers.find(d=>d.id===selectedFbDriver);
+  var d=state.drivers.find(function(d){return d.id===selectedFbDriver;});
   if(!d){panel.innerHTML='';return;}
   var i=state.drivers.indexOf(d);
   var fbs=(state.feedback[d.id]||[]).slice().reverse();
@@ -628,34 +629,34 @@ function renderFbPanel(){
     '<div style="display:flex;align-items:center;gap:12px">'+
     '<div class="avatar" style="width:40px;height:40px;font-size:14px;background:'+ac(i).bg+';color:'+ac(i).txt+'">'+getInitials(d.name)+'</div>'+
     '<div><div style="font-family:var(--font-head);font-size:16px;font-weight:700">'+d.name+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--font-mono)">'+(d.truck||'')+'</div></div></div>'+
-    (isAdmin?'<button class="btn btn-sm btn-accent" onclick="showModal('addFeedback',''+d.id+'')">+ Add feedback</button>':'')+
+    (isAdmin?'<button class="btn btn-sm btn-accent" onclick="showModal(\'addFeedback\',\'' +d.id+ '\')">+ Add feedback</button>':'')+
     '</div>';
-  var items=fbs.length?fbs.map(fb=>{
+  var items=fbs.length?fbs.map(function(fb){
     var cs=catStyle(fb.category);
     return '<div class="fb-item"><div class="fb-item-top">'+
       '<span class="fb-cat" style="background:'+cs.bg+';color:'+cs.txt+'">'+cs.label+'</span>'+
       '<div style="display:flex;align-items:center;gap:10px"><span class="fb-date">'+formatDate(fb.date)+'</span>'+
-      (isAdmin?'<button class="fb-del" onclick="deleteFeedback(''+d.id+'',''+fb.id+'')">Remove</button>':'')+
+      (isAdmin?'<button class="fb-del" onclick="deleteFeedback(\''+d.id+'\',\''+fb.id+'\')">Remove</button>':'')+
       '</div></div><div class="fb-note">'+escHtml(fb.note)+'</div></div>';
   }).join(''):'<div class="empty-fb">No feedback for this driver yet.</div>';
   panel.innerHTML=header+items;
 }
 function deleteFeedback(dId,fbId){
   if(!isAdmin)return;
-  state.feedback[dId]=(state.feedback[dId]||[]).filter(f=>f.id!==fbId);
+  state.feedback[dId]=(state.feedback[dId]||[]).filter(function(f){return f.id!==fbId;});
   saveToCloud();renderFeedback();
 }
 
 function renderManage(){
   var el=document.getElementById('driverListEl');
   if(!state.drivers.length){el.innerHTML='<div class="empty-state">No drivers.</div>';return;}
-  el.innerHTML=state.drivers.map((d,i)=>
-    '<div class="manage-row">'+
+  el.innerHTML=state.drivers.map(function(d,i){
+    return '<div class="manage-row">'+
     '<div class="avatar" style="width:36px;height:36px;font-size:12px;background:'+ac(i).bg+';color:'+ac(i).txt+'">'+getInitials(d.name)+'</div>'+
     '<div style="flex:1"><div style="font-family:var(--font-head);font-size:14px;font-weight:700">'+d.name+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--font-mono)">'+(d.truck||'No truck')+'</div></div>'+
-    (isAdmin?'<button class="btn btn-sm" onclick="showModal('editDriver',''+d.id+'')">Edit</button><button class="btn btn-sm btn-danger" onclick="removeDriver(''+d.id+'')">Remove</button>':'')+
-    '</div>'
-  ).join('');
+    (isAdmin?'<button class="btn btn-sm" onclick="showModal(\'editDriver\',\''+d.id+'\')">Edit</button><button class="btn btn-sm btn-danger" onclick="removeDriver(\''+d.id+'\')">Remove</button>':'')+
+    '</div>';
+  }).join('');
 }
 
 function render(){
@@ -669,44 +670,44 @@ function showModal(type,arg){
   if(type==='addDriver'){
     box.innerHTML='<h2>Add Driver</h2>'+
       '<div class="form-row"><label class="form-label">Full name</label><input class="form-input" id="m-dname" placeholder="e.g. Austin Clark"/></div>'+
-      '<div class="form-row"><label class="form-label">Truck / unit</label><input class="form-input" id="m-dtruck" placeholder="e.g. Truck 07 — F-350"/></div>'+
+      '<div class="form-row"><label class="form-label">Truck / unit</label><input class="form-input" id="m-dtruck" placeholder="e.g. Truck 07"/></div>'+
       '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitAddDriver()">Add driver</button></div>';
   }else if(type==='editDriver'){
-    var d=state.drivers.find(d=>d.id===arg);
+    var d=state.drivers.find(function(d){return d.id===arg;});
     box.innerHTML='<h2>Edit Driver</h2>'+
       '<div class="form-row"><label class="form-label">Full name</label><input class="form-input" id="m-dname" value="'+escHtml(d.name)+'"/></div>'+
       '<div class="form-row"><label class="form-label">Truck / unit</label><input class="form-input" id="m-dtruck" value="'+escHtml(d.truck||'')+'"/></div>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitEditDriver(''+arg+'')">Save</button></div>';
+      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitEditDriver(\''+arg+'\')">Save</button></div>';
   }else if(type==='addWeek'){
     box.innerHTML='<h2>Add Week</h2>'+
       '<div class="form-row"><label class="form-label">Week label (e.g. May 5–11, 2026)</label><input class="form-input" id="m-wlabel" placeholder="May 5–11, 2026"/></div>'+
       '<div class="form-row"><label class="form-label">Month group</label><select class="form-input" id="m-wmonth">'+
-      AVAILABLE_MONTHS.map(m=>'<option value="'+m+'">'+m+'</option>').join('')+'</select></div>'+
+      AVAILABLE_MONTHS.map(function(m){return '<option value="'+m+'">'+m+'</option>';}).join('')+'</select></div>'+
       '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitAddWeek()">Add week</button></div>';
   }else if(type==='deleteWeek'){
     var w=currentWeek();
-    box.innerHTML='<h2>Delete Week</h2><p style="font-size:14px;color:var(--text2);margin-bottom:18px;line-height:1.5">Delete <strong>'+(w?.label||'selected week')+'</strong>? All scores will be lost.</p>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="submitDeleteWeek()">Delete week</button></div>';
+    box.innerHTML='<h2>Delete Week</h2><p style="font-size:14px;color:var(--text2);margin-bottom:18px;line-height:1.5">Delete <strong>'+(w?w.label:'selected week')+'</strong>? Scores will be lost.</p>'+
+      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="submitDeleteWeek()">Delete</button></div>';
   }else if(type==='addScore'){
     var w=currentWeek();
     if(!w){box.innerHTML='<h2>No week selected</h2><p style="color:var(--text2);font-size:14px;margin-bottom:16px">Add a week first.</p><div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button></div>';return;}
-    var fields=state.drivers.map(d=>{
+    var fields=state.drivers.map(function(d){
       var sc=w.scores[d.id]||{};
-      var mInputs=METRIC_FIELDS.map(f=>'<div class="form-row"><label class="form-label">'+f.label+'</label><input class="form-input" type="number" min="0" id="sc-'+d.id+'-'+f.key+'" value="'+(sc[f.key]!=null?sc[f.key]:'')+'" placeholder="0"/></div>').join('');
+      var mInputs=METRIC_FIELDS.map(function(f){return '<div class="form-row"><label class="form-label">'+f.label+'</label><input class="form-input" type="number" min="0" id="sc-'+d.id+'-'+f.key+'" value="'+(sc[f.key]!=null?sc[f.key]:'')+'" placeholder="0"/></div>';}).join('');
       return '<div class="score-driver-block"><div class="score-driver-name">'+d.name+' <span class="score-driver-truck">'+(d.truck||'')+'</span></div>'+
-        '<div class="form-row"><label class="form-label">Dash cam score (0–1000)</label><input class="form-input" type="number" min="0" max="1000" id="sc-'+d.id+'-score" value="'+(sc.score||'')+'" placeholder="e.g. 912"/></div>'+
+        '<div class="form-row"><label class="form-label">Dash cam score (0–1000)</label><input class="form-input" type="number" min="0" max="1000" id="sc-'+d.id+'-score" value="'+(sc.score||'')+'" placeholder="912"/></div>'+
         '<div class="form-grid-3">'+mInputs+'</div>'+
-        '<div class="form-row"><label class="form-label">Notes (optional)</label><input class="form-input" id="sc-'+d.id+'-notes" value="'+escHtml(sc.notes||'')+'" placeholder="Any notes"/></div></div>';
+        '<div class="form-row"><label class="form-label">Notes (optional)</label><input class="form-input" id="sc-'+d.id+'-notes" value="'+escHtml(sc.notes||'')+'" placeholder="Optional"/></div></div>';
     }).join('');
-    box.innerHTML='<h2>Enter Scores — '+w.label+'</h2>'+fields+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitScores(''+w.id+'')">Save all scores</button></div>';
+    box.innerHTML='<h2>Enter Scores — '+w.label+'</h2>'+fields+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitScores(\''+w.id+'\')">Save all scores</button></div>';
   }else if(type==='addFeedback'){
-    var d=state.drivers.find(d=>d.id===arg);
+    var d=state.drivers.find(function(d){return d.id===arg;});
     var today=new Date().toISOString().split('T')[0];
-    box.innerHTML='<h2>Add Feedback — '+(d?.name||'')+'</h2>'+
+    box.innerHTML='<h2>Add Feedback — '+(d?d.name:'')+'</h2>'+
       '<div class="form-grid-2"><div class="form-row"><label class="form-label">Date</label><input class="form-input" type="date" id="m-fbdate" value="'+today+'"/></div>'+
-      '<div class="form-row"><label class="form-label">Category</label><select class="form-input" id="m-fbcat">'+FEEDBACK_CATS.map(c=>'<option value="'+c.key+'">'+c.label+'</option>').join('')+'</select></div></div>'+
+      '<div class="form-row"><label class="form-label">Category</label><select class="form-input" id="m-fbcat">'+FEEDBACK_CATS.map(function(c){return '<option value="'+c.key+'">'+c.label+'</option>';}).join('')+'</select></div></div>'+
       '<div class="form-row"><label class="form-label">Note</label><textarea class="form-input" id="m-fbnote" rows="5" placeholder="Write feedback here…" style="resize:vertical;"></textarea></div>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitFeedback(''+arg+'')">Save feedback</button></div>';
+      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="submitFeedback(\''+arg+'\')">Save feedback</button></div>';
   }
 }
 
@@ -718,7 +719,7 @@ function submitAddDriver(){
   saveToCloud();closeModal();render();
 }
 function submitEditDriver(id){
-  var d=state.drivers.find(d=>d.id===id);if(!d)return;
+  var d=state.drivers.find(function(d){return d.id===id;});if(!d)return;
   d.name=document.getElementById('m-dname').value.trim()||d.name;
   d.truck=document.getElementById('m-dtruck').value.trim();
   saveToCloud();closeModal();render();
@@ -734,18 +735,19 @@ function submitAddWeek(){
 }
 function submitDeleteWeek(){
   if(!selectedWeekId)return;
-  state.weeks=state.weeks.filter(w=>w.id!==selectedWeekId);
-  selectedWeekId=state.weeks[state.weeks.length-1]?.id||null;
+  state.weeks=state.weeks.filter(function(w){return w.id!==selectedWeekId;});
+  selectedWeekId=state.weeks.length?state.weeks[state.weeks.length-1].id:null;
   saveToCloud();closeModal();render();
 }
 function submitScores(wid){
-  var w=state.weeks.find(wk=>wk.id===wid);if(!w)return;
-  state.drivers.forEach(d=>{
-    var score=parseInt(document.getElementById('sc-'+d.id+'-score')?.value);
+  var w=state.weeks.find(function(wk){return wk.id===wid;});if(!w)return;
+  state.drivers.forEach(function(d){
+    var score=parseInt(document.getElementById('sc-'+d.id+'-score')?document.getElementById('sc-'+d.id+'-score').value:'');
     if(isNaN(score))return;
     var obj={score:Math.min(1000,Math.max(0,score))};
-    METRIC_FIELDS.forEach(f=>{var v=parseInt(document.getElementById('sc-'+d.id+'-'+f.key)?.value);obj[f.key]=isNaN(v)?0:v;});
-    obj.notes=document.getElementById('sc-'+d.id+'-notes')?.value?.trim()||'';
+    METRIC_FIELDS.forEach(function(f){var el=document.getElementById('sc-'+d.id+'-'+f.key);var v=parseInt(el?el.value:'');obj[f.key]=isNaN(v)?0:v;});
+    var notesEl=document.getElementById('sc-'+d.id+'-notes');
+    obj.notes=notesEl?notesEl.value.trim():'';
     w.scores[d.id]=obj;
   });
   saveToCloud();closeModal();render();
@@ -762,24 +764,23 @@ function submitFeedback(dId){
 function removeDriver(id){
   if(!isAdmin)return;
   if(!confirm('Remove this driver and all their data?'))return;
-  state.drivers=state.drivers.filter(d=>d.id!==id);
-  state.weeks.forEach(w=>{delete w.scores[id];});
+  state.drivers=state.drivers.filter(function(d){return d.id!==id;});
+  state.weeks.forEach(function(w){delete w.scores[id];});
   delete state.feedback[id];
-  if(selectedFbDriver===id)selectedFbDriver=state.drivers[0]?.id||null;
+  if(selectedFbDriver===id)selectedFbDriver=state.drivers.length?state.drivers[0].id:null;
   saveToCloud();render();
 }
 
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
 function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
 function switchTab(name,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='feedback')renderFeedback();
 }
 
-// Auto-refresh every 60s for read-only viewers
 setInterval(function(){if(!isAdmin)loadFromCloud();},60000);
 </script>
 </body>
