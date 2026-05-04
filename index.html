@@ -309,128 +309,32 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────────────
-var CFG = {
-  pw: 'fuelled2026',
-  bin: '69f8a158aaba8821976d267c',
-  key: '$2a$10$So9.QCLzKj4eKbHDF2Qpbe9pCNlMjURr5monXKn6.l/UXP6KPQu26'
-};
-var RURL = 'https://api.jsonbin.io/v3/b/' + CFG.bin + '/latest';
-var WURL = 'https://api.jsonbin.io/v3/b/' + CFG.bin;
+var CFG={pw:'fuelled2026',bin:'69f8a158aaba8821976d267c',key:'$2a$10$So9.QCLzKj4eKbHDF2Qpbe9pCNlMjURr5monXKn6.l/UXP6KPQu26'};
+var RURL='https://api.jsonbin.io/v3/b/'+CFG.bin+'/latest';
+var WURL='https://api.jsonbin.io/v3/b/'+CFG.bin;
+var isAdmin=false,selFbDriver=null,view='weekly',selWeekId=null,selMonth='April 2026',saving=false;
+var S={drivers:[],weeks:[],feedback:{}};
+var AV=[{bg:'#DBEAFE',tx:'#1D4ED8'},{bg:'#DCFCE7',tx:'#166534'},{bg:'#FEE2E2',tx:'#991B1B'},{bg:'#EDE9FE',tx:'#5B21B6'},{bg:'#FEF9C3',tx:'#854D0E'},{bg:'#FCE7F3',tx:'#9D174D'},{bg:'#E0F2FE',tx:'#0369A1'},{bg:'#D1FAE5',tx:'#065F46'}];
+var FCATS=[{key:'positive',label:'Positive',bg:'#DCFCE7',tx:'#166534'},{key:'coaching',label:'Coaching',bg:'#FEF9C3',tx:'#854D0E'},{key:'warning',label:'Warning',bg:'#FEE2E2',tx:'#991B1B'},{key:'general',label:'General',bg:'#F3F4F6',tx:'#374151'}];
+var MF=[{key:'rolling_stop',label:'Rolling Stop'},{key:'following_close',label:'Following Close'},{key:'hard_accel',label:'Hard Accel'},{key:'hard_brake',label:'Hard Braking'},{key:'speeding',label:'Speeding'},{key:'distracted',label:'Distracted'}];
+var MONTHS=['April 2026','May 2026','June 2026','July 2026'];
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
-var isAdmin = false, selFbDriver = null, view = 'weekly', selWeekId = null, selMonth = 'April 2026', saving = false;
-var S = {drivers:[], weeks:[], feedback:{}};
+function av(i){return AV[i%8];}
+function fcat(k){return FCATS.find(function(c){return c.key===k;})||FCATS[3];}
+function ini(n){return n.split(' ').map(function(p){return p[0];}).join('').toUpperCase().slice(0,2);}
+function sc(s){if(!s&&s!==0)return'#9A9690';if(s>=900)return'#1A8C5E';if(s>=850)return'#2266CC';if(s>=800)return'#9A6200';return'#CC2222';}
+function sl(s){if(!s&&s!==0)return'No data';if(s>=900)return'Excellent';if(s>=850)return'Good';if(s>=800)return'Fair';return'At risk';}
+function scbg(s){if(!s&&s!==0)return'#F3F4F6';if(s>=900)return'#DCFCE7';if(s>=850)return'#DBEAFE';if(s>=800)return'#FEF9C3';return'#FEE2E2';}
+function fd(d){if(!d)return'';return new Date(d+'T00:00:00').toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'});}
+function eh(s){return(s||'').replace(/&/g,'&amp;').replace(/\x3C/g,'&lt;').replace(/\x3E/g,'&gt;').replace(/"/g,'&quot;');}
+function cw(){return S.weeks.find(function(w){return w.id===selWeekId;});}
+function gs(d){return view==='weekly'?(cw()&&cw().scores[d.id]?cw().scores[d.id].score:null):mAvg(d.id);}
+function mAvg(id){var wks=S.weeks.filter(function(w){return(w.month||'')===selMonth&&w.scores[id]&&w.scores[id].score!=null;});return wks.length?Math.round(wks.reduce(function(a,b){return a+(b.scores[id].score||0);},0)/wks.length):null;}
+function mTot(id){var wks=S.weeks.filter(function(w){return(w.month||'')===selMonth&&w.scores[id]&&w.scores[id].score!=null;});var t={};MF.forEach(function(f){t[f.key]=wks.reduce(function(a,w){return a+(w.scores[id][f.key]||0);},0);});return t;}
+function hist(id){return S.weeks.slice(-5).map(function(w){return{label:w.label,score:w.scores[id]?w.scores[id].score:null};});}
+function setSS(state,txt){var dot=document.getElementById('syncDot'),el=document.getElementById('syncText');if(!dot||!el)return;dot.className='sync-dot'+(state==='live'?' live':state==='saving'?' saving':state==='err'?' err':'');el.textContent=txt;}
 
-// ── CONSTANTS ─────────────────────────────────────────────────────────────────
-var AV = [
-  {bg:'#DBEAFE',tx:'#1D4ED8'},{bg:'#DCFCE7',tx:'#166534'},
-  {bg:'#FEE2E2',tx:'#991B1B'},{bg:'#EDE9FE',tx:'#5B21B6'},
-  {bg:'#FEF9C3',tx:'#854D0E'},{bg:'#FCE7F3',tx:'#9D174D'},
-  {bg:'#E0F2FE',tx:'#0369A1'},{bg:'#D1FAE5',tx:'#065F46'}
-];
-var FCATS = [
-  {key:'positive',label:'Positive',bg:'#DCFCE7',tx:'#166534'},
-  {key:'coaching',label:'Coaching',bg:'#FEF9C3',tx:'#854D0E'},
-  {key:'warning', label:'Warning', bg:'#FEE2E2',tx:'#991B1B'},
-  {key:'general', label:'General', bg:'#F3F4F6',tx:'#374151'}
-];
-var MF = [
-  {key:'rolling_stop',    label:'Rolling Stop'},
-  {key:'following_close', label:'Following Close'},
-  {key:'hard_accel',      label:'Hard Accel'},
-  {key:'hard_brake',      label:'Hard Braking'},
-  {key:'speeding',        label:'Speeding'},
-  {key:'distracted',      label:'Distracted'}
-];
-var MONTHS = ['April 2026','May 2026','June 2026','July 2026'];
-
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-function av(i)    { return AV[i % 8]; }
-function fcat(k)  { return FCATS.find(function(c){return c.key===k;}) || FCATS[3]; }
-function ini(n)   { return n.split(' ').map(function(p){return p[0];}).join('').toUpperCase().slice(0,2); }
-function sc(s)    { if(!s&&s!==0)return'#9A9690'; if(s>=900)return'#1A8C5E'; if(s>=850)return'#2266CC'; if(s>=800)return'#9A6200'; return'#CC2222'; }
-function sl(s)    { if(!s&&s!==0)return'No data'; if(s>=900)return'Excellent'; if(s>=850)return'Good'; if(s>=800)return'Fair'; return'At risk'; }
-function scbg(s)  { if(!s&&s!==0)return'#F3F4F6'; if(s>=900)return'#DCFCE7'; if(s>=850)return'#DBEAFE'; if(s>=800)return'#FEF9C3'; return'#FEE2E2'; }
-function sctx(s)  { return sc(s); }
-function fd(d)    { if(!d)return''; return new Date(d+'T00:00:00').toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'}); }
-function eh(s)    { return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function cw()     { return S.weeks.find(function(w){return w.id===selWeekId;}); }
-function gs(d)    { return view==='weekly'?(cw()&&cw().scores[d.id]?cw().scores[d.id].score:null):mAvg(d.id); }
-function mAvg(id) {
-  var wks=S.weeks.filter(function(w){return(w.month||'')===selMonth&&w.scores[id]&&w.scores[id].score!=null;});
-  return wks.length?Math.round(wks.reduce(function(a,b){return a+(b.scores[id].score||0);},0)/wks.length):null;
-}
-function mTot(id) {
-  var wks=S.weeks.filter(function(w){return(w.month||'')===selMonth&&w.scores[id]&&w.scores[id].score!=null;});
-  var t={};
-  MF.forEach(function(f){t[f.key]=wks.reduce(function(a,w){return a+(w.scores[id][f.key]||0);},0);});
-  return t;
-}
-function hist(id) { return S.weeks.slice(-5).map(function(w){return{label:w.label,score:w.scores[id]?w.scores[id].score:null};}); }
-
-// ── SYNC STATUS ───────────────────────────────────────────────────────────────
-function setSS(state, txt) {
-  var dot = document.getElementById('syncDot'), el = document.getElementById('syncText');
-  if(!dot||!el) return;
-  dot.className = 'sync-dot' + (state==='live'?' live':state==='saving'?' saving':state==='err'?' err':'');
-  el.textContent = txt;
-}
-
-// ── CLOUD ─────────────────────────────────────────────────────────────────────
-async function loadData() {
-  setSS('saving','Loading...');
-  try {
-    var r = await fetch(RURL, {headers:{'X-ACCESS-KEY': CFG.key, 'X-BIN-META': 'false'}});
-    if(!r.ok) throw new Error('HTTP ' + r.status);
-    var data = await r.json();
-    if(!data||!data.drivers||!data.drivers.length) {
-      S = defaultData();
-      await saveData();
-    } else {
-      S = data;
-    }
-    var p = JSON.parse(localStorage.getItem('fp')||'{}');
-    view = p.view||'weekly';
-    selMonth = p.month||'April 2026';
-    selWeekId = p.week||(S.weeks.length?S.weeks[S.weeks.length-1].id:null);
-    if(!S.weeks.find(function(w){return w.id===selWeekId;})) selWeekId = S.weeks.length?S.weeks[S.weeks.length-1].id:null;
-    setSS('live','Live');
-    document.getElementById('loadingScreen').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-    render();
-  } catch(e) {
-    setSS('err','Error — retry');
-    document.getElementById('loadingScreen').innerHTML = '<div style="text-align:center;color:var(--red);font-family:var(--mono);font-size:13px;">Failed to load.<br><br><button class="btn btn-sm" onclick="loadData()">Retry</button></div>';
-  }
-}
-
-async function saveData() {
-  if(saving) return;
-  saving = true;
-  setSS('saving','Saving...');
-  try {
-    var r = await fetch(WURL, {
-      method: 'PUT',
-      headers: {'Content-Type':'application/json','X-ACCESS-KEY': CFG.key},
-      body: JSON.stringify(S)
-    });
-    if(!r.ok) throw new Error('HTTP ' + r.status);
-    setSS('live','Saved ✓');
-    setTimeout(function(){setSS('live','Live');}, 2000);
-  } catch(e) {
-    setSS('err','Save failed — check console');
-    console.error('Save error:', e);
-  } finally {
-    saving = false;
-  }
-}
-
-function refreshData() { loadData(); }
-function savePrefs() { localStorage.setItem('fp', JSON.stringify({view:view,month:selMonth,week:selWeekId})); }
-
-// ── DEFAULT DATA ──────────────────────────────────────────────────────────────
-function defaultData() {
+function getDefaultData(){
   return {
     drivers:[
       {id:'d1',name:'Dylan',  truck:'001 - Toyota Tundra'},
@@ -441,42 +345,70 @@ function defaultData() {
       {id:'d6',name:'Harsh',  truck:'006 - Ford F150'}
     ],
     weeks:[
-      {id:'w1',label:'Apr 1-7, 2026',   month:'April 2026',scores:{d1:{score:883,rolling_stop:0,following_close:1,hard_accel:2,hard_brake:2,speeding:1,distracted:0,notes:''},d2:{score:854,rolling_stop:1,following_close:1,hard_accel:1,hard_brake:3,speeding:2,distracted:1,notes:''},d3:{score:871,rolling_stop:1,following_close:2,hard_accel:2,hard_brake:2,speeding:1,distracted:0,notes:''},d4:{score:908,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:791,rolling_stop:2,following_close:3,hard_accel:3,hard_brake:5,speeding:4,distracted:2,notes:'Flagged'},d6:{score:932,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''}}},
-      {id:'w2',label:'Apr 8-14, 2026',  month:'April 2026',scores:{d1:{score:897,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},d2:{score:841,rolling_stop:0,following_close:2,hard_accel:2,hard_brake:3,speeding:2,distracted:1,notes:''},d3:{score:862,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:0,notes:''},d4:{score:921,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:808,rolling_stop:1,following_close:2,hard_accel:2,hard_brake:4,speeding:3,distracted:1,notes:'Improving'},d6:{score:944,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:0,speeding:0,distracted:0,notes:'Clean week'}}},
-      {id:'w3',label:'Apr 15-21, 2026', month:'April 2026',scores:{d1:{score:901,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d2:{score:856,rolling_stop:1,following_close:1,hard_accel:1,hard_brake:2,speeding:2,distracted:0,notes:''},d3:{score:878,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:''},d4:{score:918,rolling_stop:0,following_close:1,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:823,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:1,notes:''},d6:{score:927,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''}}},
-      {id:'w4',label:'Apr 22-28, 2026', month:'April 2026',scores:{d1:{score:893,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},d2:{score:867,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:'Progressing'},d3:{score:884,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:''},d4:{score:924,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:836,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:0,notes:''},d6:{score:919,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:1,distracted:0,notes:''}}},
+      {id:'w1',label:'Apr 1-7, 2026',month:'April 2026',scores:{d1:{score:883,rolling_stop:0,following_close:1,hard_accel:2,hard_brake:2,speeding:1,distracted:0,notes:''},d2:{score:854,rolling_stop:1,following_close:1,hard_accel:1,hard_brake:3,speeding:2,distracted:1,notes:''},d3:{score:871,rolling_stop:1,following_close:2,hard_accel:2,hard_brake:2,speeding:1,distracted:0,notes:''},d4:{score:908,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:791,rolling_stop:2,following_close:3,hard_accel:3,hard_brake:5,speeding:4,distracted:2,notes:'Flagged'},d6:{score:932,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''}}},
+      {id:'w2',label:'Apr 8-14, 2026',month:'April 2026',scores:{d1:{score:897,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},d2:{score:841,rolling_stop:0,following_close:2,hard_accel:2,hard_brake:3,speeding:2,distracted:1,notes:''},d3:{score:862,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:0,notes:''},d4:{score:921,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:808,rolling_stop:1,following_close:2,hard_accel:2,hard_brake:4,speeding:3,distracted:1,notes:'Improving'},d6:{score:944,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:0,speeding:0,distracted:0,notes:'Clean week'}}},
+      {id:'w3',label:'Apr 15-21, 2026',month:'April 2026',scores:{d1:{score:901,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d2:{score:856,rolling_stop:1,following_close:1,hard_accel:1,hard_brake:2,speeding:2,distracted:0,notes:''},d3:{score:878,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:''},d4:{score:918,rolling_stop:0,following_close:1,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:823,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:1,notes:''},d6:{score:927,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''}}},
+      {id:'w4',label:'Apr 22-28, 2026',month:'April 2026',scores:{d1:{score:893,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},d2:{score:867,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:'Progressing'},d3:{score:884,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:''},d4:{score:924,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:836,rolling_stop:1,following_close:1,hard_accel:2,hard_brake:3,speeding:2,distracted:0,notes:''},d6:{score:919,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:1,distracted:0,notes:''}}},
       {id:'w5',label:'Apr 29-May 1, 2026',month:'May 2026',scores:{d1:{score:904,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},d2:{score:872,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},d3:{score:891,rolling_stop:0,following_close:0,hard_accel:1,hard_brake:1,speeding:1,distracted:0,notes:''},d4:{score:931,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:1,speeding:0,distracted:0,notes:''},d5:{score:848,rolling_stop:0,following_close:1,hard_accel:1,hard_brake:2,speeding:1,distracted:0,notes:'Steady improvement'},d6:{score:941,rolling_stop:0,following_close:0,hard_accel:0,hard_brake:0,speeding:0,distracted:0,notes:''}}}
     ],
     feedback:{
-      d5:[
-        {id:'fb1',date:'2026-04-03',category:'warning',note:'Multiple speeding and hard braking events in Week 1. Reviewed dash cam footage — flagged. Discussion held April 4th.'},
-        {id:'fb2',date:'2026-04-14',category:'coaching',note:'Improvement in Week 2 but still elevated following distance events. Recommended 3-second rule refresher.'},
-        {id:'fb3',date:'2026-04-28',category:'positive',note:'Strong trend over the last two weeks. Score improved from 791 to 836. Acknowledged in team standup.'}
-      ],
-      d2:[
-        {id:'fb4',date:'2026-04-10',category:'coaching',note:'Hard braking events elevated across first two weeks. Suggested smoother approach speeds at job sites.'}
-      ]
+      d5:[{id:'fb1',date:'2026-04-03',category:'warning',note:'Multiple speeding and hard braking events in Week 1. Reviewed dash cam footage. Discussion held April 4th.'},{id:'fb2',date:'2026-04-14',category:'coaching',note:'Improvement in Week 2 but still elevated following distance events. Recommended 3-second rule refresher.'},{id:'fb3',date:'2026-04-28',category:'positive',note:'Strong trend over the last two weeks. Score improved from 791 to 836. Acknowledged in team standup.'}],
+      d2:[{id:'fb4',date:'2026-04-10',category:'coaching',note:'Hard braking events elevated across first two weeks. Suggested smoother approach speeds at job sites.'}]
     }
   };
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
-function tryLogin() {
-  if(document.getElementById('loginPwd').value===CFG.pw) { isAdmin=true; showApp(); }
+async function loadData() {
+  setSS('saving','Loading...');
+  try {
+    var r = await fetch(RURL, {headers:{'X-ACCESS-KEY':CFG.key,'X-BIN-META':'false'}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    var data = await r.json();
+    if(!data||!data.drivers||!data.drivers.length) { S=getDefaultData(); await saveData(); }
+    else { S=data; }
+    var p = JSON.parse(localStorage.getItem('fp')||'{}');
+    view=p.view||'weekly'; selMonth=p.month||'April 2026';
+    selWeekId=p.week||(S.weeks.length?S.weeks[S.weeks.length-1].id:null);
+    if(!S.weeks.find(function(w){return w.id===selWeekId;})) selWeekId=S.weeks.length?S.weeks[S.weeks.length-1].id:null;
+    setSS('live','Live');
+    document.getElementById('loadingScreen').style.display='none';
+    document.getElementById('mainContent').style.display='block';
+    render();
+  } catch(e) {
+    setSS('err','Error');
+    document.getElementById('loadingScreen').innerHTML='<div style="text-align:center;color:var(--red);font-family:var(--mono);font-size:13px;">Failed to load.<br><br><button class="btn btn-sm" onclick="loadData()">Retry</button></div>';
+  }
+}
+
+async function saveData() {
+  if(saving) return; saving=true; setSS('saving','Saving...');
+  try {
+    var r = await fetch(WURL, {method:'PUT',headers:{'Content-Type':'application/json','X-ACCESS-KEY':CFG.key},body:JSON.stringify(S)});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    setSS('live','Saved'); setTimeout(function(){setSS('live','Live');},2000);
+  } catch(e) { setSS('err','Save failed'); console.error(e); }
+  finally { saving=false; }
+}
+
+function refreshData(){loadData();}
+function savePrefs(){localStorage.setItem('fp',JSON.stringify({view:view,month:selMonth,week:selWeekId}));}
+
+function tryLogin(){
+  if(document.getElementById('loginPwd').value===CFG.pw){isAdmin=true;showApp();}
   else document.getElementById('loginErr').style.display='block';
 }
-function enterViewer() { isAdmin=false; showApp(); }
-function showApp() {
+function enterViewer(){isAdmin=false;showApp();}
+function showApp(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('app').style.display='block';
-  if(isAdmin) {
+  if(isAdmin){
     document.getElementById('adminBar').style.display='flex';
     document.getElementById('adminPill').style.display='';
     document.getElementById('manageTab').style.display='';
   }
   loadData();
 }
-function logout() {
+function logout(){
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('app').style.display='none';
   document.getElementById('mainContent').style.display='none';
@@ -490,21 +422,20 @@ function logout() {
   isAdmin=false;
 }
 
-// ── VIEW ──────────────────────────────────────────────────────────────────────
-function setView(v) {
+function setView(v){
   view=v;
   document.getElementById('vt-weekly').classList.toggle('active',v==='weekly');
   document.getElementById('vt-monthly').classList.toggle('active',v==='monthly');
   document.getElementById('periodLabel').textContent=v==='weekly'?'Week':'Month';
   savePrefs(); render();
 }
-function onPeriodChange(val) {
+function onPeriodChange(val){
   if(view==='weekly') selWeekId=val; else selMonth=val;
   savePrefs(); render();
 }
-function renderPeriodSelect() {
+function renderPeriodSelect(){
   var sel=document.getElementById('periodSelect');
-  if(view==='weekly') {
+  if(view==='weekly'){
     sel.innerHTML=S.weeks.map(function(w){return '<option value="'+w.id+'"'+(w.id===selWeekId?' selected':'')+'>'+w.label+'</option>';}).join('');
   } else {
     var months=[];
@@ -513,8 +444,7 @@ function renderPeriodSelect() {
   }
 }
 
-// ── RENDER ────────────────────────────────────────────────────────────────────
-function renderSummary() {
+function renderSummary(){
   var el=document.getElementById('summaryGrid');
   var scores=S.drivers.map(function(d){return gs(d);}).filter(function(s){return s!=null;});
   var avg=scores.length?Math.round(scores.reduce(function(a,b){return a+b;},0)/scores.length):null;
@@ -522,75 +452,54 @@ function renderSummary() {
   var atRisk=scores.filter(function(s){return s<800;}).length;
   var topD=S.drivers.filter(function(d){return gs(d)!=null;}).sort(function(a,b){return(gs(b)||0)-(gs(a)||0);})[0];
   el.innerHTML=
-    '<div class="stat-card"><div class="stat-label">Fleet Avg</div><div class="stat-value" style="color:'+(avg?sc(avg):'var(--text)')+'">'+( avg||'—')+'</div><div class="stat-sub">'+scores.length+' of '+S.drivers.length+' drivers</div></div>'+
+    '<div class="stat-card"><div class="stat-label">Fleet Avg</div><div class="stat-value" style="color:'+(avg?sc(avg):'var(--text)')+'">'+( avg||'&mdash;')+'</div><div class="stat-sub">'+scores.length+' of '+S.drivers.length+' drivers</div></div>'+
     '<div class="stat-card"><div class="stat-label">Excellent</div><div class="stat-value" style="color:var(--green)">'+excellent+'</div><div class="stat-sub">Score 900+</div></div>'+
     '<div class="stat-card"><div class="stat-label">At Risk</div><div class="stat-value" style="color:'+(atRisk>0?'var(--red)':'var(--text)')+'">'+atRisk+'</div><div class="stat-sub">Score below 800</div></div>'+
-    '<div class="stat-card"><div class="stat-label">Top Driver</div><div class="stat-value" style="font-size:18px">'+(topD?topD.name:'—')+'</div><div class="stat-sub">'+(topD?gs(topD)||'':'')+'</div></div>'+
-    '<div class="stat-card"><div class="stat-label">'+(view==='weekly'?'Week':'Month')+'</div><div class="stat-value" style="font-size:13px;padding-top:4px">'+(view==='weekly'?(cw()?cw().label:'—'):selMonth)+'</div><div class="stat-sub">'+S.weeks.length+' weeks tracked</div></div>';
+    '<div class="stat-card"><div class="stat-label">Top Driver</div><div class="stat-value" style="font-size:18px">'+(topD?topD.name:'&mdash;')+'</div><div class="stat-sub">'+(topD?gs(topD)||'':'')+'</div></div>'+
+    '<div class="stat-card"><div class="stat-label">'+(view==='weekly'?'Week':'Month')+'</div><div class="stat-value" style="font-size:13px;padding-top:4px">'+(view==='weekly'?(cw()?cw().label:'&mdash;'):selMonth)+'</div><div class="stat-sub">'+S.weeks.length+' weeks tracked</div></div>';
 }
 
-function renderDriverGrid() {
+function renderDriverGrid(){
   var g=document.getElementById('driverGrid');
   if(!S.drivers.length){g.innerHTML='<div class="empty-state">No drivers yet.</div>';return;}
   var sorted=S.drivers.slice().sort(function(a,b){return(gs(b)||0)-(gs(a)||0);});
-  var topId=sorted.find(function(d){return gs(d)!=null;});
-  topId=topId?topId.id:null;
+  var topId=sorted.find(function(d){return gs(d)!=null;});topId=topId?topId.id:null;
   g.innerHTML=sorted.map(function(d,rank){
-    var i=S.drivers.indexOf(d);
-    var score=gs(d);
-    var sc2=view==='weekly'&&cw()?cw().scores[d.id]:null;
-    var metrics=view==='monthly'?mTot(d.id):null;
-    var h=hist(d.id);
-    var circ=2*Math.PI*21;
-    var pct=score?score/1000:0;
-    var col=sc(score);
-    var isTop=d.id===topId&&score!=null;
-    var bars=h.map(function(hh){
-      var ht=hh.score?Math.round((hh.score/1000)*30):2;
-      var wl=hh.label?hh.label.split('-')[0].trim().split(' ').pop()||'':'';
-      return '<div class="trend-col"><div class="trend-bar-el" style="height:'+ht+'px;background:'+sc(hh.score)+';"></div><div class="trend-wk">'+wl+'</div></div>';
-    }).join('');
-    var mrows=MF.map(function(f){
-      var val=view==='weekly'?(sc2!=null?sc2[f.key]:null):(metrics!=null?metrics[f.key]:null);
-      var cls=val>3?'bad':val>1?'warn':'';
-      return '<div class="metric-box"><div class="metric-label">'+f.label+'</div><div class="metric-val '+cls+'">'+(val!=null?val:'—')+'</div></div>';
-    }).join('');
+    var i=S.drivers.indexOf(d),score=gs(d),sc2=view==='weekly'&&cw()?cw().scores[d.id]:null,metrics=view==='monthly'?mTot(d.id):null,h=hist(d.id);
+    var circ=2*Math.PI*21,pct=score?score/1000:0,col=sc(score),isTop=d.id===topId&&score!=null;
+    var bars=h.map(function(hh){var ht=hh.score?Math.round((hh.score/1000)*30):2;var wl=hh.label?hh.label.split('-')[0].trim().split(' ').pop()||'':'';return '<div class="trend-col"><div class="trend-bar-el" style="height:'+ht+'px;background:'+sc(hh.score)+';"></div><div class="trend-wk">'+wl+'</div></div>';}).join('');
+    var mrows=MF.map(function(f){var val=view==='weekly'?(sc2!=null?sc2[f.key]:null):(metrics!=null?metrics[f.key]:null);var cls=val>3?'bad':val>1?'warn':'';return '<div class="metric-box"><div class="metric-label">'+f.label+'</div><div class="metric-val '+cls+'">'+(val!=null?val:'&mdash;')+'</div></div>';}).join('');
     var fbc=(S.feedback[d.id]||[]).length;
     var arc=score?'<circle cx="26" cy="26" r="21" fill="none" stroke="'+col+'" stroke-width="5" stroke-dasharray="'+(circ*pct).toFixed(1)+' '+(circ*(1-pct)).toFixed(1)+'" stroke-linecap="round"/>':'';
     return '<div class="driver-card'+(isTop?' top-card':'')+'">'+
-      '<div class="driver-top">'+
-      '<div class="avatar" style="background:'+av(i).bg+';color:'+av(i).tx+'">'+ini(d.name)+'</div>'+
-      '<div class="driver-info"><div class="driver-name">'+d.name+'</div><div class="driver-truck">'+(d.truck||'—')+'</div></div>'+
+      '<div class="driver-top"><div class="avatar" style="background:'+av(i).bg+';color:'+av(i).tx+'">'+ini(d.name)+'</div>'+
+      '<div class="driver-info"><div class="driver-name">'+d.name+'</div><div class="driver-truck">'+(d.truck||'&mdash;')+'</div></div>'+
       '<div class="score-ring-wrap"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="21" fill="none" stroke="var(--bg3)" stroke-width="5"/>'+arc+'</svg>'+
-      '<div class="score-num" style="color:'+col+'">'+(score||'—')+'</div></div></div>'+
+      '<div class="score-num" style="color:'+col+'">'+(score||'&mdash;')+'</div></div></div>'+
       '<div class="metrics-grid">'+mrows+'</div>'+
       '<div class="trend-section"><div class="trend-label">5-week trend</div><div class="trend-bars">'+bars+'</div></div>'+
       '<div class="card-footer">'+
       (isTop?'<span class="top-badge">Top driver</span>':'<span class="rank-txt">#'+(rank+1)+'</span>')+
       (fbc?'<span style="font-size:10px;color:var(--text3);font-family:var(--mono)">'+fbc+' note'+(fbc!==1?'s':'')+'</span>':'<span></span>')+
-      '<span class="status-pill" style="background:'+scbg(score)+';color:'+sctx(score)+'">'+sl(score)+'</span>'+
+      '<span class="status-pill" style="background:'+scbg(score)+';color:'+sc(score)+'">'+sl(score)+'</span>'+
       '</div></div>';
   }).join('');
 }
 
-function renderLeaderboard() {
+function renderLeaderboard(){
   var el=document.getElementById('leaderboardEl');
   var sorted=S.drivers.map(function(d){return{d:d,score:gs(d)};}).filter(function(x){return x.score!=null;}).sort(function(a,b){return b.score-a.score;});
   if(!sorted.length){el.innerHTML='<div class="empty-state">No scores yet.</div>';return;}
-  var ranks=['🥇','🥈','🥉'];
   var pwi=S.weeks.findIndex(function(w){return w.id===selWeekId;})-1;
   var pw=pwi>=0?S.weeks[pwi]:null;
   var rows=sorted.map(function(x,i){
-    var d=x.d, score=x.score;
-    var idx=S.drivers.indexOf(d);
-    var col=sc(score);
-    var pct=Math.round((score/1000)*100);
-    var ps=pw&&pw.scores[d.id]?pw.scores[d.id].score:null;
-    var diff=ps!=null?score-ps:null;
-    var ts=diff!=null?(diff>0?'+'+diff:diff===0?'—':''+diff):'—';
+    var d=x.d,score=x.score,idx=S.drivers.indexOf(d),col=sc(score),pct=Math.round((score/1000)*100);
+    var ps=pw&&pw.scores[d.id]?pw.scores[d.id].score:null,diff=ps!=null?score-ps:null;
+    var ts=diff!=null?(diff>0?'+'+diff:diff===0?'&mdash;':''+diff):'&mdash;';
     var tc=diff!=null?(diff>0?'var(--green)':diff===0?'var(--text3)':'var(--red)'):'var(--text3)';
+    var medal=i===0?'&#127945;':i===1?'&#127946;':i===2?'&#127947;':String(i+1);
     return '<div class="lb-data-row">'+
-      '<div class="lb-rank" style="color:'+(i<3?['#B45309','#6B7280','#92400E'][i]:'var(--text3)')+'">'+( ranks[i]||i+1)+'</div>'+
+      '<div class="lb-rank" style="color:'+(i<3?['#B45309','#6B7280','#92400E'][i]:'var(--text3)')+'">'+medal+'</div>'+
       '<div class="avatar" style="width:32px;height:32px;font-size:11px;background:'+av(idx).bg+';color:'+av(idx).tx+'">'+ini(d.name)+'</div>'+
       '<div><div class="lb-name">'+d.name+'</div><div class="lb-sub">'+(d.truck||'')+'</div></div>'+
       '<div class="lb-bar-col"><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div></div>'+
@@ -600,159 +509,223 @@ function renderLeaderboard() {
   el.innerHTML='<div class="lb-wrap"><div class="lb-header-row"><div class="lb-hcell">Rank</div><div></div><div class="lb-hcell">Driver</div><div class="lb-hcell lb-bar-col">Bar</div><div class="lb-hcell lb-trend-col">vs prev</div><div class="lb-hcell" style="text-align:right">Score</div></div>'+rows+'</div>';
 }
 
-function renderFeedback() {
+function renderFeedback(){
   if(!S.drivers.length) return;
   if(!selFbDriver) selFbDriver=S.drivers[0].id;
-  document.getElementById('fbSidebar').innerHTML=S.drivers.map(function(d,i){
+  var sb=document.getElementById('fbSidebar');
+  sb.innerHTML=S.drivers.map(function(d,i){
     var cnt=(S.feedback[d.id]||[]).length;
-    return '<div class="fb-sidebar-item'+(d.id===selFbDriver?' active':'')+'" onclick="selFb(''+d.id+'')">'+
+    return '<div class="fb-sidebar-item'+(d.id===selFbDriver?' active':'')+'" data-fbid="'+d.id+'">'+
       '<div class="avatar" style="width:30px;height:30px;font-size:11px;background:'+av(i).bg+';color:'+av(i).tx+'">'+ini(d.name)+'</div>'+
       '<div><div class="fb-sidebar-name">'+d.name+'</div><div class="fb-sidebar-count">'+cnt+' note'+(cnt!==1?'s':'')+'</div></div></div>';
   }).join('');
+  sb.querySelectorAll('[data-fbid]').forEach(function(el){
+    el.addEventListener('click',function(){selFb(el.getAttribute('data-fbid'));});
+  });
   renderFbPanel();
 }
-function selFb(id) { selFbDriver=id; renderFeedback(); }
-function renderFbPanel() {
+function selFb(id){selFbDriver=id;renderFeedback();}
+function renderFbPanel(){
   var panel=document.getElementById('fbPanel');
-  var d=S.drivers.find(function(d){return d.id===selFbDriver;});
+  var d=S.drivers.find(function(x){return x.id===selFbDriver;});
   if(!d){panel.innerHTML='';return;}
-  var i=S.drivers.indexOf(d);
-  var fbs=(S.feedback[d.id]||[]).slice().reverse();
-  var hdr='<div class="fb-panel-header">'+
-    '<div style="display:flex;align-items:center;gap:10px">'+
-    '<div class="avatar" style="width:36px;height:36px;font-size:13px;background:'+av(i).bg+';color:'+av(i).tx+'">'+ini(d.name)+'</div>'+
-    '<div><div style="font-size:15px;font-weight:600">'+d.name+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">'+(d.truck||'')+'</div></div></div>'+
-    (isAdmin?'<button class="btn btn-sm btn-accent" onclick="showModal('addFeedback',''+d.id+'')">+ Add note</button>':'')+
-    '</div>';
-  var items=fbs.length?fbs.map(function(fb){
-    var cs=fcat(fb.category);
-    return '<div class="fb-item"><div class="fb-item-top">'+
-      '<span class="fb-cat" style="background:'+cs.bg+';color:'+cs.tx+'">'+cs.label+'</span>'+
-      '<div style="display:flex;align-items:center;gap:8px"><span class="fb-date">'+fd(fb.date)+'</span>'+
-      (isAdmin?'<button class="fb-del" onclick="delFb(''+d.id+'',''+fb.id+'')">Remove</button>':'')+
-      '</div></div><div class="fb-note">'+eh(fb.note)+'</div></div>';
-  }).join(''):'<div class="empty-fb">No notes for this driver yet.</div>';
-  panel.innerHTML=hdr+items;
+  var i=S.drivers.indexOf(d),fbs=(S.feedback[d.id]||[]).slice().reverse();
+  panel.innerHTML=
+    '<div class="fb-panel-header">'+
+      '<div style="display:flex;align-items:center;gap:10px">'+
+        '<div class="avatar" style="width:36px;height:36px;font-size:13px;background:'+av(i).bg+';color:'+av(i).tx+'">'+ini(d.name)+'</div>'+
+        '<div><div style="font-size:15px;font-weight:600">'+d.name+'</div>'+
+        '<div style="font-size:11px;color:var(--text3);font-family:var(--mono)">'+(d.truck||'')+'</div></div>'+
+      '</div>'+
+      (isAdmin?'<button class="btn btn-sm btn-accent" id="btn-addfb">+ Add note</button>':'')+
+    '</div>'+
+    (fbs.length?fbs.map(function(fb){
+      var cs=fcat(fb.category);
+      return '<div class="fb-item"><div class="fb-item-top">'+
+        '<span class="fb-cat" style="background:'+cs.bg+';color:'+cs.tx+'">'+cs.label+'</span>'+
+        '<div style="display:flex;align-items:center;gap:8px">'+
+          '<span class="fb-date">'+fd(fb.date)+'</span>'+
+          (isAdmin?'<button class="fb-del" data-did="'+d.id+'" data-fid="'+fb.id+'">Remove</button>':'')+
+        '</div></div><div class="fb-note">'+eh(fb.note)+'</div></div>';
+    }).join(''):'<div class="empty-fb">No notes yet.</div>');
+  if(isAdmin){
+    var ab=document.getElementById('btn-addfb'),did=d.id;
+    if(ab) ab.addEventListener('click',function(){openModal('addFeedback',did);});
+    panel.querySelectorAll('[data-fid]').forEach(function(btn){
+      btn.addEventListener('click',function(){delFb(btn.getAttribute('data-did'),btn.getAttribute('data-fid'));});
+    });
+  }
 }
-function delFb(did, fid) {
+function delFb(did,fid){
   if(!isAdmin) return;
   S.feedback[did]=(S.feedback[did]||[]).filter(function(f){return f.id!==fid;});
   saveData(); renderFeedback();
 }
 
-function renderManage() {
+function renderManage(){
   var el=document.getElementById('driverListEl');
   if(!S.drivers.length){el.innerHTML='<div class="empty-state">No drivers.</div>';return;}
   el.innerHTML=S.drivers.map(function(d,i){
     return '<div class="manage-row">'+
-    '<div class="avatar" style="width:34px;height:34px;font-size:12px;background:'+av(i).bg+';color:'+av(i).tx+'">'+ini(d.name)+'</div>'+
-    '<div style="flex:1"><div style="font-size:14px;font-weight:600">'+d.name+'</div><div style="font-size:11px;color:var(--text3);font-family:var(--mono)">'+(d.truck||'—')+'</div></div>'+
-    (isAdmin?'<button class="btn btn-sm" onclick="showModal('editDriver',''+d.id+'')">Edit</button> <button class="btn btn-sm btn-danger" onclick="rmDriver(''+d.id+'')">Remove</button>':'')+
-    '</div>';
+      '<div class="avatar" style="width:34px;height:34px;font-size:12px;background:'+av(i).bg+';color:'+av(i).tx+'">'+ini(d.name)+'</div>'+
+      '<div style="flex:1"><div style="font-size:14px;font-weight:600">'+d.name+'</div>'+
+      '<div style="font-size:11px;color:var(--text3);font-family:var(--mono)">'+(d.truck||'&mdash;')+'</div></div>'+
+      (isAdmin?
+        '<button class="btn btn-sm" data-action="edit" data-id="'+d.id+'">Edit</button> '+
+        '<button class="btn btn-sm btn-danger" data-action="rm" data-id="'+d.id+'">Remove</button>':'')+
+      '</div>';
   }).join('');
+  el.querySelectorAll('[data-action="edit"]').forEach(function(btn){
+    btn.addEventListener('click',function(){openModal('editDriver',btn.getAttribute('data-id'));});
+  });
+  el.querySelectorAll('[data-action="rm"]').forEach(function(btn){
+    btn.addEventListener('click',function(){rmDriver(btn.getAttribute('data-id'));});
+  });
 }
 
-function render() {
-  renderPeriodSelect(); renderSummary(); renderDriverGrid(); renderLeaderboard(); renderFeedback(); renderManage();
-}
+function render(){renderPeriodSelect();renderSummary();renderDriverGrid();renderLeaderboard();renderFeedback();renderManage();}
 
-// ── MODAL ─────────────────────────────────────────────────────────────────────
-function showModal(type, arg) {
-  var ov=document.getElementById('modalOverlay'), box=document.getElementById('modalBox');
-  ov.classList.add('open');
-  if(type==='addDriver') {
+function openModal(type,arg){
+  var box=document.getElementById('modalBox');
+  document.getElementById('modalOverlay').classList.add('open');
+
+  if(type==='addDriver'){
     box.innerHTML='<h2>Add Driver</h2>'+
       '<div class="form-row"><label class="form-label">First name</label><input class="form-input" id="m-dn" placeholder="e.g. Austin"/></div>'+
       '<div class="form-row"><label class="form-label">Truck</label><input class="form-input" id="m-dt" placeholder="e.g. 004 - Ford F150"/></div>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="doAddDriver()">Add driver</button></div>';
-  } else if(type==='editDriver') {
-    var d=S.drivers.find(function(d){return d.id===arg;});
+      '<div class="modal-footer"><button class="btn" id="mc">Cancel</button><button class="btn btn-accent" id="mo">Add driver</button></div>';
+    document.getElementById('mc').addEventListener('click',closeModal);
+    document.getElementById('mo').addEventListener('click',function(){
+      var n=document.getElementById('m-dn').value.trim(),t=document.getElementById('m-dt').value.trim();
+      if(!n) return;
+      S.drivers.push({id:'d'+Date.now(),name:n,truck:t});
+      saveData(); closeModal(); render();
+    });
+
+  } else if(type==='editDriver'){
+    var d=S.drivers.find(function(x){return x.id===arg;})||{name:'',truck:''};
     box.innerHTML='<h2>Edit Driver</h2>'+
       '<div class="form-row"><label class="form-label">First name</label><input class="form-input" id="m-dn" value="'+eh(d.name)+'"/></div>'+
       '<div class="form-row"><label class="form-label">Truck</label><input class="form-input" id="m-dt" value="'+eh(d.truck||'')+'"/></div>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="doEditDriver(''+arg+'')">Save</button></div>';
-  } else if(type==='addWeek') {
+      '<div class="modal-footer"><button class="btn" id="mc">Cancel</button><button class="btn btn-accent" id="mo">Save</button></div>';
+    document.getElementById('mc').addEventListener('click',closeModal);
+    document.getElementById('mo').addEventListener('click',function(){
+      var dx=S.drivers.find(function(x){return x.id===arg;});
+      if(!dx) return;
+      dx.name=document.getElementById('m-dn').value.trim()||dx.name;
+      dx.truck=document.getElementById('m-dt').value.trim();
+      saveData(); closeModal(); render();
+    });
+
+  } else if(type==='addWeek'){
     box.innerHTML='<h2>Add Week</h2>'+
-      '<div class="form-row"><label class="form-label">Week label (e.g. May 5-11, 2026)</label><input class="form-input" id="m-wl" placeholder="May 5-11, 2026"/></div>'+
-      '<div class="form-row"><label class="form-label">Month group</label><select class="form-input" id="m-wm">'+
-      MONTHS.map(function(m){return '<option value="'+m+'">'+m+'</option>';}).join('')+'</select></div>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="doAddWeek()">Add week</button></div>';
-  } else if(type==='deleteWeek') {
+      '<div class="form-row"><label class="form-label">Week label (e.g. May 5-11, 2026)</label>'+
+      '<input class="form-input" id="m-wl" placeholder="May 5-11, 2026"/></div>'+
+      '<div class="form-row"><label class="form-label">Month group</label>'+
+      '<select class="form-input" id="m-wm">'+
+        MONTHS.map(function(m){return '<option value="'+m+'">'+m+'</option>';}).join('')+
+      '</select></div>'+
+      '<div class="modal-footer"><button class="btn" id="mc">Cancel</button><button class="btn btn-accent" id="mo">Add week</button></div>';
+    document.getElementById('mc').addEventListener('click',closeModal);
+    document.getElementById('mo').addEventListener('click',function(){
+      var lbl=document.getElementById('m-wl').value.trim(),mon=document.getElementById('m-wm').value;
+      if(!lbl) return;
+      var id='w'+Date.now();
+      S.weeks.push({id:id,label:lbl,month:mon,scores:{}});
+      selWeekId=id; saveData(); closeModal(); render();
+    });
+
+  } else if(type==='deleteWeek'){
     var w=cw();
-    box.innerHTML='<h2>Delete Week</h2><p style="font-size:14px;color:var(--text2);margin-bottom:18px;line-height:1.5">Delete <strong>'+(w?w.label:'this week')+'</strong>? All scores for this week will be removed.</p>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="doDeleteWeek()">Delete</button></div>';
-  } else if(type==='addScore') {
+    box.innerHTML='<h2>Delete Week</h2>'+
+      '<p style="font-size:14px;color:var(--text2);margin-bottom:18px;line-height:1.5">Delete <strong>'+(w?w.label:'this week')+'</strong>? All scores will be removed.</p>'+
+      '<div class="modal-footer"><button class="btn" id="mc">Cancel</button><button class="btn btn-danger" id="mo">Delete</button></div>';
+    document.getElementById('mc').addEventListener('click',closeModal);
+    document.getElementById('mo').addEventListener('click',function(){
+      if(!selWeekId) return;
+      S.weeks=S.weeks.filter(function(w){return w.id!==selWeekId;});
+      selWeekId=S.weeks.length?S.weeks[S.weeks.length-1].id:null;
+      saveData(); closeModal(); render();
+    });
+
+  } else if(type==='addScore'){
     var w=cw();
-    if(!w){box.innerHTML='<h2>No week selected</h2><p style="color:var(--text2);font-size:14px;margin-bottom:14px">Add a week first.</p><div class="modal-footer"><button class="btn" onclick="closeModal()">Close</button></div>';return;}
+    if(!w){
+      box.innerHTML='<h2>No week selected</h2><p style="color:var(--text2);font-size:14px;margin-bottom:14px">Add a week first.</p>'+
+        '<div class="modal-footer"><button class="btn" id="mc">Close</button></div>';
+      document.getElementById('mc').addEventListener('click',closeModal);
+      return;
+    }
+    var wid=w.id;
     var fields=S.drivers.map(function(d){
       var sc2=w.scores[d.id]||{};
-      var mi=MF.map(function(f){return '<div class="form-row"><label class="form-label">'+f.label+'</label><input class="form-input" type="number" min="0" id="sc-'+d.id+'-'+f.key+'" value="'+(sc2[f.key]!=null?sc2[f.key]:'')+'" placeholder="0"/></div>';}).join('');
-      return '<div class="score-driver-block"><div class="score-driver-name">'+d.name+' <span class="score-driver-truck">'+(d.truck||'')+'</span></div>'+
-        '<div class="form-row"><label class="form-label">Dash cam score (0-1000)</label><input class="form-input" type="number" min="0" max="1000" id="sc-'+d.id+'-score" value="'+(sc2.score||'')+'" placeholder="912"/></div>'+
+      var mi=MF.map(function(f){
+        return '<div class="form-row"><label class="form-label">'+f.label+'</label>'+
+          '<input class="form-input" type="number" min="0" id="sc-'+d.id+'-'+f.key+'" value="'+(sc2[f.key]!=null?sc2[f.key]:'')+'" placeholder="0"/></div>';
+      }).join('');
+      return '<div class="score-driver-block">'+
+        '<div class="score-driver-name">'+d.name+' <span class="score-driver-truck">'+(d.truck||'')+'</span></div>'+
+        '<div class="form-row"><label class="form-label">Dash cam score (0-1000)</label>'+
+          '<input class="form-input" type="number" min="0" max="1000" id="sc-'+d.id+'-score" value="'+(sc2.score||'')+'" placeholder="912"/></div>'+
         '<div class="form-grid3">'+mi+'</div>'+
-        '<div class="form-row"><label class="form-label">Notes (optional)</label><input class="form-input" id="sc-'+d.id+'-notes" value="'+eh(sc2.notes||'')+'" placeholder="Optional"/></div></div>';
+        '<div class="form-row"><label class="form-label">Notes (optional)</label>'+
+          '<input class="form-input" id="sc-'+d.id+'-notes" value="'+eh(sc2.notes||'')+'" placeholder="Optional"/></div>'+
+        '</div>';
     }).join('');
-    box.innerHTML='<h2>Enter Scores — '+w.label+'</h2>'+fields+'<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="doScores(''+w.id+'')">Save all scores</button></div>';
-  } else if(type==='addFeedback') {
-    var d=S.drivers.find(function(d){return d.id===arg;});
+    box.innerHTML='<h2>Enter Scores &mdash; '+w.label+'</h2>'+fields+
+      '<div class="modal-footer"><button class="btn" id="mc">Cancel</button><button class="btn btn-accent" id="mo">Save all scores</button></div>';
+    document.getElementById('mc').addEventListener('click',closeModal);
+    document.getElementById('mo').addEventListener('click',function(){
+      var wx=S.weeks.find(function(x){return x.id===wid;});
+      if(!wx) return;
+      S.drivers.forEach(function(d){
+        var se=document.getElementById('sc-'+d.id+'-score');
+        var score=se?parseInt(se.value):NaN;
+        if(isNaN(score)) return;
+        var obj={score:Math.min(1000,Math.max(0,score))};
+        MF.forEach(function(f){
+          var fe=document.getElementById('sc-'+d.id+'-'+f.key);
+          obj[f.key]=fe&&!isNaN(parseInt(fe.value))?parseInt(fe.value):0;
+        });
+        var ne=document.getElementById('sc-'+d.id+'-notes');
+        obj.notes=ne?ne.value.trim():'';
+        wx.scores[d.id]=obj;
+      });
+      saveData(); closeModal(); render();
+    });
+
+  } else if(type==='addFeedback'){
     var today=new Date().toISOString().split('T')[0];
-    box.innerHTML='<h2>Add Note — '+(d?d.name:'')+'</h2>'+
-      '<div class="form-grid2"><div class="form-row"><label class="form-label">Date</label><input class="form-input" type="date" id="m-fd" value="'+today+'"/></div>'+
-      '<div class="form-row"><label class="form-label">Category</label><select class="form-input" id="m-fc">'+FCATS.map(function(c){return '<option value="'+c.key+'">'+c.label+'</option>';}).join('')+'</select></div></div>'+
-      '<div class="form-row"><label class="form-label">Note</label><textarea class="form-input" id="m-fn" rows="5" placeholder="Write your feedback here..." style="resize:vertical;"></textarea></div>'+
-      '<div class="modal-footer"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-accent" onclick="doFeedback(''+arg+'')">Save note</button></div>';
+    var dname=S.drivers.find(function(x){return x.id===arg;});
+    dname=dname?dname.name:'';
+    box.innerHTML='<h2>Add Note'+(dname?' &mdash; '+dname:'')+'</h2>'+
+      '<div class="form-grid2">'+
+        '<div class="form-row"><label class="form-label">Date</label>'+
+          '<input class="form-input" type="date" id="m-fd" value="'+today+'"/></div>'+
+        '<div class="form-row"><label class="form-label">Category</label>'+
+          '<select class="form-input" id="m-fc">'+
+            FCATS.map(function(c){return '<option value="'+c.key+'">'+c.label+'</option>';}).join('')+
+          '</select></div>'+
+      '</div>'+
+      '<div class="form-row"><label class="form-label">Note</label>'+
+        '<textarea class="form-input" id="m-fn" rows="5" placeholder="Write your feedback here..." style="resize:vertical;"></textarea>'+
+      '</div>'+
+      '<div class="modal-footer"><button class="btn" id="mc">Cancel</button><button class="btn btn-accent" id="mo">Save note</button></div>';
+    document.getElementById('mc').addEventListener('click',closeModal);
+    document.getElementById('mo').addEventListener('click',function(){
+      var date=document.getElementById('m-fd').value;
+      var cat=document.getElementById('m-fc').value;
+      var note=document.getElementById('m-fn').value.trim();
+      if(!note) return;
+      if(!S.feedback[arg]) S.feedback[arg]=[];
+      S.feedback[arg].push({id:'fb'+Date.now(),date:date,category:cat,note:note});
+      saveData(); closeModal(); renderFeedback();
+    });
   }
 }
 
-function doAddDriver() {
-  var n=document.getElementById('m-dn').value.trim(), t=document.getElementById('m-dt').value.trim();
-  if(!n) return;
-  S.drivers.push({id:'d'+Date.now(),name:n,truck:t});
-  saveData(); closeModal(); render();
-}
-function doEditDriver(id) {
-  var d=S.drivers.find(function(d){return d.id===id;}); if(!d) return;
-  d.name=document.getElementById('m-dn').value.trim()||d.name;
-  d.truck=document.getElementById('m-dt').value.trim();
-  saveData(); closeModal(); render();
-}
-function doAddWeek() {
-  var lbl=document.getElementById('m-wl').value.trim(), mon=document.getElementById('m-wm').value;
-  if(!lbl) return;
-  var id='w'+Date.now();
-  S.weeks.push({id:id,label:lbl,month:mon,scores:{}});
-  selWeekId=id; saveData(); closeModal(); render();
-}
-function doDeleteWeek() {
-  if(!selWeekId) return;
-  S.weeks=S.weeks.filter(function(w){return w.id!==selWeekId;});
-  selWeekId=S.weeks.length?S.weeks[S.weeks.length-1].id:null;
-  saveData(); closeModal(); render();
-}
-function doScores(wid) {
-  var w=S.weeks.find(function(w){return w.id===wid;}); if(!w) return;
-  S.drivers.forEach(function(d){
-    var el=document.getElementById('sc-'+d.id+'-score');
-    var score=el?parseInt(el.value):NaN;
-    if(isNaN(score)) return;
-    var obj={score:Math.min(1000,Math.max(0,score))};
-    MF.forEach(function(f){var fe=document.getElementById('sc-'+d.id+'-'+f.key);var v=fe?parseInt(fe.value):NaN;obj[f.key]=isNaN(v)?0:v;});
-    var ne=document.getElementById('sc-'+d.id+'-notes');
-    obj.notes=ne?ne.value.trim():'';
-    w.scores[d.id]=obj;
-  });
-  saveData(); closeModal(); render();
-}
-function doFeedback(did) {
-  var date=document.getElementById('m-fd').value;
-  var cat=document.getElementById('m-fc').value;
-  var note=document.getElementById('m-fn').value.trim();
-  if(!note) return;
-  if(!S.feedback[did]) S.feedback[did]=[];
-  S.feedback[did].push({id:'fb'+Date.now(),date:date,category:cat,note:note});
-  saveData(); closeModal(); renderFeedback();
-}
-function rmDriver(id) {
+function showModal(type,arg){openModal(type,arg);}
+function rmDriver(id){
   if(!isAdmin) return;
   if(!confirm('Remove this driver and all their data?')) return;
   S.drivers=S.drivers.filter(function(d){return d.id!==id;});
@@ -761,19 +734,17 @@ function rmDriver(id) {
   if(selFbDriver===id) selFbDriver=S.drivers.length?S.drivers[0].id:null;
   saveData(); render();
 }
-
-function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
-function closeModalOutside(e) { if(e.target===document.getElementById('modalOverlay')) closeModal(); }
-function switchTab(name, el) {
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='feedback') renderFeedback();
 }
+setInterval(function(){if(!isAdmin)loadData();},60000);
 
-// Auto-refresh every 60s for viewers
-setInterval(function(){if(!isAdmin) loadData();}, 60000);
-</script>
+</script></script>
 </body>
 </html>
