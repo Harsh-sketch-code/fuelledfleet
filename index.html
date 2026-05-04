@@ -309,9 +309,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <script>
-var CFG={pw:'fuelled2026',bin:'69f8a158aaba8821976d267c',key:'$2a$10$So9.QCLzKj4eKbHDF2Qpbe9pCNlMjURr5monXKn6.l/UXP6KPQu26'};
-var RURL='https://api.jsonbin.io/v3/b/'+CFG.bin+'/latest';
-var WURL='https://api.jsonbin.io/v3/b/'+CFG.bin;
+var CFG={pw:'fuelled2026'};
+var RURL='https://api.npoint.io/96e5be2a6b16b0cef2da';
+var WURL='https://api.npoint.io/96e5be2a6b16b0cef2da';
 var isAdmin=false,selFbDriver=null,view='weekly',selWeekId=null,selMonth='April 2026',saving=false;
 var S={drivers:[],weeks:[],feedback:{}};
 var AV=[{bg:'#DBEAFE',tx:'#1D4ED8'},{bg:'#DCFCE7',tx:'#166534'},{bg:'#FEE2E2',tx:'#991B1B'},{bg:'#EDE9FE',tx:'#5B21B6'},{bg:'#FEF9C3',tx:'#854D0E'},{bg:'#FCE7F3',tx:'#9D174D'},{bg:'#E0F2FE',tx:'#0369A1'},{bg:'#D1FAE5',tx:'#065F46'}];
@@ -361,7 +361,7 @@ function getDefaultData(){
 async function loadData() {
   setSS('saving','Loading...');
   try {
-    var r = await fetch(RURL, {headers:{'X-ACCESS-KEY':CFG.key,'X-BIN-META':'false'}});
+    var r = await fetch(RURL);
     if(!r.ok) throw new Error('HTTP '+r.status);
     var data = await r.json();
     if(!data||!data.drivers||!data.drivers.length) { S=getDefaultData(); await saveData(); }
@@ -383,7 +383,7 @@ async function loadData() {
 async function saveData() {
   if(saving) return; saving=true; setSS('saving','Saving...');
   try {
-    var r = await fetch(WURL, {method:'PUT',headers:{'Content-Type':'application/json','X-ACCESS-KEY':CFG.key},body:JSON.stringify(S)});
+    var r = await fetch(WURL, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)});
     if(!r.ok) throw new Error('HTTP '+r.status);
     setSS('live','Saved'); setTimeout(function(){setSS('live','Live');},2000);
   } catch(e) { setSS('err','Save failed'); console.error(e); }
