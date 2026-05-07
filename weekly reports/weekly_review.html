@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Weekly Reports — Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F4F1;--bg2:#FFFFFF;--bg3:#EEECEA;--border:#E0DDD8;--border2:#C8C5BF;
+  --text:#1A1A18;--text2:#6B6860;--text3:#9A9690;
+  --accent:#F05A28;--accent-light:#FEF0EB;--accent-border:#F9C4AF;
+  --green:#1A8C5E;--blue:#2266CC;--amber:#9A6200;--red:#CC2222;
+  --radius:10px;--radius-sm:6px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --font:Inter,sans-serif;--mono:JetBrains Mono,monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:54px;box-shadow:var(--shadow);position:sticky;top:0;z-index:10}
+.nav-brand{display:flex;align-items:center;gap:14px}
+.nav-divider{width:1px;height:20px;background:var(--border2)}
+.nav-title{font-size:15px;font-weight:700}
+.nav-sub{font-size:12px;color:var(--text3);font-family:var(--mono);letter-spacing:.02em}
+.pill{font-size:11px;font-weight:600;font-family:var(--mono);background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-border);border-radius:20px;padding:2px 10px}
+.page{max-width:1280px;margin:0 auto;padding:1.5rem}
+
+/* WEEK PICKER */
+.period-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.period-label{font-size:11px;font-weight:600;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em}
+.period-select{font-family:var(--mono);font-size:13px;padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer;flex:1;min-width:180px}
+
+/* SUMMARY */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:1.25rem}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.stat-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:var(--mono)}
+.stat-value{font-size:26px;font-weight:700;color:var(--text);line-height:1}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:5px;font-family:var(--mono)}
+.delta-up{color:var(--green)}
+.delta-down{color:var(--red)}
+.delta-flat{color:var(--text3)}
+
+/* DRIVER CARDS */
+.section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);font-family:var(--mono);margin:1.5rem 0 .75rem}
+.driver-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.driver-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);transition:box-shadow .15s,border-color .15s}
+.driver-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.driver-card.top-card{border-color:var(--accent);border-width:1.5px}
+.driver-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;font-family:var(--mono)}
+.driver-info{flex:1;min-width:0}
+.driver-name{font-size:15px;font-weight:600;color:var(--text)}
+.driver-truck{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--mono)}
+.score-ring-wrap{position:relative;width:54px;height:54px;flex-shrink:0}
+.score-ring-wrap svg{width:54px;height:54px;transform:rotate(-90deg)}
+.score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--mono)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:10px;margin-top:4px;gap:8px}
+.delta-pill{font-size:11px;font-family:var(--mono);font-weight:600;padding:2px 8px;border-radius:20px}
+.delta-pill.up{background:#DCFCE7;color:#166534}
+.delta-pill.down{background:#FEE2E2;color:#991B1B}
+.delta-pill.flat{background:var(--bg3);color:var(--text3)}
+.status-pill{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;font-family:var(--mono)}
+.s-excellent{background:#DCFCE7;color:#166534}
+.s-good{background:#DBEAFE;color:#1D4ED8}
+.s-fair{background:#FEF9C3;color:#854D0E}
+.s-risk{background:#FEE2E2;color:#991B1B}
+.s-empty{background:var(--bg3);color:var(--text3)}
+.star-row{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:11px;color:var(--amber);font-family:var(--mono);font-weight:600}
+.no-data{font-size:11px;color:var(--text3);font-style:italic}
+
+/* INFRACTIONS */
+.infractions{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.infraction-row{display:grid;grid-template-columns:1.5fr 1fr 70px 70px;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:13px}
+.infraction-row:last-child{border-bottom:none}
+.infraction-row.header{background:var(--bg3);font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;font-family:var(--mono);padding:9px 16px}
+.infraction-name{font-weight:600}
+.infraction-unit{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:4px}
+.bar-wrap{display:flex;height:7px;border-radius:4px;overflow:hidden;background:var(--bg3);border:1px solid var(--border)}
+.bar-seg{height:100%}
+.b-ok{background:#1A8C5E}
+.b-mod{background:#F0A028}
+.b-sev{background:#CC2222}
+.infraction-num{text-align:right;font-family:var(--mono);font-weight:600}
+.infraction-num.warn{color:var(--amber)}
+.infraction-num.bad{color:var(--red)}
+.bar-legend{display:flex;gap:14px;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:10px;padding:0 4px}
+.bar-legend span{display:flex;align-items:center;gap:5px}
+.bar-legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+</style>
+</head>
+<body>
+<div class="nav">
+  <div class="nav-brand">
+    <div class="nav-title">Fuelled Fleet — Weekly Reports</div>
+    <div class="nav-divider"></div>
+    <div class="nav-sub" id="weekRangeLabel">6 weeks parsed</div>
+  </div>
+  <span class="pill">REVIEW</span>
+</div>
+
+<div class="page">
+
+<div class="period-bar">
+  <span class="period-label">Week</span>
+  <select class="period-select" id="weekPicker"></select>
+</div>
+
+<div class="summary-grid" id="summaryGrid"></div>
+
+<div class="section-title">Drivers</div>
+<div class="driver-grid" id="driverGrid"></div>
+
+<div class="section-title">Infractions <span style="font-family:var(--font);font-weight:500;text-transform:none;color:var(--text3);margin-left:6px">Fleet-wide for the selected week</span></div>
+<div class="infractions" id="infractionsBlock"></div>
+<div class="bar-legend">
+  <span><i class="b-ok"></i>Below threshold</span>
+  <span><i class="b-mod"></i>Moderate</span>
+  <span><i class="b-sev"></i>Severe</span>
+</div>
+
+</div>
+
+<script>
+const RAW = {"folder":"/sessions/practical-epic-brahmagupta/mnt/fleet-dashboard/weekly reports","count":6,"reports":[{"source_file":"Fleet Report ( 04 May 2026 - 10 May 2026 ).pdf","report_type":"weekly_fleet","period":{"raw":"(04 May) 12:00 AM (MDT) - Sun (10 May)","start_iso":"2026-05-04","end_iso":"2026-05-10","label":"May 4-May 10, 2026","type":"weekly"},"fleet_average_score":{"score":984,"delta":56},"drivers_with_greenzone_score":{"count":2,"delta":-2},"driver_performance":[{"name":"Austin","driver_id":"d4","score":986,"delta":16.0},{"name":"Jackson","driver_id":"d3","score":982,"delta":137.0}],"risk_profile":[{"metric":"Accelerations","unit":"alerts","below_threshold":{"count":491,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Brakings","unit":"alerts","below_threshold":{"count":657,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Turns","unit":"alerts","below_threshold":{"count":352,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Traffic Lights","unit":"alerts","below_threshold":{"count":200,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Stoppings","unit":"alerts","below_threshold":{"count":38,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Speeding","unit":"Minutes","below_threshold":{"count":505,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Driver Distraction","unit":"Minutes","below_threshold":{"count":505,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}}],"following_distance_per_driver":[{"name":"Austin","driver_id":"d4","driving_minutes":168,"avg_fd_seconds":3.7,"congestion_light_min":3.23,"congestion_medium_min":6.52,"congestion_heavy_min":6.37},{"name":"Jackson","driver_id":"d3","driving_minutes":337,"avg_fd_seconds":3.9,"congestion_light_min":11.69,"congestion_medium_min":3.59,"congestion_heavy_min":1.19}],"most_severe_fd_alerts":[],"driver_stars_awarded":0,"data_unavailable_sections":["Most severe hard braking alerts","Most severe speeding alerts"]},{"source_file":"Fleet Report ( 06 Apr 2026 - 12 Apr 2026 ).pdf","report_type":"weekly_fleet","period":{"raw":"(06 Apr) 12:00 AM (MDT) - Sun (12 Apr)","start_iso":"2026-04-06","end_iso":"2026-04-12","label":"Apr 6-Apr 12, 2026","type":"weekly"},"fleet_average_score":{"score":911,"delta":17},"drivers_with_greenzone_score":{"count":5,"delta":0},"driver_performance":[{"name":"Raj","driver_id":"d5","score":1016,"delta":73.0},{"name":"Harsh","driver_id":"d6","score":946,"delta":-16.0},{"name":"Jackson","driver_id":"d3","score":904,"delta":-38.0},{"name":"Dylan","driver_id":"d1","score":889,"delta":85.0},{"name":"Willem","driver_id":"d2","score":845,"delta":-123.0}],"risk_profile":[{"metric":"Accelerations","unit":"alerts","below_threshold":{"count":2390,"pct":99.96},"moderate":{"count":1,"pct":0.04},"severe":{"count":0,"pct":0.0}},{"metric":"Brakings","unit":"alerts","below_threshold":{"count":3227,"pct":99.91},"moderate":{"count":3,"pct":0.09},"severe":{"count":0,"pct":0.0}},{"metric":"Turns","unit":"alerts","below_threshold":{"count":1613,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Traffic Lights","unit":"alerts","below_threshold":{"count":1411,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Stoppings","unit":"alerts","below_threshold":{"count":116,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Speeding","unit":"Minutes","below_threshold":{"count":1923,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Driver Distraction","unit":"Minutes","below_threshold":{"count":1923,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}}],"following_distance_per_driver":[{"name":"Dylan","driver_id":"d1","driving_minutes":490,"avg_fd_seconds":3.1,"congestion_light_min":67.07,"congestion_medium_min":26.91,"congestion_heavy_min":11.21},{"name":"Harsh","driver_id":"d6","driving_minutes":511,"avg_fd_seconds":3.5,"congestion_light_min":6.94,"congestion_medium_min":34.63,"congestion_heavy_min":82.48},{"name":"Jackson","driver_id":"d3","driving_minutes":286,"avg_fd_seconds":3.6,"congestion_light_min":21.55,"congestion_medium_min":27.81,"congestion_heavy_min":8.95},{"name":"Willem","driver_id":"d2","driving_minutes":448,"avg_fd_seconds":3.8,"congestion_light_min":34.26,"congestion_medium_min":21.69,"congestion_heavy_min":2.97},{"name":"Raj","driver_id":"d5","driving_minutes":188,"avg_fd_seconds":3.8,"congestion_light_min":3.5,"congestion_medium_min":6.1,"congestion_heavy_min":2.64}],"most_severe_fd_alerts":[{"name":"Jackson","driver_id":"d3","alert_id":"5563140470","closest_fd_sec":0.38,"duration_sec":12.19}],"driver_stars_awarded":1,"data_unavailable_sections":["Most severe hard braking alerts","Most severe speeding alerts"]},{"source_file":"Fleet Report ( 13 Apr 2026 - 19 Apr 2026 ).pdf","report_type":"weekly_fleet","period":{"raw":"(13 Apr) 12:00 AM (MDT) - Sun (19 Apr)","start_iso":"2026-04-13","end_iso":"2026-04-19","label":"Apr 13-Apr 19, 2026","type":"weekly"},"fleet_average_score":{"score":879,"delta":-32},"drivers_with_greenzone_score":{"count":5,"delta":0},"driver_performance":[{"name":"Willem","driver_id":"d2","score":964,"delta":119.0},{"name":"Jackson","driver_id":"d3","score":961,"delta":57.0},{"name":"Raj","driver_id":"d5","score":937,"delta":-79.0},{"name":"Harsh","driver_id":"d6","score":909,"delta":-37.0},{"name":"Dylan","driver_id":"d1","score":730,"delta":-159.0}],"risk_profile":[{"metric":"Accelerations","unit":"alerts","below_threshold":{"count":2830,"pct":99.79},"moderate":{"count":6,"pct":0.21},"severe":{"count":0,"pct":0.0}},{"metric":"Brakings","unit":"alerts","below_threshold":{"count":3830,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Turns","unit":"alerts","below_threshold":{"count":1922,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Traffic Lights","unit":"alerts","below_threshold":{"count":1584,"pct":99.87},"moderate":{"count":2,"pct":0.13},"severe":{"count":0,"pct":0.0}},{"metric":"Stoppings","unit":"alerts","below_threshold":{"count":195,"pct":99.49},"moderate":{"count":1,"pct":0.51},"severe":{"count":0,"pct":0.0}},{"metric":"Speeding","unit":"Minutes","below_threshold":{"count":2769,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Driver Distraction","unit":"Minutes","below_threshold":{"count":2769,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}}],"following_distance_per_driver":[{"name":"Dylan","driver_id":"d1","driving_minutes":911,"avg_fd_seconds":3.1,"congestion_light_min":115.19,"congestion_medium_min":51.94,"congestion_heavy_min":14.51},{"name":"Harsh","driver_id":"d6","driving_minutes":129,"avg_fd_seconds":3.1,"congestion_light_min":0.13,"congestion_medium_min":6.21,"congestion_heavy_min":4.84},{"name":"Jackson","driver_id":"d3","driving_minutes":686,"avg_fd_seconds":3.6,"congestion_light_min":19.48,"congestion_medium_min":16.52,"congestion_heavy_min":9.27},{"name":"Willem","driver_id":"d2","driving_minutes":637,"avg_fd_seconds":3.6,"congestion_light_min":60.59,"congestion_medium_min":42.51,"congestion_heavy_min":10.74},{"name":"Raj","driver_id":"d5","driving_minutes":406,"avg_fd_seconds":3.7,"congestion_light_min":28.07,"congestion_medium_min":26.28,"congestion_heavy_min":18.57}],"most_severe_fd_alerts":[{"name":"Dylan","driver_id":"d1","alert_id":"5599422135","closest_fd_sec":0.28,"duration_sec":10.59}],"driver_stars_awarded":0,"data_unavailable_sections":["Most severe hard braking alerts","Most severe speeding alerts"]},{"source_file":"Fleet Report ( 20 Apr 2026 - 26 Apr 2026 ).pdf","report_type":"weekly_fleet","period":{"raw":"(20 Apr) 12:00 AM (MDT) - Sun (26 Apr)","start_iso":"2026-04-20","end_iso":"2026-04-26","label":"Apr 20-Apr 26, 2026","type":"weekly"},"fleet_average_score":{"score":922,"delta":43},"drivers_with_greenzone_score":{"count":3,"delta":-2},"driver_performance":[{"name":"Raj","driver_id":"d5","score":989,"delta":52.0},{"name":"Willem","driver_id":"d2","score":929,"delta":-35.0},{"name":"Jackson","driver_id":"d3","score":786,"delta":-175.0}],"risk_profile":[{"metric":"Accelerations","unit":"alerts","below_threshold":{"count":1386,"pct":99.93},"moderate":{"count":1,"pct":0.07},"severe":{"count":0,"pct":0.0}},{"metric":"Brakings","unit":"alerts","below_threshold":{"count":1781,"pct":99.94},"moderate":{"count":1,"pct":0.06},"severe":{"count":0,"pct":0.0}},{"metric":"Turns","unit":"alerts","below_threshold":{"count":909,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Traffic Lights","unit":"alerts","below_threshold":{"count":926,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Stoppings","unit":"alerts","below_threshold":{"count":80,"pct":98.77},"moderate":{"count":1,"pct":1.23},"severe":{"count":0,"pct":0.0}},{"metric":"Speeding","unit":"Minutes","below_threshold":{"count":1281,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Driver Distraction","unit":"Minutes","below_threshold":{"count":1281,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}}],"following_distance_per_driver":[{"name":"Jackson","driver_id":"d3","driving_minutes":175,"avg_fd_seconds":3.5,"congestion_light_min":8.15,"congestion_medium_min":15.29,"congestion_heavy_min":10.85},{"name":"Willem","driver_id":"d2","driving_minutes":867,"avg_fd_seconds":3.6,"congestion_light_min":68.71,"congestion_medium_min":52.45,"congestion_heavy_min":23.07},{"name":"Raj","driver_id":"d5","driving_minutes":239,"avg_fd_seconds":3.8,"congestion_light_min":8.18,"congestion_medium_min":11.64,"congestion_heavy_min":9.1}],"most_severe_fd_alerts":[{"name":"Jackson","driver_id":"d3","alert_id":"5620575871","closest_fd_sec":0.54,"duration_sec":13.19},{"name":"Jackson","driver_id":"d3","alert_id":"5628223343","closest_fd_sec":0.46,"duration_sec":11.99}],"driver_stars_awarded":0,"data_unavailable_sections":["Most severe hard braking alerts","Most severe speeding alerts"]},{"source_file":"Fleet Report ( 27 Apr 2026 - 03 May 2026 ).pdf","report_type":"weekly_fleet","period":{"raw":"(27 Apr) 12:00 AM (MDT) - Sun (03 May)","start_iso":"2026-04-27","end_iso":"2026-05-03","label":"Apr 27-May 3, 2026","type":"weekly"},"fleet_average_score":{"score":928,"delta":6},"drivers_with_greenzone_score":{"count":4,"delta":1},"driver_performance":[{"name":"Austin","driver_id":"d4","score":970,"delta":970.0},{"name":"Willem","driver_id":"d2","score":947,"delta":18.0},{"name":"Raj","driver_id":"d5","score":933,"delta":-56.0},{"name":"Jackson","driver_id":"d3","score":845,"delta":59.0}],"risk_profile":[{"metric":"Accelerations","unit":"alerts","below_threshold":{"count":1854,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Brakings","unit":"alerts","below_threshold":{"count":2451,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Turns","unit":"alerts","below_threshold":{"count":1218,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Traffic Lights","unit":"alerts","below_threshold":{"count":1086,"pct":99.82},"moderate":{"count":2,"pct":0.18},"severe":{"count":0,"pct":0.0}},{"metric":"Stoppings","unit":"alerts","below_threshold":{"count":85,"pct":98.84},"moderate":{"count":1,"pct":1.16},"severe":{"count":0,"pct":0.0}},{"metric":"Speeding","unit":"Minutes","below_threshold":{"count":1792,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Driver Distraction","unit":"Minutes","below_threshold":{"count":1792,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}}],"following_distance_per_driver":[{"name":"Willem","driver_id":"d2","driving_minutes":801,"avg_fd_seconds":3.4,"congestion_light_min":73.36,"congestion_medium_min":74.52,"congestion_heavy_min":27.2},{"name":"Raj","driver_id":"d5","driving_minutes":180,"avg_fd_seconds":3.5,"congestion_light_min":8.22,"congestion_medium_min":9.97,"congestion_heavy_min":13.62},{"name":"Jackson","driver_id":"d3","driving_minutes":404,"avg_fd_seconds":3.6,"congestion_light_min":24.31,"congestion_medium_min":40.85,"congestion_heavy_min":18.4},{"name":"Austin","driver_id":"d4","driving_minutes":407,"avg_fd_seconds":3.7,"congestion_light_min":23.8,"congestion_medium_min":22.9,"congestion_heavy_min":25.28}],"most_severe_fd_alerts":[{"name":"Jackson","driver_id":"d3","alert_id":"5687550894","closest_fd_sec":0.34,"duration_sec":11.79}],"driver_stars_awarded":0,"data_unavailable_sections":["Most severe hard braking alerts","Most severe speeding alerts"]},{"source_file":"Fleet Report ( 30 Mar 2026 - 05 Apr 2026 ).pdf","report_type":"weekly_fleet","period":{"raw":"(30 Mar) 12:00 AM (MDT) - Sun (05 Apr)","start_iso":"2026-03-30","end_iso":"2026-04-05","label":"Mar 30-Apr 5, 2026","type":"weekly"},"fleet_average_score":{"score":894,"delta":-27},"drivers_with_greenzone_score":{"count":5,"delta":0},"driver_performance":[{"name":"Willem","driver_id":"d2","score":968,"delta":43.0},{"name":"Harsh","driver_id":"d6","score":962,"delta":50.0},{"name":"Raj","driver_id":"d5","score":943,"delta":-40.0},{"name":"Jackson","driver_id":"d3","score":942,"delta":10.0},{"name":"Dylan","driver_id":"d1","score":804,"delta":-40.0}],"risk_profile":[{"metric":"Accelerations","unit":"alerts","below_threshold":{"count":2477,"pct":99.72},"moderate":{"count":7,"pct":0.28},"severe":{"count":0,"pct":0.0}},{"metric":"Brakings","unit":"alerts","below_threshold":{"count":3447,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Turns","unit":"alerts","below_threshold":{"count":1860,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Traffic Lights","unit":"alerts","below_threshold":{"count":1250,"pct":99.84},"moderate":{"count":2,"pct":0.16},"severe":{"count":0,"pct":0.0}},{"metric":"Stoppings","unit":"alerts","below_threshold":{"count":148,"pct":99.33},"moderate":{"count":1,"pct":0.67},"severe":{"count":0,"pct":0.0}},{"metric":"Speeding","unit":"Minutes","below_threshold":{"count":2597,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},{"metric":"Driver Distraction","unit":"Minutes","below_threshold":{"count":2597,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}}],"following_distance_per_driver":[{"name":"Dylan","driver_id":"d1","driving_minutes":1040,"avg_fd_seconds":3.3,"congestion_light_min":93.31,"congestion_medium_min":58.2,"congestion_heavy_min":20.68},{"name":"Willem","driver_id":"d2","driving_minutes":594,"avg_fd_seconds":3.6,"congestion_light_min":61.6,"congestion_medium_min":34.79,"congestion_heavy_min":5.29},{"name":"Jackson","driver_id":"d3","driving_minutes":168,"avg_fd_seconds":3.6,"congestion_light_min":16.11,"congestion_medium_min":17.74,"congestion_heavy_min":5.93},{"name":"Harsh","driver_id":"d6","driving_minutes":387,"avg_fd_seconds":3.8,"congestion_light_min":7.54,"congestion_medium_min":15.95,"congestion_heavy_min":10.5},{"name":"Raj","driver_id":"d5","driving_minutes":408,"avg_fd_seconds":3.9,"congestion_light_min":20.64,"congestion_medium_min":17.16,"congestion_heavy_min":9.26}],"most_severe_fd_alerts":[],"driver_stars_awarded":0,"data_unavailable_sections":["Most severe hard braking alerts","Most severe speeding alerts"]}]};
+
+const weeks = RAW.reports.slice().sort((a,b) => a.period.start_iso.localeCompare(b.period.start_iso));
+
+const ROSTER = [
+  {id:'d1', name:'Dylan',   truck:'001 - Toyota Tundra'},
+  {id:'d2', name:'Willem',  truck:'002 - Toyota Tundra'},
+  {id:'d3', name:'Jackson', truck:'003 - Toyota Tundra'},
+  {id:'d4', name:'Austin',  truck:'004 - Ford F150'},
+  {id:'d5', name:'Raj',     truck:'005 - Ford F150'},
+  {id:'d6', name:'Harsh',   truck:'006 - Ford F150'},
+];
+const AV = [
+  {bg:'#DBEAFE',tx:'#1D4ED8'},{bg:'#DCFCE7',tx:'#166534'},
+  {bg:'#FEE2E2',tx:'#991B1B'},{bg:'#EDE9FE',tx:'#5B21B6'},
+  {bg:'#FEF9C3',tx:'#854D0E'},{bg:'#FCE7F3',tx:'#9D174D'},
+];
+
+function tier(s){
+  if(s == null) return ['s-empty','No data'];
+  if(s >= 950) return ['s-excellent','Excellent'];
+  if(s >= 900) return ['s-good','Good'];
+  if(s >= 850) return ['s-fair','Fair'];
+  return ['s-risk','At risk'];
+}
+function ringColor(s){
+  if(s == null) return '#9A9690';
+  if(s >= 950) return '#1A8C5E';
+  if(s >= 900) return '#2266CC';
+  if(s >= 850) return '#9A6200';
+  return '#CC2222';
+}
+function ini(n){return n.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2);}
+function shortDate(iso){const d=new Date(iso+'T00:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+
+// Populate week picker (most recent first)
+const picker = document.getElementById('weekPicker');
+weeks.slice().reverse().forEach((w, i) => {
+  const opt = document.createElement('option');
+  opt.value = w.period.start_iso;
+  opt.textContent = `${shortDate(w.period.start_iso)} – ${shortDate(w.period.end_iso)}, ${w.period.start_iso.slice(0,4)}`;
+  picker.appendChild(opt);
+});
+picker.addEventListener('change', () => render(picker.value));
+
+// Range label
+document.getElementById('weekRangeLabel').textContent =
+  `${shortDate(weeks[0].period.start_iso)} → ${shortDate(weeks[weeks.length-1].period.end_iso)}, ${weeks[0].period.start_iso.slice(0,4)} · ${weeks.length} weeks`;
+
+function render(weekIso){
+  const w = weeks.find(x => x.period.start_iso === weekIso) || weeks[weeks.length-1];
+
+  // Summary cards
+  const fa = w.fleet_average_score;
+  const dw = w.drivers_with_greenzone_score;
+  const stars = w.driver_stars_awarded || 0;
+  const totalMod = w.risk_profile.reduce((a,r)=>a+r.moderate.count,0);
+  const totalSev = w.risk_profile.reduce((a,r)=>a+r.severe.count,0);
+
+  const fleetSub = !fa ? '—' :
+    fa.delta > 0 ? `<span class="delta-up">↑ ${fa.delta}</span> vs prior week` :
+    fa.delta < 0 ? `<span class="delta-down">↓ ${Math.abs(fa.delta)}</span> vs prior week` :
+    'No change vs prior week';
+
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Fleet Average</div>
+      <div class="stat-value">${fa? fa.score : '—'}</div>
+      <div class="stat-sub">${fleetSub}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Drivers Scored</div>
+      <div class="stat-value">${dw? dw.count : '—'}</div>
+      <div class="stat-sub">${dw && dw.delta !== 0 ? (dw.delta > 0 ? '<span class="delta-up">↑ '+dw.delta+'</span>' : '<span class="delta-down">↓ '+Math.abs(dw.delta)+'</span>') : 'vs prior week'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Driver Stars</div>
+      <div class="stat-value">${stars}</div>
+      <div class="stat-sub">${stars ? 'Positive driving' : 'None awarded'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Moderate Infractions</div>
+      <div class="stat-value">${totalMod}</div>
+      <div class="stat-sub">Across all categories</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Severe Infractions</div>
+      <div class="stat-value">${totalSev}</div>
+      <div class="stat-sub">Across all categories</div>
+    </div>
+  `;
+
+  // Driver cards — fixed roster, sorted by score
+  const byId = {};
+  w.driver_performance.forEach(p => byId[p.driver_id] = p);
+  const ordered = ROSTER.slice().sort((a,b) => {
+    const sa = byId[a.id]?.score ?? -1;
+    const sb = byId[b.id]?.score ?? -1;
+    return sb - sa;
+  });
+  const topId = ordered.find(d => byId[d.id])?.id;
+
+  document.getElementById('driverGrid').innerHTML = ordered.map((d, idx) => {
+    const p = byId[d.id];
+    const av = AV[idx % AV.length];
+    if(!p){
+      return `
+        <div class="driver-card">
+          <div class="driver-top">
+            <div class="avatar" style="background:var(--bg3);color:var(--text3)">${ini(d.name)}</div>
+            <div class="driver-info">
+              <div class="driver-name">${d.name}</div>
+              <div class="driver-truck">${d.truck}</div>
+            </div>
+            <div class="score-ring-wrap">
+              <svg viewBox="0 0 54 54">
+                <circle cx="27" cy="27" r="22" fill="none" stroke="var(--bg3)" stroke-width="5"/>
+              </svg>
+              <div class="score-num" style="color:var(--text3)">—</div>
+            </div>
+          </div>
+          <div class="no-data">No data this week</div>
+        </div>
+      `;
+    }
+    const [cls, label] = tier(p.score);
+    const rc = ringColor(p.score);
+    // Cap ring fill at 1000 visually
+    const pct = Math.max(0, Math.min(1, p.score / 1000));
+    const C = 2 * Math.PI * 22;
+    const isNew = p.score === p.delta;
+    const deltaPill = isNew
+      ? `<span class="delta-pill up">↑ new</span>`
+      : (p.delta === 0 ? `<span class="delta-pill flat">— no change</span>`
+          : (p.delta > 0
+              ? `<span class="delta-pill up">↑ ${p.delta}</span>`
+              : `<span class="delta-pill down">↓ ${Math.abs(p.delta)}</span>`));
+    const isTop = d.id === topId;
+    return `
+      <div class="driver-card ${isTop?'top-card':''}">
+        <div class="driver-top">
+          <div class="avatar" style="background:${av.bg};color:${av.tx}">${ini(d.name)}</div>
+          <div class="driver-info">
+            <div class="driver-name">${d.name}</div>
+            <div class="driver-truck">${d.truck}</div>
+          </div>
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 54 54">
+              <circle cx="27" cy="27" r="22" fill="none" stroke="var(--bg3)" stroke-width="5"/>
+              <circle cx="27" cy="27" r="22" fill="none" stroke="${rc}" stroke-width="5"
+                stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" stroke-linecap="round"/>
+            </svg>
+            <div class="score-num" style="color:${rc}">${p.score}</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          ${deltaPill}
+          <span class="status-pill ${cls}">${label}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Infractions (fleet-level)
+  const ib = document.getElementById('infractionsBlock');
+  ib.innerHTML = `
+    <div class="infraction-row header">
+      <div>Category</div>
+      <div>Severity mix</div>
+      <div style="text-align:right">Moderate</div>
+      <div style="text-align:right">Severe</div>
+    </div>
+  ` + w.risk_profile.map(r => {
+    const total = r.below_threshold.count + r.moderate.count + r.severe.count;
+    const okPct = total ? (r.below_threshold.count/total)*100 : 0;
+    const modPct = total ? (r.moderate.count/total)*100 : 0;
+    const sevPct = total ? (r.severe.count/total)*100 : 0;
+    const modCls = r.moderate.count > 0 ? 'warn' : '';
+    const sevCls = r.severe.count > 0 ? 'bad' : '';
+    return `
+      <div class="infraction-row">
+        <div>
+          <span class="infraction-name">${r.metric}</span>
+          <span class="infraction-unit">${r.unit}</span>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-seg b-ok" style="width:${okPct}%"></div>
+          <div class="bar-seg b-mod" style="width:${modPct}%"></div>
+          <div class="bar-seg b-sev" style="width:${sevPct}%"></div>
+        </div>
+        <div class="infraction-num ${modCls}">${r.moderate.count}</div>
+        <div class="infraction-num ${sevCls}">${r.severe.count}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Initial render: latest week
+render(weeks[weeks.length - 1].period.start_iso);
+picker.value = weeks[weeks.length - 1].period.start_iso;
+</script>
+
+</body>
+</html>

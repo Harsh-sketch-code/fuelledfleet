@@ -1,0 +1,203 @@
+{
+  "source_file": "Fleet Report ( 20 Apr 2026 - 26 Apr 2026 ).pdf",
+  "report_type": "weekly_fleet",
+  "period": {
+    "raw": "(20 Apr) 12:00 AM (MDT) - Sun (26 Apr)",
+    "start_iso": "2026-04-20",
+    "end_iso": "2026-04-26",
+    "label": "Apr 20-Apr 26, 2026",
+    "type": "weekly"
+  },
+  "fleet_average_score": {
+    "score": 922,
+    "delta": 43
+  },
+  "drivers_with_greenzone_score": {
+    "count": 3,
+    "delta": -2
+  },
+  "driver_performance": [
+    {
+      "name": "Raj",
+      "driver_id": "d5",
+      "score": 989,
+      "delta": 52.0
+    },
+    {
+      "name": "Willem",
+      "driver_id": "d2",
+      "score": 929,
+      "delta": -35.0
+    },
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "score": 786,
+      "delta": -175.0
+    }
+  ],
+  "risk_profile": [
+    {
+      "metric": "Accelerations",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 1386,
+        "pct": 99.93
+      },
+      "moderate": {
+        "count": 1,
+        "pct": 0.07
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Brakings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 1781,
+        "pct": 99.94
+      },
+      "moderate": {
+        "count": 1,
+        "pct": 0.06
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Turns",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 909,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Traffic Lights",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 926,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Stoppings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 80,
+        "pct": 98.77
+      },
+      "moderate": {
+        "count": 1,
+        "pct": 1.23
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Speeding",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 1281,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Driver Distraction",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 1281,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    }
+  ],
+  "following_distance_per_driver": [
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "driving_minutes": 175,
+      "avg_fd_seconds": 3.5,
+      "congestion_light_min": 8.15,
+      "congestion_medium_min": 15.29,
+      "congestion_heavy_min": 10.85
+    },
+    {
+      "name": "Willem",
+      "driver_id": "d2",
+      "driving_minutes": 867,
+      "avg_fd_seconds": 3.6,
+      "congestion_light_min": 68.71,
+      "congestion_medium_min": 52.45,
+      "congestion_heavy_min": 23.07
+    },
+    {
+      "name": "Raj",
+      "driver_id": "d5",
+      "driving_minutes": 239,
+      "avg_fd_seconds": 3.8,
+      "congestion_light_min": 8.18,
+      "congestion_medium_min": 11.64,
+      "congestion_heavy_min": 9.1
+    }
+  ],
+  "most_severe_fd_alerts": [
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "alert_id": "5620575871",
+      "closest_fd_sec": 0.54,
+      "duration_sec": 13.19
+    },
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "alert_id": "5628223343",
+      "closest_fd_sec": 0.46,
+      "duration_sec": 11.99
+    }
+  ],
+  "driver_stars_awarded": 0,
+  "data_unavailable_sections": [
+    "Most severe hard braking alerts",
+    "Most severe speeding alerts"
+  ]
+}

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>April 2026 — Parsed Report Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F4F1;--bg2:#FFFFFF;--bg3:#EEECEA;--border:#E0DDD8;--border2:#C8C5BF;
+  --text:#1A1A18;--text2:#6B6860;--text3:#9A9690;
+  --accent:#F05A28;--accent-light:#FEF0EB;--accent-border:#F9C4AF;
+  --green:#1A8C5E;--green-bg:#E8F5EF;
+  --blue:#2266CC;--blue-bg:#EBF1FB;
+  --amber:#9A6200;--amber-bg:#FEF5E0;
+  --red:#CC2222;--red-bg:#FCEAEA;
+  --radius:10px;--radius-sm:6px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --font:Inter,sans-serif;--mono:JetBrains Mono,monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased;line-height:1.5}
+.nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:10}
+.nav-left{display:flex;align-items:center;gap:14px}
+.nav-title{font-size:15px;font-weight:700}
+.nav-divider{width:1px;height:20px;background:var(--border2)}
+.nav-sub{font-size:12px;font-family:var(--mono);color:var(--text3)}
+.pill{display:inline-block;font-size:11px;font-weight:600;font-family:var(--mono);padding:3px 10px;border-radius:20px;background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-border)}
+.page{max-width:1200px;margin:0 auto;padding:28px}
+.section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
+.section h2{font-size:14px;font-weight:700;margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono);color:var(--text2)}
+.section h2 small{font-family:var(--font);font-weight:500;text-transform:none;letter-spacing:0;color:var(--text3);margin-left:8px;font-size:12px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.kpi{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px}
+.kpi-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);font-family:var(--mono);margin-bottom:6px}
+.kpi-val{font-size:28px;font-weight:700;line-height:1}
+.kpi-delta{font-size:12px;margin-top:4px;font-family:var(--mono)}
+.delta-up{color:var(--green)}
+.delta-down{color:var(--red)}
+.delta-flat{color:var(--text3)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);font-family:var(--mono);background:var(--bg3);border-bottom:1px solid var(--border)}
+td{padding:11px 12px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+.score-pill{display:inline-block;font-family:var(--mono);font-weight:700;font-size:13px;padding:3px 10px;border-radius:20px}
+.s-excellent{background:#DCFCE7;color:#166534}
+.s-good{background:#DBEAFE;color:#1D4ED8}
+.s-fair{background:#FEF9C3;color:#854D0E}
+.s-risk{background:#FEE2E2;color:#991B1B}
+.mono{font-family:var(--mono)}
+.mut{color:var(--text3)}
+.right{text-align:right}
+.center{text-align:center}
+.bar-wrap{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--bg3);border:1px solid var(--border);min-width:160px}
+.bar-seg{height:100%}
+.b-ok{background:#1A8C5E}
+.b-mod{background:#F0A028}
+.b-sev{background:#CC2222}
+.bar-legend{display:flex;gap:12px;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:8px}
+.bar-legend span{display:flex;align-items:center;gap:5px}
+.bar-legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.note-box{background:var(--blue-bg);border:1px solid #BFD4F0;border-radius:var(--radius-sm);padding:12px 14px;font-size:12px;color:var(--blue);margin-bottom:18px}
+.note-box b{display:block;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono)}
+.warn-box{background:var(--amber-bg);border:1px solid #E8C84A;border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--amber);font-family:var(--mono)}
+.unavail-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.unavail-list span{font-size:11px;font-family:var(--mono);background:var(--bg3);border:1px solid var(--border);padding:3px 9px;border-radius:20px;color:var(--text3)}
+.json-link{font-size:12px;font-family:var(--mono);color:var(--accent);text-decoration:none}
+.json-link:hover{text-decoration:underline}
+.fb-arrow{font-family:var(--mono);font-weight:700}
+</style>
+</head>
+<body>
+<div class="nav">
+  <div class="nav-left">
+    <div class="nav-title">Fuelled Fleet — Parsed Report Review</div>
+    <div class="nav-divider"></div>
+    <div class="nav-sub">Source: Fleet Report ( April 2026 ).pdf</div>
+  </div>
+  <span class="pill">PARSER OUTPUT</span>
+</div>
+
+<div class="page">
+
+<div class="note-box">
+  <b>What this page is</b>
+  This is the structured data extracted from the April monthly PDF, laid out the same way it'll feed the dashboard. Eyeball it against the source PDF — if it all looks right, we wire it into the live board.
+</div>
+
+<div class="section">
+  <h2>Period</h2>
+  <div class="mono" id="period"></div>
+</div>
+
+<div class="section">
+  <h2>Fleet Summary</h2>
+  <div class="kpi-row" id="fleetKpis"></div>
+</div>
+
+<div class="section">
+  <h2>Driver Performance Ranking <small>Greenzone score, month-over-month delta</small></h2>
+  <table id="rankTable">
+    <thead><tr>
+      <th>#</th><th>Driver</th><th>Dashboard ID</th>
+      <th class="right">Score</th><th class="center">Δ vs prior</th><th>Tier</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Following Distance — Per Driver <small>Driving exposure & traffic mix</small></h2>
+  <table id="fdTable">
+    <thead><tr>
+      <th>Driver</th>
+      <th class="right">Driving min</th>
+      <th class="right">Avg FD (s)</th>
+      <th class="right">Light traffic min</th>
+      <th class="right">Medium traffic min</th>
+      <th class="right">Heavy traffic min</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Risk Profile <small>Severity breakdown across the fleet</small></h2>
+  <table id="riskTable">
+    <thead><tr>
+      <th>Alert type</th><th>Unit</th><th class="right">Total</th>
+      <th>Severity mix</th>
+      <th class="right">Moderate</th><th class="right">Severe</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
+  <div class="bar-legend">
+    <span><i class="b-ok"></i>Below threshold</span>
+    <span><i class="b-mod"></i>Moderate</span>
+    <span><i class="b-sev"></i>Severe</span>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Most Severe Following Distance Alerts</h2>
+  <table id="sevTable">
+    <thead><tr>
+      <th>Driver</th><th class="mono">Alert ID</th>
+      <th class="right">Closest FD (s)</th><th class="right">Duration (s)</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Positive Driving</h2>
+  <div id="positive"></div>
+</div>
+
+<div class="section">
+  <h2>Sections marked "Data unavailable" in source PDF</h2>
+  <div class="unavail-list" id="unavailList"></div>
+</div>
+
+<div class="section">
+  <h2>Raw JSON</h2>
+  <a class="json-link" href="april_2026_parsed.json" target="_blank">→ april_2026_parsed.json</a>
+</div>
+
+</div>
+
+<script>
+const data = {
+  "source_file": "Fleet Report ( April 2026 ).pdf",
+  "report_type": "monthly_fleet",
+  "period": {
+    "raw": "(01 Apr) 12:00 AM (MDT) - Fri (01 May)",
+    "start_iso": "2026-04-01",
+    "end_iso": "2026-05-01",
+    "label": "Apr 2026"
+  },
+  "fleet_average_score": { "score": 897, "delta": -8 },
+  "drivers_with_greenzone_score": { "count": 6, "delta": 1 },
+  "driver_performance": [
+    {"name":"Austin","driver_id":"d4","score":964,"delta":964.0},
+    {"name":"Raj","driver_id":"d5","score":957,"delta":-6.0},
+    {"name":"Harsh","driver_id":"d6","score":946,"delta":23.0},
+    {"name":"Jackson","driver_id":"d3","score":927,"delta":0.0},
+    {"name":"Willem","driver_id":"d2","score":927,"delta":5.0},
+    {"name":"Dylan","driver_id":"d1","score":770,"delta":-70.0}
+  ],
+  "risk_profile": [
+    {"metric":"Accelerations","unit":"alerts","below_threshold":{"count":9440,"pct":99.85},"moderate":{"count":14,"pct":0.15},"severe":{"count":0,"pct":0.0}},
+    {"metric":"Brakings","unit":"alerts","below_threshold":{"count":12767,"pct":99.97},"moderate":{"count":4,"pct":0.03},"severe":{"count":0,"pct":0.0}},
+    {"metric":"Turns","unit":"alerts","below_threshold":{"count":6557,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},
+    {"metric":"Traffic Lights","unit":"alerts","below_threshold":{"count":5545,"pct":99.91},"moderate":{"count":5,"pct":0.09},"severe":{"count":0,"pct":0.0}},
+    {"metric":"Stoppings","unit":"alerts","below_threshold":{"count":555,"pct":99.46},"moderate":{"count":3,"pct":0.54},"severe":{"count":0,"pct":0.0}},
+    {"metric":"Speeding","unit":"Minutes","below_threshold":{"count":8693,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}},
+    {"metric":"Driver Distraction","unit":"Minutes","below_threshold":{"count":8693,"pct":100.0},"moderate":{"count":0,"pct":0.0},"severe":{"count":0,"pct":0.0}}
+  ],
+  "following_distance_per_driver": [
+    {"name":"Dylan","driver_id":"d1","driving_minutes":2062,"avg_fd_seconds":3.1,"congestion_light_min":252.36,"congestion_medium_min":119.12,"congestion_heavy_min":38.39},
+    {"name":"Willem","driver_id":"d2","driving_minutes":2764,"avg_fd_seconds":3.6,"congestion_light_min":279.21,"congestion_medium_min":213.57,"congestion_heavy_min":65.94},
+    {"name":"Jackson","driver_id":"d3","driving_minutes":1424,"avg_fd_seconds":3.6,"congestion_light_min":72.78,"congestion_medium_min":91.17,"congestion_heavy_min":42.0},
+    {"name":"Harsh","driver_id":"d6","driving_minutes":976,"avg_fd_seconds":3.6,"congestion_light_min":11.62,"congestion_medium_min":53.87,"congestion_heavy_min":96.21},
+    {"name":"Raj","driver_id":"d5","driving_minutes":1379,"avg_fd_seconds":3.8,"congestion_light_min":66.01,"congestion_medium_min":68.38,"congestion_heavy_min":47.12}
+  ],
+  "most_severe_fd_alerts": [
+    {"name":"Jackson","driver_id":"d3","alert_id":"5620575871","closest_fd_sec":0.54,"duration_sec":13.19},
+    {"name":"Jackson","driver_id":"d3","alert_id":"5563140470","closest_fd_sec":0.38,"duration_sec":12.19},
+    {"name":"Jackson","driver_id":"d3","alert_id":"5628223343","closest_fd_sec":0.46,"duration_sec":11.99},
+    {"name":"Dylan","driver_id":"d1","alert_id":"5599422135","closest_fd_sec":0.28,"duration_sec":10.59}
+  ],
+  "driver_stars_awarded": 1,
+  "data_unavailable_sections": ["Most severe hard braking alerts","Most severe speeding alerts"]
+};
+
+// Period
+document.getElementById('period').textContent =
+  `${data.period.label}  •  ${data.period.start_iso} → ${data.period.end_iso}  •  ${data.period.raw}`;
+
+// Fleet KPIs
+function fmtDelta(n, isNew){
+  if(isNew) return `<span class="kpi-delta delta-up">↑ new (no prior data)</span>`;
+  if(n === 0) return `<span class="kpi-delta delta-flat">— no change</span>`;
+  if(n > 0)   return `<span class="kpi-delta delta-up">↑ ${n}</span>`;
+  return `<span class="kpi-delta delta-down">↓ ${Math.abs(n)}</span>`;
+}
+document.getElementById('fleetKpis').innerHTML = `
+  <div class="kpi">
+    <div class="kpi-label">Fleet Average Score</div>
+    <div class="kpi-val">${data.fleet_average_score.score}</div>
+    ${fmtDelta(data.fleet_average_score.delta)}
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Drivers Scored</div>
+    <div class="kpi-val">${data.drivers_with_greenzone_score.count}</div>
+    ${fmtDelta(data.drivers_with_greenzone_score.delta)}
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Driver Stars Awarded</div>
+    <div class="kpi-val">${data.driver_stars_awarded}</div>
+    <div class="kpi-delta delta-flat">positive recognition</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Severe Alerts</div>
+    <div class="kpi-val">0</div>
+    <div class="kpi-delta delta-up">across all categories</div>
+  </div>
+`;
+
+// Tier helper
+function tier(s){
+  if(s >= 950) return ['s-excellent','Excellent'];
+  if(s >= 900) return ['s-good','Good'];
+  if(s >= 850) return ['s-fair','Fair'];
+  return ['s-risk','At risk'];
+}
+
+// Ranking
+const rankBody = document.querySelector('#rankTable tbody');
+data.driver_performance.forEach((d, i) => {
+  const isNew = d.score === d.delta;        // first measurement signal
+  const [cls, label] = tier(d.score);
+  const deltaCell = isNew
+    ? `<span class="fb-arrow delta-up">↑ new</span>`
+    : (d.delta === 0 ? `<span class="mut">—</span>`
+        : (d.delta > 0
+            ? `<span class="fb-arrow delta-up">↑ ${d.delta}</span>`
+            : `<span class="fb-arrow delta-down">↓ ${Math.abs(d.delta)}</span>`));
+  rankBody.insertAdjacentHTML('beforeend', `
+    <tr>
+      <td class="mono mut">${i+1}</td>
+      <td><b>${d.name}</b></td>
+      <td class="mono mut">${d.driver_id}</td>
+      <td class="right mono"><b>${d.score}</b></td>
+      <td class="center">${deltaCell}</td>
+      <td><span class="score-pill ${cls}">${label}</span></td>
+    </tr>
+  `);
+});
+
+// FD per driver
+const fdBody = document.querySelector('#fdTable tbody');
+data.following_distance_per_driver.forEach(d => {
+  fdBody.insertAdjacentHTML('beforeend', `
+    <tr>
+      <td><b>${d.name}</b> <span class="mono mut">${d.driver_id}</span></td>
+      <td class="right mono">${d.driving_minutes.toLocaleString()}</td>
+      <td class="right mono">${d.avg_fd_seconds.toFixed(1)}</td>
+      <td class="right mono">${d.congestion_light_min.toFixed(2)}</td>
+      <td class="right mono">${d.congestion_medium_min.toFixed(2)}</td>
+      <td class="right mono">${d.congestion_heavy_min.toFixed(2)}</td>
+    </tr>
+  `);
+});
+
+// Risk profile
+const riskBody = document.querySelector('#riskTable tbody');
+data.risk_profile.forEach(r => {
+  const total = r.below_threshold.count + r.moderate.count + r.severe.count;
+  const okPct = (r.below_threshold.count / total) * 100;
+  const modPct = (r.moderate.count / total) * 100;
+  const sevPct = (r.severe.count / total) * 100;
+  riskBody.insertAdjacentHTML('beforeend', `
+    <tr>
+      <td><b>${r.metric}</b></td>
+      <td class="mono mut">${r.unit}</td>
+      <td class="right mono">${total.toLocaleString()}</td>
+      <td>
+        <div class="bar-wrap">
+          <div class="bar-seg b-ok" style="width:${okPct}%"></div>
+          <div class="bar-seg b-mod" style="width:${modPct}%"></div>
+          <div class="bar-seg b-sev" style="width:${sevPct}%"></div>
+        </div>
+      </td>
+      <td class="right mono">${r.moderate.count} <span class="mut">(${r.moderate.pct}%)</span></td>
+      <td class="right mono">${r.severe.count} <span class="mut">(${r.severe.pct}%)</span></td>
+    </tr>
+  `);
+});
+
+// Severe FD
+const sevBody = document.querySelector('#sevTable tbody');
+data.most_severe_fd_alerts.forEach(a => {
+  sevBody.insertAdjacentHTML('beforeend', `
+    <tr>
+      <td><b>${a.name}</b> <span class="mono mut">${a.driver_id}</span></td>
+      <td class="mono">${a.alert_id}</td>
+      <td class="right mono"><b>${a.closest_fd_sec}</b></td>
+      <td class="right mono">${a.duration_sec}</td>
+    </tr>
+  `);
+});
+
+// Positive driving
+document.getElementById('positive').innerHTML = data.driver_stars_awarded > 0
+  ? `<div style="font-size:14px"><b>${data.driver_stars_awarded}</b> driver star${data.driver_stars_awarded === 1 ? '' : 's'} awarded this month.</div>`
+  : `<div class="mut">No driver stars awarded.</div>`;
+
+// Unavailable
+const ua = document.getElementById('unavailList');
+data.data_unavailable_sections.forEach(s => {
+  ua.insertAdjacentHTML('beforeend', `<span>${s}</span>`);
+});
+if(!data.data_unavailable_sections.length){
+  ua.innerHTML = '<span class="mut">All sections present.</span>';
+}
+</script>
+
+</body>
+</html>

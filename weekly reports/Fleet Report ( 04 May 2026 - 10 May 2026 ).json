@@ -1,0 +1,173 @@
+{
+  "source_file": "Fleet Report ( 04 May 2026 - 10 May 2026 ).pdf",
+  "report_type": "weekly_fleet",
+  "period": {
+    "raw": "(04 May) 12:00 AM (MDT) - Sun (10 May)",
+    "start_iso": "2026-05-04",
+    "end_iso": "2026-05-10",
+    "label": "May 4-May 10, 2026",
+    "type": "weekly"
+  },
+  "fleet_average_score": {
+    "score": 984,
+    "delta": 56
+  },
+  "drivers_with_greenzone_score": {
+    "count": 2,
+    "delta": -2
+  },
+  "driver_performance": [
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "score": 986,
+      "delta": 16.0
+    },
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "score": 982,
+      "delta": 137.0
+    }
+  ],
+  "risk_profile": [
+    {
+      "metric": "Accelerations",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 491,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Brakings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 657,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Turns",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 352,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Traffic Lights",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 200,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Stoppings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 38,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Speeding",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 505,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Driver Distraction",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 505,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    }
+  ],
+  "following_distance_per_driver": [
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "driving_minutes": 168,
+      "avg_fd_seconds": 3.7,
+      "congestion_light_min": 3.23,
+      "congestion_medium_min": 6.52,
+      "congestion_heavy_min": 6.37
+    },
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "driving_minutes": 337,
+      "avg_fd_seconds": 3.9,
+      "congestion_light_min": 11.69,
+      "congestion_medium_min": 3.59,
+      "congestion_heavy_min": 1.19
+    }
+  ],
+  "most_severe_fd_alerts": [],
+  "driver_stars_awarded": 0,
+  "data_unavailable_sections": [
+    "Most severe hard braking alerts",
+    "Most severe speeding alerts"
+  ]
+}

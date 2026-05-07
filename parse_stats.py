@@ -1,0 +1,316 @@
+"""
+Parse TitanGPS Driver Statistics Report XLSX files (per-driver, per-week)
+into structured JSON, then merge with the Fleet Report PDF parses to produce
+a single combined weeks.json the dashboard reads.
+
+Usage:
+    python3 parse_stats.py
+"""
+import json, os, re, glob
+import openpyxl
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+STATS_DIR = os.path.join(BASE, "driver statistics report")
+WEEKS_DIR = os.path.join(BASE, "weekly reports")
+OUT_FILE  = os.path.join(BASE, "weeks.json")
+
+NAME_MAP = {
+    "Dylan":   "d1",
+    "Will":    "d2", "Willem": "d2",
+    "Jackson": "d3",
+    "Austin":  "d4",
+    "Paddy":   "d5", "Raj": "d5",
+    "Harsh":   "d6",
+}
+
+ROSTER = [
+    {"id":"d1", "name":"Dylan",   "truck":"001 - Toyota Tundra"},
+    {"id":"d2", "name":"Willem",  "truck":"002 - Toyota Tundra"},
+    {"id":"d3", "name":"Jackson", "truck":"003 - Toyota Tundra"},
+    {"id":"d4", "name":"Austin",  "truck":"004 - Ford F150"},
+    {"id":"d5", "name":"Raj",     "truck":"005 - Ford F150"},
+    {"id":"d6", "name":"Harsh",   "truck":"006 - Ford F150"},
+]
+
+# Column header (case-insensitive contains) -> our key
+COLS = {
+    "minutes analyzed":              "minutes",
+    "driver score":                  "score_xlsx",
+    "average following distance(sec)":"avg_fd_sec",
+    "sign violations":               "sign_violations",
+    "traffic light violation":       "traffic_lights",
+    "hard braking":                  "hard_brake",
+    "hard acceleration":             "hard_accel",
+    "following distance":            "following_close",
+    "speeding violations":           "speeding",
+    "driver star":                   "stars",
+}
+SUFFIX_SKIP = "gz impact"  # ignore the *_GZ_Impact columns
+
+def to_int(v, default=0):
+    try:
+        if v is None or v == "" or v == "NA":
+            return default
+        return int(float(v))
+    except Exception:
+        return default
+
+def to_float(v, default=0.0):
+    try:
+        if v is None or v == "" or v == "NA":
+            return default
+        return float(v)
+    except Exception:
+        return default
+
+def header_index(row):
+    """Return {our_key: column_index} based on the header row."""
+    idx = {}
+    for i, cell in enumerate(row):
+        if cell is None: continue
+        h = str(cell).strip().lower()
+        # skip the GZ Impact columns (they live to the right of the actual count)
+        if h.endswith(SUFFIX_SKIP):
+            continue
+        for needle, key in COLS.items():
+            if h == needle or h.startswith(needle):
+                # First match wins (so "Following Distance" is matched, not
+                # "Average Following Distance(Sec)" — handled by COLS keys)
+                if key not in idx:
+                    idx[key] = i
+                break
+    return idx
+
+def parse_xlsx(path):
+    wb = openpyxl.load_workbook(path, data_only=True)
+    ws = wb[wb.sheetnames[0]]
+    rows = list(ws.iter_rows(values_only=True))
+
+    # Find period from row containing "Report Generated For"
+    period_iso_start = period_iso_end = period_label = None
+    for r in rows[:6]:
+        for cell in r:
+            if cell and "Report Generated For" in str(cell):
+                m = re.search(r"\((\d{1,2}) (\w+)\) [\d:]+ [AP]M\s*\([A-Z]+\)\s*to\s*\w+\s*\((\d{1,2}) (\w+)\)", str(cell))
+                if m:
+                    sd, sm, ed, em = m.groups()
+                    months = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,
+                              "Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
+                    sm_n, em_n = months.get(sm[:3]), months.get(em[:3])
+                    fname = os.path.basename(path)
+                    yr_m = re.search(r"(20\d{2})", fname)
+                    yr = int(yr_m.group(1)) if yr_m else 2026
+                    if sm_n and em_n:
+                        period_iso_start = f"{yr}-{sm_n:02d}-{int(sd):02d}"
+                        end_yr = yr + (1 if em_n < sm_n else 0)
+                        # XLSX end date is exclusive (Mon to Mon = 7 days),
+                        # subtract 1 day to match weekly Fleet Report convention (Mon-Sun)
+                        from datetime import date, timedelta
+                        ed_date = date(end_yr, em_n, int(ed)) - timedelta(days=1)
+                        period_iso_end = ed_date.isoformat()
+                        period_label = f"{sm} {int(sd)}-{ed_date.strftime('%b')} {ed_date.day}, {yr}"
+                break
+        if period_iso_start:
+            break
+
+    # Find the header row (the one with "Driver Name" in col 0)
+    header_row_idx = None
+    for i, r in enumerate(rows):
+        if r and r[0] and str(r[0]).strip().lower() == "driver name":
+            header_row_idx = i
+            break
+    if header_row_idx is None:
+        raise RuntimeError(f"Could not find header row in {path}")
+
+    cmap = header_index(rows[header_row_idx])
+
+    drivers = []
+    for r in rows[header_row_idx+1:]:
+        if not r or not r[0]: continue
+        nm = str(r[0]).strip()
+        if nm.lower() in ("total", "unknown driver", ""):
+            continue
+        if nm not in NAME_MAP:
+            continue  # unknown driver
+        rec = {
+            "name": nm,
+            "driver_id": NAME_MAP[nm],
+            "minutes":          to_int(r[cmap["minutes"]]) if "minutes" in cmap else 0,
+            "score":            to_int(r[cmap["score_xlsx"]]) if "score_xlsx" in cmap else None,
+            "avg_fd_sec":       to_float(r[cmap["avg_fd_sec"]]) if "avg_fd_sec" in cmap else None,
+            "sign_violations":  to_int(r[cmap["sign_violations"]]) if "sign_violations" in cmap else 0,
+            "traffic_lights":   to_int(r[cmap["traffic_lights"]]) if "traffic_lights" in cmap else 0,
+            "hard_brake":       to_int(r[cmap["hard_brake"]]) if "hard_brake" in cmap else 0,
+            "hard_accel":       to_int(r[cmap["hard_accel"]]) if "hard_accel" in cmap else 0,
+            "following_close":  to_int(r[cmap["following_close"]]) if "following_close" in cmap else 0,
+            "speeding":         to_int(r[cmap["speeding"]]) if "speeding" in cmap else 0,
+            "stars":            to_int(r[cmap["stars"]]) if "stars" in cmap else 0,
+        }
+        # Skip drivers with 0 minutes (Austin in early weeks shows up but with no data)
+        if rec["minutes"] == 0 and rec["score"] in (None, 0):
+            continue
+        drivers.append(rec)
+
+    return {
+        "source_file": os.path.basename(path),
+        "period": {"start_iso": period_iso_start, "end_iso": period_iso_end, "label": period_label},
+        "drivers": drivers,
+    }
+
+def load_pdf_index():
+    p = os.path.join(WEEKS_DIR, "_parsed_index.json")
+    if not os.path.exists(p):
+        return {}
+    with open(p) as f:
+        idx = json.load(f)
+    by_start = {}
+    for r in idx.get("reports", []):
+        by_start[r["period"]["start_iso"]] = r
+    return by_start
+
+def merge():
+    pdfs = load_pdf_index()
+    weeks = []
+    for x in sorted(glob.glob(os.path.join(STATS_DIR, "*.xlsx"))):
+        s = parse_xlsx(x)
+        start = s["period"]["start_iso"]
+        pdf = pdfs.get(start, {})
+        # Build per-driver merged record
+        per_driver = {}
+        for d in s["drivers"]:
+            per_driver[d["driver_id"]] = {
+                "name": d["name"],
+                "score": d["score"],
+                "minutes": d["minutes"],
+                "avg_fd_sec": d["avg_fd_sec"],
+                "stars": d["stars"],
+                "infractions": {
+                    "sign_violations": d["sign_violations"],
+                    "following_close": d["following_close"],
+                    "hard_accel":      d["hard_accel"],
+                    "hard_brake":      d["hard_brake"],
+                    "speeding":        d["speeding"],
+                    "traffic_lights":  d["traffic_lights"],
+                },
+            }
+        # Override scores with PDF values where available (PDF = portal-canonical)
+        if pdf:
+            for p in pdf.get("driver_performance", []):
+                did = p["driver_id"]
+                if did in per_driver:
+                    per_driver[did]["score"] = p["score"]
+                    per_driver[did]["delta"] = p["delta"]
+                else:
+                    # Driver appears in PDF but not in XLSX — keep them anyway
+                    per_driver[did] = {
+                        "name": p["name"], "score": p["score"], "delta": p["delta"],
+                        "minutes": 0, "avg_fd_sec": None, "stars": 0,
+                        "infractions": {"sign_violations":0,"following_close":0,"hard_accel":0,
+                                        "hard_brake":0,"speeding":0,"traffic_lights":0},
+                    }
+        weeks.append({
+            "id": "w_" + start,
+            "label": s["period"]["label"],
+            "start_iso": start,
+            "end_iso": s["period"]["end_iso"],
+            "fleet_average_score": pdf.get("fleet_average_score") if pdf else None,
+            "drivers_with_score": pdf.get("drivers_with_greenzone_score") if pdf else None,
+            "drivers": per_driver,
+            "sources": {
+                "stats_xlsx": s["source_file"],
+                "fleet_pdf":  pdf.get("source_file") if pdf else None,
+            },
+        })
+    weeks.sort(key=lambda w: w["start_iso"])
+
+    # ===== Build monthly aggregates =====
+    # Load monthly Fleet Report JSONs (canonical scores per driver per month)
+    monthly_dir = os.path.join(BASE, "monthly reports")
+    monthly_pdfs = []
+    if os.path.isdir(monthly_dir):
+        idx_path = os.path.join(monthly_dir, "_parsed_index.json")
+        if os.path.exists(idx_path):
+            with open(idx_path) as f:
+                monthly_pdfs = json.load(f).get("reports", [])
+
+    months = []
+    for mp in monthly_pdfs:
+        start = mp["period"]["start_iso"]   # e.g. 2026-04-01
+        end   = mp["period"]["end_iso"]     # e.g. 2026-05-01 (exclusive)
+        # Use the start month/year for the label
+        from datetime import date
+        sd = date.fromisoformat(start)
+        # Compute true month end (last day of the start month)
+        if sd.month == 12:
+            month_end = date(sd.year, 12, 31)
+        else:
+            month_end = date(sd.year, sd.month + 1, 1) - __import__("datetime").timedelta(days=1)
+
+        # Per-driver aggregate from weekly XLSX rows whose START date is in this month
+        per_driver = {r["id"]: {
+            "name": r["name"],
+            "score": None,
+            "delta": None,
+            "minutes": 0,
+            "stars": 0,
+            "avg_fd_sec": None,
+            "infractions": {"sign_violations":0,"following_close":0,"hard_accel":0,
+                            "hard_brake":0,"speeding":0,"traffic_lights":0},
+            "_fd_samples": [],
+        } for r in ROSTER}
+
+        for w in weeks:
+            wsd = __import__("datetime").date.fromisoformat(w["start_iso"])
+            if wsd.year == sd.year and wsd.month == sd.month:
+                for did, dd in w["drivers"].items():
+                    if did not in per_driver: continue
+                    pd = per_driver[did]
+                    pd["minutes"] += dd.get("minutes", 0) or 0
+                    pd["stars"]   += dd.get("stars", 0) or 0
+                    if dd.get("avg_fd_sec"):
+                        pd["_fd_samples"].append(dd["avg_fd_sec"])
+                    for k, v in (dd.get("infractions") or {}).items():
+                        pd["infractions"][k] = pd["infractions"].get(k, 0) + (v or 0)
+
+        # Score & delta come from the monthly PDF (canonical, weighted by minutes)
+        for p in mp.get("driver_performance", []):
+            did = p["driver_id"]
+            if did in per_driver:
+                per_driver[did]["score"] = p["score"]
+                per_driver[did]["delta"] = p["delta"]
+
+        # Average the FD samples (weighted by week minutes would be better, but simple mean is fine for the size of this fleet)
+        for did, pd in per_driver.items():
+            samples = pd.pop("_fd_samples")
+            if samples:
+                pd["avg_fd_sec"] = round(sum(samples)/len(samples), 2)
+
+        months.append({
+            "id": "m_" + sd.strftime("%Y-%m"),
+            "label": sd.strftime("%B %Y"),
+            "start_iso": sd.isoformat(),
+            "end_iso": month_end.isoformat(),
+            "fleet_average_score": mp.get("fleet_average_score"),
+            "drivers_with_score": mp.get("drivers_with_greenzone_score"),
+            "drivers": per_driver,
+            "sources": {
+                "fleet_pdf":  mp.get("source_file"),
+                "weekly_aggregated": [w["sources"]["stats_xlsx"] for w in weeks
+                                       if __import__("datetime").date.fromisoformat(w["start_iso"]).month == sd.month
+                                       and __import__("datetime").date.fromisoformat(w["start_iso"]).year == sd.year],
+            },
+        })
+
+    months.sort(key=lambda m: m["start_iso"])
+    return {"roster": ROSTER, "weeks": weeks, "months": months}
+
+if __name__ == "__main__":
+    out = merge()
+    with open(OUT_FILE, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"Wrote {OUT_FILE}")
+    print(f"  Weeks: {len(out['weeks'])}")
+    for w in out["weeks"]:
+        sn = sum(1 for d in w["drivers"].values() if d.get("score"))
+        st = sum(d.get("stars",0) for d in w["drivers"].values())
+        print(f"   - {w['label']:<28}  drivers w/ score: {sn}  stars: {st}")
