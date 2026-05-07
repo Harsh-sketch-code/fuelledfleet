@@ -22,8 +22,18 @@
     },
     {
       "id": "d5",
-      "name": "Raj",
-      "truck": "005 - Ford F150"
+      "name": "Paddy",
+      "truck": "005 - Ford F150",
+      "name_history": [
+        {
+          "from_iso": "2000-01-01",
+          "name": "Raj"
+        },
+        {
+          "from_iso": "2026-05-04",
+          "name": "Paddy"
+        }
+      ]
     },
     {
       "id": "d6",
@@ -614,7 +624,7 @@
           }
         },
         "d5": {
-          "name": "Raj",
+          "name": "Paddy",
           "score": 943,
           "delta": null,
           "minutes": 408,
@@ -733,7 +743,7 @@
           }
         },
         "d5": {
-          "name": "Raj",
+          "name": "Paddy",
           "score": 957,
           "delta": -6.0,
           "minutes": 1013,
@@ -852,7 +862,7 @@
           }
         },
         "d5": {
-          "name": "Raj",
+          "name": "Paddy",
           "score": null,
           "delta": null,
           "minutes": 0,
