@@ -224,80 +224,111 @@ def merge():
     weeks.sort(key=lambda w: w["start_iso"])
 
     # ===== Build monthly aggregates =====
-    # Load monthly Fleet Report JSONs (canonical scores per driver per month)
+    # A month appears as soon as any week within it has data (XLSX or PDF).
+    # If a Monthly Fleet Report PDF is present, its scores override (TitanGPS-canonical).
+    # Otherwise scores are computed from weekly data (weighted by driving minutes).
+    from datetime import date, timedelta
+
+    # Load any monthly Fleet Report JSONs available
     monthly_dir = os.path.join(BASE, "monthly reports")
-    monthly_pdfs = []
+    monthly_pdfs_by_ym = {}
     if os.path.isdir(monthly_dir):
         idx_path = os.path.join(monthly_dir, "_parsed_index.json")
         if os.path.exists(idx_path):
             with open(idx_path) as f:
-                monthly_pdfs = json.load(f).get("reports", [])
+                for mp in json.load(f).get("reports", []):
+                    sd = date.fromisoformat(mp["period"]["start_iso"])
+                    monthly_pdfs_by_ym[(sd.year, sd.month)] = mp
+
+    # Discover all (year, month) pairs that have at least one week of data
+    months_with_data = sorted({
+        (date.fromisoformat(w["start_iso"]).year,
+         date.fromisoformat(w["start_iso"]).month)
+        for w in weeks
+    })
+    # Also include months that have a PDF but no week (defensive)
+    for ym in monthly_pdfs_by_ym.keys():
+        if ym not in months_with_data:
+            months_with_data.append(ym)
+    months_with_data = sorted(set(months_with_data))
 
     months = []
-    for mp in monthly_pdfs:
-        start = mp["period"]["start_iso"]   # e.g. 2026-04-01
-        end   = mp["period"]["end_iso"]     # e.g. 2026-05-01 (exclusive)
-        # Use the start month/year for the label
-        from datetime import date
-        sd = date.fromisoformat(start)
-        # Compute true month end (last day of the start month)
-        if sd.month == 12:
-            month_end = date(sd.year, 12, 31)
+    for (yr, mo) in months_with_data:
+        first = date(yr, mo, 1)
+        if mo == 12:
+            last = date(yr, 12, 31)
         else:
-            month_end = date(sd.year, sd.month + 1, 1) - __import__("datetime").timedelta(days=1)
+            last = date(yr, mo + 1, 1) - timedelta(days=1)
+        mp = monthly_pdfs_by_ym.get((yr, mo))
 
-        # Per-driver aggregate from weekly XLSX rows whose START date is in this month
         per_driver = {r["id"]: {
-            "name": r["name"],
-            "score": None,
-            "delta": None,
-            "minutes": 0,
-            "stars": 0,
-            "avg_fd_sec": None,
+            "name": r["name"], "score": None, "delta": None,
+            "minutes": 0, "stars": 0, "avg_fd_sec": None,
             "infractions": {"sign_violations":0,"following_close":0,"hard_accel":0,
                             "hard_brake":0,"speeding":0,"traffic_lights":0},
             "_fd_samples": [],
+            "_score_samples": [],   # (score, minutes) for weighted average
         } for r in ROSTER}
 
+        # Sum infractions / stars / minutes from weekly XLSX rows in this month
+        weeks_in_month = []
         for w in weeks:
-            wsd = __import__("datetime").date.fromisoformat(w["start_iso"])
-            if wsd.year == sd.year and wsd.month == sd.month:
+            wsd = date.fromisoformat(w["start_iso"])
+            if wsd.year == yr and wsd.month == mo:
+                weeks_in_month.append(w)
                 for did, dd in w["drivers"].items():
                     if did not in per_driver: continue
                     pd = per_driver[did]
-                    pd["minutes"] += dd.get("minutes", 0) or 0
+                    mins  = dd.get("minutes", 0) or 0
+                    score = dd.get("score")
+                    pd["minutes"] += mins
                     pd["stars"]   += dd.get("stars", 0) or 0
                     if dd.get("avg_fd_sec"):
                         pd["_fd_samples"].append(dd["avg_fd_sec"])
+                    if score is not None and mins > 0:
+                        pd["_score_samples"].append((score, mins))
                     for k, v in (dd.get("infractions") or {}).items():
                         pd["infractions"][k] = pd["infractions"].get(k, 0) + (v or 0)
 
-        # Score & delta come from the monthly PDF (canonical, weighted by minutes)
-        for p in mp.get("driver_performance", []):
-            did = p["driver_id"]
-            if did in per_driver:
-                per_driver[did]["score"] = p["score"]
-                per_driver[did]["delta"] = p["delta"]
+        # Score: prefer monthly PDF (canonical); fall back to minutes-weighted avg of weekly
+        if mp:
+            for p in mp.get("driver_performance", []):
+                did = p["driver_id"]
+                if did in per_driver:
+                    per_driver[did]["score"] = p["score"]
+                    per_driver[did]["delta"] = p["delta"]
 
-        # Average the FD samples (weighted by week minutes would be better, but simple mean is fine for the size of this fleet)
         for did, pd in per_driver.items():
-            samples = pd.pop("_fd_samples")
-            if samples:
-                pd["avg_fd_sec"] = round(sum(samples)/len(samples), 2)
+            samples = pd.pop("_score_samples")
+            fd_samples = pd.pop("_fd_samples")
+            # Compute weighted score average if PDF didn't already provide one
+            if pd["score"] is None and samples:
+                total_min = sum(m for _, m in samples)
+                if total_min > 0:
+                    pd["score"] = round(sum(s * m for s, m in samples) / total_min)
+            if fd_samples:
+                pd["avg_fd_sec"] = round(sum(fd_samples) / len(fd_samples), 2)
+
+        # Fleet average for the month: prefer PDF, else weighted avg of weekly fleet averages
+        fleet_avg = mp.get("fleet_average_score") if mp else None
+        if not fleet_avg:
+            wfa = [(w["fleet_average_score"]["score"], w.get("fleet_average_score") and 1)
+                   for w in weeks_in_month if w.get("fleet_average_score")]
+            if wfa:
+                fleet_avg = {"score": round(sum(s for s, _ in wfa) / len(wfa)), "delta": None}
 
         months.append({
-            "id": "m_" + sd.strftime("%Y-%m"),
-            "label": sd.strftime("%B %Y"),
-            "start_iso": sd.isoformat(),
-            "end_iso": month_end.isoformat(),
-            "fleet_average_score": mp.get("fleet_average_score"),
-            "drivers_with_score": mp.get("drivers_with_greenzone_score"),
+            "id": "m_" + first.strftime("%Y-%m"),
+            "label": first.strftime("%B %Y"),
+            "start_iso": first.isoformat(),
+            "end_iso": last.isoformat(),
+            "fleet_average_score": fleet_avg,
+            "drivers_with_score": (mp or {}).get("drivers_with_greenzone_score"),
             "drivers": per_driver,
+            "is_provisional": mp is None,   # true until the monthly PDF lands
             "sources": {
-                "fleet_pdf":  mp.get("source_file"),
-                "weekly_aggregated": [w["sources"]["stats_xlsx"] for w in weeks
-                                       if __import__("datetime").date.fromisoformat(w["start_iso"]).month == sd.month
-                                       and __import__("datetime").date.fromisoformat(w["start_iso"]).year == sd.year],
+                "fleet_pdf": mp.get("source_file") if mp else None,
+                "weekly_aggregated": [w["sources"]["stats_xlsx"] for w in weeks_in_month],
             },
         })
 

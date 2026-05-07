@@ -1,5 +1,5 @@
 {
-  "_comment": "Feedback notes per driver. Categories: positive, coaching, warning, general. Edit this file to add or remove notes; rerun build.py (or just reload if you re-injected).",
+  "_comment": "Feedback notes per driver. Categories: positive, coaching, warning, general. Edit this file to add or remove notes; rerun build.py.",
   "_generated_from_data": "Initial set auto-written from Mar 30 - May 10, 2026 reports.",
   "d1": [
     { "id": "fb-d1-1", "date": "2026-04-05", "category": "coaching",
@@ -7,7 +7,9 @@
     { "id": "fb-d1-2", "date": "2026-04-12", "category": "positive",
       "note": "Apr 6 - Apr 12: score jumped 85 points, hard accels dropped from 7 to 1, earned 2 driver stars. Strong correction." },
     { "id": "fb-d1-3", "date": "2026-04-19", "category": "warning",
-      "note": "Apr 13 - Apr 19: score fell 159 points to 730. Six hard accels, one following-distance event, and one traffic-light violation. Reviewed dash cam footage; coaching session scheduled." }
+      "note": "Apr 13 - Apr 19: score fell 159 points to 730. Six hard accels, one following-distance event, and one traffic-light violation. Reviewed dash cam footage; coaching session scheduled." },
+    { "id": "fb-d1-monthly-apr", "date": "2026-04-30", "category": "warning",
+      "note": "April month summary: closed at 770 (down 70 vs March). 14 hard accels and the worst single-week regression on the fleet. Highest priority for May coaching focus." }
   ],
   "d2": [
     { "id": "fb-d2-1", "date": "2026-04-12", "category": "coaching",
@@ -15,7 +17,9 @@
     { "id": "fb-d2-2", "date": "2026-04-19", "category": "positive",
       "note": "Apr 13 - Apr 19: bounced back 119 points to 964. Zero infractions logged. Acknowledged in team standup." },
     { "id": "fb-d2-3", "date": "2026-05-03", "category": "general",
-      "note": "Holding steady in the 929 - 947 range across late April, earning a star each week. Most consistent driver on the fleet through April." }
+      "note": "Holding steady in the 929 - 947 range across late April, earning a star each week. Most consistent driver on the fleet through April." },
+    { "id": "fb-d2-monthly-apr", "date": "2026-04-30", "category": "positive",
+      "note": "April month summary: 927 (up 5 vs March). 3 driver stars across the month and the most driving minutes on the fleet (2,753). Strong V-recovery after the Apr 6-12 dip." }
   ],
   "d3": [
     { "id": "fb-d3-1", "date": "2026-04-26", "category": "warning",
@@ -23,24 +27,32 @@
     { "id": "fb-d3-2", "date": "2026-05-03", "category": "coaching",
       "note": "Apr 27 - May 3: improved to 845 but picked up a sign violation, an FD event, and a traffic-light violation. Recurring pattern across multiple weeks; let's keep FD as the focus." },
     { "id": "fb-d3-3", "date": "2026-05-10", "category": "positive",
-      "note": "May 4 - May 10: scored 982, the week's top performer. Zero infractions, FD up to 3.8s. Big rebound." }
+      "note": "May 4 - May 10: scored 982, the week's top performer. Zero infractions, FD up to 3.8s. Big rebound." },
+    { "id": "fb-d3-monthly-apr", "date": "2026-04-30", "category": "coaching",
+      "note": "April month summary: 927 (flat vs March). Owns 4 of the period's 5 worst FD alerts. Following Distance is the recurring theme — that's the single coaching priority going into May." }
   ],
   "d4": [
     { "id": "fb-d4-1", "date": "2026-05-03", "category": "positive",
       "note": "First week on the fleet (Apr 27 - May 3): scored 970 with no infractions across 407 driving minutes. Excellent onboarding." },
     { "id": "fb-d4-2", "date": "2026-05-10", "category": "general",
-      "note": "Two weeks in, sitting at 986 — top of the leaderboard. Maintain current habits." }
+      "note": "Two weeks in, sitting at 986 — top of the leaderboard. Maintain current habits." },
+    { "id": "fb-d4-monthly-apr", "date": "2026-04-30", "category": "positive",
+      "note": "April month summary: joined the fleet Apr 27. First-week score of 964 with zero infractions logged. Cleanest start of any driver this year." }
   ],
   "d5": [
     { "id": "fb-d5-1", "date": "2026-04-12", "category": "positive",
       "note": "Apr 6 - Apr 12: scored 1016 (above the 1000 ceiling), earned a driver star. Cleanest week on the fleet." },
     { "id": "fb-d5-2", "date": "2026-04-19", "category": "coaching",
-      "note": "Sign violations and traffic-light events showing up in 3 of the last 4 weeks. Low-volume but consistent — quick reminder on full stops at signs and yellow-light judgement." }
+      "note": "Sign violations and traffic-light events showing up in 3 of the last 4 weeks. Low-volume but consistent — quick reminder on full stops at signs and yellow-light judgement." },
+    { "id": "fb-d5-monthly-apr", "date": "2026-04-30", "category": "general",
+      "note": "April month summary: 957 (down 6 vs March). Highest single-week score on the fleet (1016). Sign-violation pattern is mild but recurring — worth a quick mention." }
   ],
   "d6": [
     { "id": "fb-d6-1", "date": "2026-04-19", "category": "positive",
       "note": "Apr 13 - Apr 19: earned a driver star despite limited driving time (129 min). Quality over quantity." },
     { "id": "fb-d6-2", "date": "2026-05-10", "category": "general",
-      "note": "No driving data for the last 3 weeks (Apr 20 onward). If this is a planned gap, no action needed; if not, check the dash cam install." }
+      "note": "No driving data for the last 3 weeks (Apr 20 onward). If this is a planned gap, no action needed; if not, check the dash cam install." },
+    { "id": "fb-d6-monthly-apr", "date": "2026-04-30", "category": "positive",
+      "note": "April month summary: 946 (up 23 vs March). Solid scores across the weeks he was driving (909 - 962). Limited minutes (640 total), so reflects quality of driving more than quantity." }
   ]
 }
