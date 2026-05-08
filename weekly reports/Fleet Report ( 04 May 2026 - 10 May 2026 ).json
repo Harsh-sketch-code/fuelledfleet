@@ -9,25 +9,31 @@
     "type": "weekly"
   },
   "fleet_average_score": {
-    "score": 984,
-    "delta": 56
+    "score": 986,
+    "delta": 58
   },
   "drivers_with_greenzone_score": {
-    "count": 2,
-    "delta": -2
+    "count": 3,
+    "delta": -1
   },
   "driver_performance": [
     {
-      "name": "Austin",
-      "driver_id": "d4",
-      "score": 986,
-      "delta": 16.0
-    },
-    {
       "name": "Jackson",
       "driver_id": "d3",
-      "score": 982,
-      "delta": 137.0
+      "score": 991,
+      "delta": 146.0
+    },
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "score": 985,
+      "delta": 15.0
+    },
+    {
+      "name": "Harsh",
+      "driver_id": "d6",
+      "score": 969,
+      "delta": 969.0
     }
   ],
   "risk_profile": [
@@ -35,7 +41,7 @@
       "metric": "Accelerations",
       "unit": "alerts",
       "below_threshold": {
-        "count": 491,
+        "count": 900,
         "pct": 100.0
       },
       "moderate": {
@@ -51,7 +57,7 @@
       "metric": "Brakings",
       "unit": "alerts",
       "below_threshold": {
-        "count": 657,
+        "count": 1198,
         "pct": 100.0
       },
       "moderate": {
@@ -67,7 +73,7 @@
       "metric": "Turns",
       "unit": "alerts",
       "below_threshold": {
-        "count": 352,
+        "count": 609,
         "pct": 100.0
       },
       "moderate": {
@@ -83,7 +89,7 @@
       "metric": "Traffic Lights",
       "unit": "alerts",
       "below_threshold": {
-        "count": 200,
+        "count": 381,
         "pct": 100.0
       },
       "moderate": {
@@ -99,7 +105,7 @@
       "metric": "Stoppings",
       "unit": "alerts",
       "below_threshold": {
-        "count": 38,
+        "count": 66,
         "pct": 100.0
       },
       "moderate": {
@@ -115,7 +121,7 @@
       "metric": "Speeding",
       "unit": "Minutes",
       "below_threshold": {
-        "count": 505,
+        "count": 831,
         "pct": 100.0
       },
       "moderate": {
@@ -131,7 +137,7 @@
       "metric": "Driver Distraction",
       "unit": "Minutes",
       "below_threshold": {
-        "count": 505,
+        "count": 831,
         "pct": 100.0
       },
       "moderate": {
@@ -146,22 +152,31 @@
   ],
   "following_distance_per_driver": [
     {
-      "name": "Austin",
-      "driver_id": "d4",
-      "driving_minutes": 168,
-      "avg_fd_seconds": 3.7,
-      "congestion_light_min": 3.23,
-      "congestion_medium_min": 6.52,
-      "congestion_heavy_min": 6.37
+      "name": "Harsh",
+      "driver_id": "d6",
+      "driving_minutes": 102,
+      "avg_fd_seconds": 3.4,
+      "congestion_light_min": 1.34,
+      "congestion_medium_min": 7.62,
+      "congestion_heavy_min": 18.57
     },
     {
       "name": "Jackson",
       "driver_id": "d3",
-      "driving_minutes": 337,
-      "avg_fd_seconds": 3.9,
-      "congestion_light_min": 11.69,
-      "congestion_medium_min": 3.59,
-      "congestion_heavy_min": 1.19
+      "driving_minutes": 488,
+      "avg_fd_seconds": 3.8,
+      "congestion_light_min": 16.89,
+      "congestion_medium_min": 9.2,
+      "congestion_heavy_min": 4.27
+    },
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "driving_minutes": 241,
+      "avg_fd_seconds": 3.8,
+      "congestion_light_min": 5.47,
+      "congestion_medium_min": 9.64,
+      "congestion_heavy_min": 10.03
     }
   ],
   "most_severe_fd_alerts": [],

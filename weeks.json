@@ -500,18 +500,18 @@
       "start_iso": "2026-05-04",
       "end_iso": "2026-05-10",
       "fleet_average_score": {
-        "score": 984,
-        "delta": 56
+        "score": 986,
+        "delta": 58
       },
       "drivers_with_score": {
-        "count": 2,
-        "delta": -2
+        "count": 3,
+        "delta": -1
       },
       "drivers": {
         "d4": {
           "name": "Austin",
-          "score": 986,
-          "minutes": 204,
+          "score": 985,
+          "minutes": 241,
           "avg_fd_sec": 3.8,
           "stars": 0,
           "infractions": {
@@ -522,12 +522,28 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": 16.0
+          "delta": 15.0
+        },
+        "d6": {
+          "name": "Harsh",
+          "score": 969,
+          "minutes": 102,
+          "avg_fd_sec": 3.4,
+          "stars": 0,
+          "infractions": {
+            "sign_violations": 0,
+            "following_close": 0,
+            "hard_accel": 0,
+            "hard_brake": 0,
+            "speeding": 0,
+            "traffic_lights": 0
+          },
+          "delta": 969.0
         },
         "d3": {
           "name": "Jackson",
-          "score": 982,
-          "minutes": 469,
+          "score": 991,
+          "minutes": 488,
           "avg_fd_sec": 3.8,
           "stars": 0,
           "infractions": {
@@ -538,7 +554,7 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": 137.0
+          "delta": 146.0
         }
       },
       "sources": {
@@ -792,7 +808,7 @@
       "start_iso": "2026-05-01",
       "end_iso": "2026-05-31",
       "fleet_average_score": {
-        "score": 984,
+        "score": 986,
         "delta": null
       },
       "drivers_with_score": null,
@@ -831,9 +847,9 @@
         },
         "d3": {
           "name": "Jackson",
-          "score": 982,
+          "score": 991,
           "delta": null,
-          "minutes": 469,
+          "minutes": 488,
           "stars": 0,
           "avg_fd_sec": 3.8,
           "infractions": {
@@ -847,9 +863,9 @@
         },
         "d4": {
           "name": "Austin",
-          "score": 986,
+          "score": 985,
           "delta": null,
-          "minutes": 204,
+          "minutes": 241,
           "stars": 0,
           "avg_fd_sec": 3.8,
           "infractions": {
@@ -879,11 +895,11 @@
         },
         "d6": {
           "name": "Harsh",
-          "score": null,
+          "score": 969,
           "delta": null,
-          "minutes": 0,
+          "minutes": 102,
           "stars": 0,
-          "avg_fd_sec": null,
+          "avg_fd_sec": 3.4,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
