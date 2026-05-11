@@ -47,6 +47,10 @@ def main():
     with open(fb_path)    as f: fb    = json.load(f)
     fb = {k: v for k, v in fb.items() if not k.startswith("_") and isinstance(v, list)}
 
+    # Stamp the build with a refresh timestamp so the dashboard can tell the team how fresh the data is.
+    from datetime import datetime
+    weeks["last_refreshed_iso"] = datetime.now().isoformat(timespec="minutes")
+
     with open(html_path) as f: html = f.read()
 
     # Replace either the placeholders (first build) or any previously injected data block.
