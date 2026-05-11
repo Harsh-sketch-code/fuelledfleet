@@ -16,7 +16,9 @@
     { "id": "fb-d1-w-2026-04-19", "date": "2026-04-19", "category": "warning",
       "note": "Week of Apr 13 - Apr 19: Score 730 (↓159) · 911 min · 6 hard accels, 1 FD event, 1 traffic-light. Biggest single-week regression on the fleet. Reviewed dash cam footage; coaching session scheduled." },
     { "id": "fb-d1-m-2026-04", "date": "2026-04-30", "category": "warning",
-      "note": "Month of April 2026: Score 770 (↓70) · 1,401 min · ⭐2 · 14 hard accels (highest on fleet). Highest priority for May coaching focus." }
+      "note": "Month of April 2026: Score 770 (↓70) · 1,401 min · ⭐2 · 14 hard accels (highest on fleet). Highest priority for May coaching focus." },
+    { "id": "fb-d1-w-2026-05-10", "date": "2026-05-10", "category": "general",
+      "note": "Week of May 4 - May 10: No driving data — third consecutive week with no logged activity (Apr 20 - May 10). Confirm whether this is scheduled time off or a dash cam install issue." }
   ],
 
   "d2": [
@@ -30,6 +32,8 @@
       "note": "Week of Apr 20 - Apr 26: Score 929 (↓35) · 867 min · ⭐1 · 1 hard accel, 1 hard brake. Holding well despite the highest weekly mileage on the fleet." },
     { "id": "fb-d2-w-2026-05-03", "date": "2026-05-03", "category": "general",
       "note": "Week of Apr 27 - May 3: Score 947 (↑18) · 801 min · ⭐0 · 1 traffic-light. Most consistent driver across late April; minor traffic-light event the only blemish." },
+    { "id": "fb-d2-w-2026-05-10", "date": "2026-05-10", "category": "coaching",
+      "note": "Week of May 4 - May 10: Score 870 (↓77) · 185 min · ⭐0 · 1 hard brake. Score dipped on lower mileage with one hard-brake event. Watch for the pattern from Apr 6 (3 hard brakes) returning." },
     { "id": "fb-d2-m-2026-04", "date": "2026-04-30", "category": "positive",
       "note": "Month of April 2026: Score 927 (↑5) · 2,753 min · ⭐3 · 6 infractions across 4 weeks. Most driving minutes on the fleet, three stars, and a strong V-recovery after the Apr 6-12 dip." }
   ],
@@ -46,7 +50,7 @@
     { "id": "fb-d3-w-2026-05-03", "date": "2026-05-03", "category": "coaching",
       "note": "Week of Apr 27 - May 3: Score 845 (↑59) · 404 min · ⭐0 · 1 sign violation, 1 FD event, 1 traffic-light. FD pattern continues — keep this as the focus area." },
     { "id": "fb-d3-w-2026-05-10", "date": "2026-05-10", "category": "positive",
-      "note": "Week of May 4 - May 10: Score 991 (↑146) · 488 min · ⭐0 · clean. Top of the fleet this week with the largest improvement on the board. FD coaching showing through." },
+      "note": "Week of May 4 - May 10: Score 976 (↑131) · 664 min · ⭐1 · 1 hard accel. Strong rebound from last week's 845, driver star earned, highest mileage on the fleet. One minor hard-accel event the only blemish." },
     { "id": "fb-d3-m-2026-04", "date": "2026-04-30", "category": "coaching",
       "note": "Month of April 2026: Score 927 (flat) · 1,551 min · ⭐1 · 7 infractions including 4 of 5 worst FD alerts. Following Distance is the recurring theme — single coaching priority going into May." }
   ],
@@ -54,8 +58,8 @@
   "d4": [
     { "id": "fb-d4-w-2026-05-03", "date": "2026-05-03", "category": "positive",
       "note": "Week of Apr 27 - May 3: Score 970 (↑ new) · 407 min · ⭐0 · clean. First week on the fleet — zero infractions across 407 driving minutes." },
-    { "id": "fb-d4-w-2026-05-10", "date": "2026-05-10", "category": "general",
-      "note": "Week of May 4 - May 10: Score 985 (↑15) · 241 min · ⭐0 · clean. Second consecutive clean week. Maintain current habits." },
+    { "id": "fb-d4-w-2026-05-10", "date": "2026-05-10", "category": "positive",
+      "note": "Week of May 4 - May 10: Score 987 (↑17) · 395 min · ⭐0 · clean. Third clean week in a row, score still climbing. Top of the leaderboard alongside Jackson." },
     { "id": "fb-d4-m-2026-04", "date": "2026-04-30", "category": "positive",
       "note": "Month of April 2026: Score 964 (↑ new) · 407 min · ⭐0 · clean. Joined the fleet Apr 27 — cleanest start of any driver this year." }
   ],
@@ -72,7 +76,9 @@
     { "id": "fb-d5-w-2026-05-03", "date": "2026-05-03", "category": "general",
       "note": "Week of Apr 27 - May 3 (Raj): Score 933 (↓56) · 180 min · ⭐0 · clean. Final week before slot transition. Score dipped without any logged infractions — likely a mileage/conditions effect." },
     { "id": "fb-d5-m-2026-04", "date": "2026-04-30", "category": "general",
-      "note": "Month of April 2026 (Raj): Score 957 (↓6) · 1,013 min · ⭐2 · 3 infractions. Highest single-week score on the fleet (1016) but a recurring sign-violation pattern. Slot 005 transitions to Paddy from May 4." }
+      "note": "Month of April 2026 (Raj): Score 957 (↓6) · 1,013 min · ⭐2 · 3 infractions. Highest single-week score on the fleet (1016) but a recurring sign-violation pattern. Slot 005 transitions to Paddy from May 4." },
+    { "id": "fb-d5-w-2026-05-10", "date": "2026-05-10", "category": "general",
+      "note": "Week of May 4 - May 10 (Paddy): No driving data yet. Slot 005 transitioned from Raj to Paddy effective May 4 — first weekly numbers will appear once Paddy begins regular driving." }
   ],
 
   "d6": [
@@ -83,7 +89,7 @@
     { "id": "fb-d6-w-2026-04-19", "date": "2026-04-19", "category": "positive",
       "note": "Week of Apr 13 - Apr 19: Score 909 (↓37) · 129 min · ⭐1 · clean. Driver star earned despite limited driving time — quality over quantity." },
     { "id": "fb-d6-w-2026-05-10", "date": "2026-05-10", "category": "positive",
-      "note": "Week of May 4 - May 10: Score 969 (↑ new baseline) · 102 min · ⭐0 · clean. Returned to driving after a 3-week gap (Apr 20 - May 3) with a clean week." },
+      "note": "Week of May 4 - May 10: Score 970 (↑ new baseline) · 316 min · ⭐0 · clean. Returned to driving after a 3-week gap (Apr 20 - May 3) with a clean week and solid mileage." },
     { "id": "fb-d6-m-2026-04", "date": "2026-04-30", "category": "positive",
       "note": "Month of April 2026: Score 946 (↑23) · 640 min · ⭐1 · 1 infraction. Solid scores across the weeks driven (909 - 962); limited total minutes reflect schedule rather than performance." }
   ]
