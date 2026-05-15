@@ -228,6 +228,15 @@ def merge():
         })
     weeks.sort(key=lambda w: w["start_iso"])
 
+    # Mark any week whose end date is today or in the future as "in progress"
+    # — TitanGPS will refresh the canonical numbers the following Monday.
+    from datetime import date
+    today_iso = date.today().isoformat()
+    for w in weeks:
+        w["is_partial"] = (w.get("end_iso") or "0000-00-00") >= today_iso
+        if w["is_partial"]:
+            w["partial_through_iso"] = today_iso
+
     # ===== Build monthly aggregates =====
     # A month appears as soon as any week within it has data (XLSX or PDF).
     # If a Monthly Fleet Report PDF is present, its scores override (TitanGPS-canonical).
@@ -330,7 +339,9 @@ def merge():
             "fleet_average_score": fleet_avg,
             "drivers_with_score": (mp or {}).get("drivers_with_greenzone_score"),
             "drivers": per_driver,
-            "is_provisional": mp is None,   # true until the monthly PDF lands
+            # In progress only if the month isn't finished yet AND there's no monthly PDF.
+            # Past months without a PDF are treated as final (weekly-aggregated is canonical).
+            "is_provisional": mp is None and last.isoformat() >= date.today().isoformat(),
             "sources": {
                 "fleet_pdf": mp.get("source_file") if mp else None,
                 "weekly_aggregated": [w["sources"]["stats_xlsx"] for w in weeks_in_month],
