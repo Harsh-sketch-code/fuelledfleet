@@ -226,6 +226,12 @@ def merge():
                 "fleet_pdf":  pdf.get("source_file") if pdf else None,
             },
         })
+    # Dedupe by period start_iso (two XLSX filenames that map to the same week
+    # — e.g. "( 11 May ... )" vs "( 11 May ...)" — both get parsed, keep last).
+    by_start = {}
+    for w in weeks:
+        by_start[w["start_iso"]] = w
+    weeks = list(by_start.values())
     weeks.sort(key=lambda w: w["start_iso"])
 
     # Mark any week whose end date is today or in the future as "in progress"

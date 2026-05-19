@@ -58,6 +58,13 @@ fleet-dashboard/
 
 The result is a single self-contained `index.html` that GitHub Pages can serve directly. No backend, no API calls, no `npoint`, nothing to break.
 
+## Feedback notes — when they get written
+
+- **Monday rebuild (full week available)**: I write one fresh feedback note per active driver in the standard format, plus a monthly summary note per driver at month-end.
+- **Mid-week rebuild (in-progress week)**: No new notes. The dashboard's amber "IN PROGRESS" banner, the chip next to the Fleet Average, and the "· in progress" suffix in the week dropdown communicate that the data is partial.
+
+That keeps the feedback feed clean — no half-truth notes that need rewriting once Monday's full data lands.
+
 ## What I (Claude) do for you
 
 If you'd rather not run the script yourself, just drop new reports into the folders and message me with "rebuild the dashboard." I'll run `build.py` and confirm. You then `git push` to publish.
