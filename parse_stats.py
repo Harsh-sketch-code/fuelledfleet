@@ -28,11 +28,11 @@ ROSTER = [
     {"id":"d2", "name":"Willem",  "truck":"002 - Toyota Tundra"},
     {"id":"d3", "name":"Jackson", "truck":"003 - Toyota Tundra"},
     {"id":"d4", "name":"Austin",  "truck":"004 - Ford F150"},
-    # Truck 005: Raj drove until early May 2026; Paddy takes over from May 4 onward.
+    # Truck 005: Raj drove through April 2026 only; Paddy takes over starting May 1, 2026.
     {"id":"d5", "name":"Paddy",   "truck":"005 - Ford F150",
      "name_history": [
         {"from_iso": "2000-01-01", "name": "Raj"},
-        {"from_iso": "2026-05-04", "name": "Paddy"},
+        {"from_iso": "2026-05-01", "name": "Paddy"},
      ]},
     {"id":"d6", "name":"Harsh",   "truck":"006 - Ford F150"},
 ]
