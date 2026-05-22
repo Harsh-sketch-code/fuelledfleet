@@ -19,7 +19,7 @@ NAME_MAP = {
     "Will":    "d2", "Willem": "d2",
     "Jackson": "d3",
     "Austin":  "d4",
-    "Paddy":   "d5", "Raj": "d5",
+    "Paddy":   "d5", "Patrick": "d5", "Raj": "d5",
     "Harsh":   "d6",
 }
 
@@ -284,6 +284,7 @@ def merge():
         per_driver = {r["id"]: {
             "name": r["name"], "score": None, "delta": None,
             "minutes": 0, "stars": 0, "avg_fd_sec": None,
+            "active_weeks": 0,   # how many weeks in this month had minutes > 0 for this driver
             "infractions": {"sign_violations":0,"following_close":0,"hard_accel":0,
                             "hard_brake":0,"speeding":0,"traffic_lights":0},
             "_fd_samples": [],
@@ -303,6 +304,8 @@ def merge():
                     score = dd.get("score")
                     pd["minutes"] += mins
                     pd["stars"]   += dd.get("stars", 0) or 0
+                    if mins > 0:
+                        pd["active_weeks"] += 1
                     if dd.get("avg_fd_sec"):
                         pd["_fd_samples"].append(dd["avg_fd_sec"])
                     if score is not None and mins > 0:

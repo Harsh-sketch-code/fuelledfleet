@@ -1,0 +1,203 @@
+{
+  "source_file": "Fleet Report ( 18 May 2026 - 24 May 2026 ).pdf",
+  "report_type": "weekly_fleet",
+  "period": {
+    "raw": "(18 May) 12:00 AM (MDT) - Sun (24 May)",
+    "start_iso": "2026-05-18",
+    "end_iso": "2026-05-24",
+    "label": "May 18-May 24, 2026",
+    "type": "weekly"
+  },
+  "fleet_average_score": {
+    "score": 994,
+    "delta": 2
+  },
+  "drivers_with_greenzone_score": {
+    "count": 5,
+    "delta": 1
+  },
+  "driver_performance": [
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "score": 995,
+      "delta": -6.0
+    },
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "score": 990,
+      "delta": 7.0
+    },
+    {
+      "name": "Harsh",
+      "driver_id": "d6",
+      "score": 987,
+      "delta": 14.0
+    },
+    {
+      "name": "Willem",
+      "driver_id": "d2",
+      "score": 987,
+      "delta": -4.0
+    }
+  ],
+  "risk_profile": [
+    {
+      "metric": "Accelerations",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 1684,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Brakings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 2318,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Turns",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 1255,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Traffic Lights",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 865,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Stoppings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 111,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Speeding",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 1973,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Driver Distraction",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 1973,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    }
+  ],
+  "following_distance_per_driver": [
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "driving_minutes": 530,
+      "avg_fd_seconds": 3.5,
+      "congestion_light_min": 36.49,
+      "congestion_medium_min": 24.49,
+      "congestion_heavy_min": 5.91
+    },
+    {
+      "name": "Harsh",
+      "driver_id": "d6",
+      "driving_minutes": 413,
+      "avg_fd_seconds": 3.7,
+      "congestion_light_min": 3.63,
+      "congestion_medium_min": 21.16,
+      "congestion_heavy_min": 36.94
+    },
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "driving_minutes": 303,
+      "avg_fd_seconds": 3.8,
+      "congestion_light_min": 8.96,
+      "congestion_medium_min": 9.55,
+      "congestion_heavy_min": 11.66
+    },
+    {
+      "name": "Willem",
+      "driver_id": "d2",
+      "driving_minutes": 297,
+      "avg_fd_seconds": 3.8,
+      "congestion_light_min": 15.47,
+      "congestion_medium_min": 10.88,
+      "congestion_heavy_min": 3.0
+    }
+  ],
+  "most_severe_fd_alerts": [],
+  "driver_stars_awarded": 4,
+  "data_unavailable_sections": [
+    "Most severe hard braking alerts",
+    "Most severe speeding alerts"
+  ]
+}
