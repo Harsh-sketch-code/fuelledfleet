@@ -683,6 +683,22 @@
         "delta": 1
       },
       "drivers": {
+        "d5": {
+          "name": "Patrick",
+          "score": 1012,
+          "minutes": 430,
+          "avg_fd_sec": 3.7,
+          "stars": 1,
+          "infractions": {
+            "sign_violations": 0,
+            "following_close": 0,
+            "hard_accel": 0,
+            "hard_brake": 0,
+            "speeding": 0,
+            "traffic_lights": 0
+          },
+          "delta": 1012.0
+        },
         "d2": {
           "name": "Willem",
           "score": 987,
@@ -775,6 +791,7 @@
           "minutes": 1040,
           "stars": 1,
           "avg_fd_sec": 3.3,
+          "active_weeks": 1,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -782,7 +799,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         },
         "d2": {
           "name": "Willem",
@@ -791,6 +809,7 @@
           "minutes": 594,
           "stars": 2,
           "avg_fd_sec": 3.7,
+          "active_weeks": 1,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -798,7 +817,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         },
         "d3": {
           "name": "Jackson",
@@ -807,6 +827,7 @@
           "minutes": 168,
           "stars": 0,
           "avg_fd_sec": 3.6,
+          "active_weeks": 1,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -814,7 +835,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         },
         "d4": {
           "name": "Austin",
@@ -823,6 +845,7 @@
           "minutes": 0,
           "stars": 0,
           "avg_fd_sec": null,
+          "active_weeks": 0,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -830,7 +853,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         },
         "d5": {
           "name": "Paddy",
@@ -839,6 +863,7 @@
           "minutes": 408,
           "stars": 2,
           "avg_fd_sec": 3.8,
+          "active_weeks": 1,
           "infractions": {
             "sign_violations": 1,
             "following_close": 0,
@@ -846,7 +871,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 1
-          }
+          },
+          "eligible": true
         },
         "d6": {
           "name": "Harsh",
@@ -855,6 +881,7 @@
           "minutes": 387,
           "stars": 0,
           "avg_fd_sec": 3.8,
+          "active_weeks": 1,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -862,7 +889,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 1
-          }
+          },
+          "eligible": true
         }
       },
       "is_provisional": false,
@@ -894,6 +922,7 @@
           "minutes": 1401,
           "stars": 2,
           "avg_fd_sec": 3.1,
+          "active_weeks": 2,
           "infractions": {
             "sign_violations": 0,
             "following_close": 1,
@@ -901,7 +930,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 1
-          }
+          },
+          "eligible": true
         },
         "d2": {
           "name": "Willem",
@@ -910,6 +940,7 @@
           "minutes": 2753,
           "stars": 3,
           "avg_fd_sec": 3.58,
+          "active_weeks": 4,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -917,7 +948,8 @@
             "hard_brake": 4,
             "speeding": 0,
             "traffic_lights": 1
-          }
+          },
+          "eligible": true
         },
         "d3": {
           "name": "Jackson",
@@ -926,6 +958,7 @@
           "minutes": 1551,
           "stars": 1,
           "avg_fd_sec": 3.57,
+          "active_weeks": 4,
           "infractions": {
             "sign_violations": 1,
             "following_close": 5,
@@ -933,7 +966,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 1
-          }
+          },
+          "eligible": true
         },
         "d4": {
           "name": "Austin",
@@ -942,6 +976,7 @@
           "minutes": 407,
           "stars": 0,
           "avg_fd_sec": 3.7,
+          "active_weeks": 1,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -949,7 +984,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         },
         "d5": {
           "name": "Paddy",
@@ -958,6 +994,7 @@
           "minutes": 1013,
           "stars": 2,
           "avg_fd_sec": 3.75,
+          "active_weeks": 4,
           "infractions": {
             "sign_violations": 2,
             "following_close": 0,
@@ -965,7 +1002,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 1
-          }
+          },
+          "eligible": true
         },
         "d6": {
           "name": "Harsh",
@@ -974,6 +1012,7 @@
           "minutes": 640,
           "stars": 1,
           "avg_fd_sec": 3.45,
+          "active_weeks": 2,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -981,7 +1020,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         }
       },
       "is_provisional": false,
@@ -1013,6 +1053,7 @@
           "minutes": 0,
           "stars": 0,
           "avg_fd_sec": null,
+          "active_weeks": 0,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -1020,7 +1061,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": false
         },
         "d2": {
           "name": "Willem",
@@ -1029,6 +1071,7 @@
           "minutes": 866,
           "stars": 1,
           "avg_fd_sec": 3.77,
+          "active_weeks": 3,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -1036,7 +1079,8 @@
             "hard_brake": 1,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": false
         },
         "d3": {
           "name": "Jackson",
@@ -1045,6 +1089,7 @@
           "minutes": 2973,
           "stars": 3,
           "avg_fd_sec": 3.67,
+          "active_weeks": 3,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -1052,7 +1097,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         },
         "d4": {
           "name": "Austin",
@@ -1061,6 +1107,7 @@
           "minutes": 1230,
           "stars": 2,
           "avg_fd_sec": 3.83,
+          "active_weeks": 3,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -1068,15 +1115,17 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 1
-          }
+          },
+          "eligible": true
         },
         "d5": {
           "name": "Paddy",
-          "score": null,
+          "score": 1012,
           "delta": null,
-          "minutes": 0,
-          "stars": 0,
-          "avg_fd_sec": null,
+          "minutes": 430,
+          "stars": 1,
+          "avg_fd_sec": 3.7,
+          "active_weeks": 1,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -1084,7 +1133,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": false
         },
         "d6": {
           "name": "Harsh",
@@ -1093,6 +1143,7 @@
           "minutes": 1496,
           "stars": 4,
           "avg_fd_sec": 3.7,
+          "active_weeks": 3,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -1100,7 +1151,8 @@
             "hard_brake": 0,
             "speeding": 0,
             "traffic_lights": 0
-          }
+          },
+          "eligible": true
         }
       },
       "is_provisional": true,

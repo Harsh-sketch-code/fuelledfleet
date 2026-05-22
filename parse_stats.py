@@ -340,6 +340,20 @@ def merge():
             if wfa:
                 fleet_avg = {"score": round(sum(s for s, _ in wfa) / len(wfa)), "delta": None}
 
+        # ===== Monthly winner eligibility =====
+        # The monthly winner program started in May 2026. From May onward,
+        # a driver must log at least 900 minutes in the month to be eligible
+        # for the monthly winner spot (small samples shouldn't crown anyone).
+        # Before May 2026, everyone ranks normally — no eligibility gate.
+        MIN_MONTHLY_MINUTES = 900
+        ELIGIBILITY_START = (2026, 5)
+        gate_active = (yr, mo) >= ELIGIBILITY_START
+        for did, pd in per_driver.items():
+            if gate_active:
+                pd["eligible"] = pd["minutes"] >= MIN_MONTHLY_MINUTES
+            else:
+                pd["eligible"] = True   # rule didn't exist yet
+
         months.append({
             "id": "m_" + first.strftime("%Y-%m"),
             "label": first.strftime("%B %Y"),

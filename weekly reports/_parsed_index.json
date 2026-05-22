@@ -1083,6 +1083,12 @@
       },
       "driver_performance": [
         {
+          "name": "Patrick",
+          "driver_id": "d5",
+          "score": 1012,
+          "delta": 1012.0
+        },
+        {
           "name": "Jackson",
           "driver_id": "d3",
           "score": 995,
@@ -1230,6 +1236,15 @@
           "congestion_light_min": 36.49,
           "congestion_medium_min": 24.49,
           "congestion_heavy_min": 5.91
+        },
+        {
+          "name": "Patrick",
+          "driver_id": "d5",
+          "driving_minutes": 430,
+          "avg_fd_seconds": 3.7,
+          "congestion_light_min": 29.51,
+          "congestion_medium_min": 5.06,
+          "congestion_heavy_min": 2.83
         },
         {
           "name": "Harsh",

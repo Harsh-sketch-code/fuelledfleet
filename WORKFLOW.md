@@ -88,3 +88,24 @@ Then run `python3 build.py`.
 ## The 6 metric boxes
 
 Per-driver infraction boxes show: Rolling Stop, Following Close, Hard Accel, Hard Brake, Speeding, Traffic Lights. (Distracted Driving isn't broken out per-driver by TitanGPS — only at fleet level — so Traffic Lights took its slot.)
+
+## Monthly winner eligibility (internal: $100 prize, started May 2026)
+
+The monthly leaderboard does NOT rank by score alone from May 2026 onward. A driver who only drove one day with a high score shouldn't outrank someone who drove the whole month — and we don't want to hand the prize out for a small-sample fluke.
+
+**The rule:** to be eligible for the monthly winner spot, a driver must log **at least 900 driving minutes** in the month. That's it — no week-count requirement, no sliding threshold.
+
+Drivers under 900 minutes still appear on the monthly view, but in a separate "Not eligible for monthly winner" section with their score shown and no rank assigned. The weekly leaderboard is unaffected (every driver-week is its own datapoint).
+
+The dashboard does **not** mention the prize amount — keep the "$100" language internal to this doc and how you communicate with drivers directly.
+
+**Pre-May 2026 months (March, April):** the rule did not exist yet, so all drivers rank normally regardless of minutes. These months are historical and shouldn't be retroactively re-judged.
+
+To change the threshold edit `MIN_MONTHLY_MINUTES` in `parse_stats.py`; to change the start month edit `ELIGIBILITY_START` in the same file.
+
+## Driver name aliases
+
+TitanGPS sometimes emits a different name than the everyday one. The parser handles both — add new aliases to `NAME_MAP` in both `parse_titan.py` and `parse_stats.py`. Current aliases:
+
+- d2 — Willem (also: Will)
+- d5 — Paddy (also: Patrick — the name registered in TitanGPS; also: Raj for pre-May 2026 data)

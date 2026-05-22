@@ -19,7 +19,7 @@ NAME_MAP = {
     "Will":    "d2", "Willem": "d2",
     "Jackson": "d3",
     "Austin":  "d4",
-    "Paddy":   "d5", "Raj": "d5",
+    "Paddy":   "d5", "Patrick": "d5", "Raj": "d5",
     "Harsh":   "d6",
 }
 NAMES_RE = "|".join(sorted(NAME_MAP.keys(), key=len, reverse=True))
