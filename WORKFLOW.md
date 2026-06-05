@@ -41,12 +41,15 @@ fleet-dashboard/
    ```
 6. GitHub Pages picks it up in about a minute. The link stays the same: `https://harsh-sketch-code.github.io/fuelledfleet/`
 
-## Each month — same flow, plus the monthly PDF
+## Each month — same flow, plus two monthly reports
 
-1. Run the *Fleet Report (Monthly)* in TitanGPS, drop the PDF into `monthly reports/`.
-2. Run `python3 build.py` and push. The Monthly view in the dashboard picks it up automatically.
+1. In TitanGPS, run two monthly reports:
+   - *Fleet Report (Monthly)* — saves a PDF
+   - *Driver Statistics Report (GZV4) — Monthly* — saves an XLSX
+2. Drop both into `monthly reports/`. Names from TitanGPS work as-is — don't rename.
+3. Run `python3 build.py` and push. The Monthly view picks them up automatically.
 
-> Note on monthly numbers: scores in the Monthly view come from the monthly PDF (TitanGPS's official portal-canonical figure). Infractions and stars in the Monthly view are summed from the weekly XLSX files whose start date falls inside that month.
+> Note on monthly numbers: scores in the Monthly view come from the monthly PDF (TitanGPS's portal-canonical figure). When the monthly Driver Statistics XLSX is also present, it provides the canonical per-driver minutes, stars, infractions, and FD — these override the weekly-aggregated sums because TitanGPS sometimes backfills events server-side after the weekly snapshot. If only the PDF is present, weekly XLSX sums are used. If neither is present, the month is marked provisional until either monthly file lands.
 
 ## What the build does
 

@@ -141,7 +141,9 @@ def parse_xlsx(path):
             "name": nm,
             "driver_id": NAME_MAP[nm],
             "minutes":          to_int(r[cmap["minutes"]]) if "minutes" in cmap else 0,
-            "score":            to_int(r[cmap["score_xlsx"]]) if "score_xlsx" in cmap else None,
+            # Score 0 in TitanGPS means "no real driving measured" (typically a brief
+            # vehicle ping under a few minutes). Normalize to None.
+            "score":            (lambda v: v if v else None)(to_int(r[cmap["score_xlsx"]])) if "score_xlsx" in cmap else None,
             "avg_fd_sec":       to_float(r[cmap["avg_fd_sec"]]) if "avg_fd_sec" in cmap else None,
             "sign_violations":  to_int(r[cmap["sign_violations"]]) if "sign_violations" in cmap else 0,
             "traffic_lights":   to_int(r[cmap["traffic_lights"]]) if "traffic_lights" in cmap else 0,
@@ -161,6 +163,88 @@ def parse_xlsx(path):
         "period": {"start_iso": period_iso_start, "end_iso": period_iso_end, "label": period_label},
         "drivers": drivers,
     }
+
+MONTH_NAME_TO_NUM = {"january":1,"february":2,"march":3,"april":4,"may":5,"june":6,
+                     "july":7,"august":8,"september":9,"october":10,"november":11,"december":12,
+                     "jan":1,"feb":2,"mar":3,"apr":4,"jun":6,"jul":7,"aug":8,"sep":9,"oct":10,"nov":11,"dec":12}
+
+def parse_monthly_stats_xlsx(path):
+    """
+    Parse a monthly Driver Statistics Report XLSX (one row per driver for the whole month).
+    Returns dict keyed by driver_id with TitanGPS-canonical monthly totals (minutes, stars,
+    score, infractions, avg_fd_sec). This is more accurate than summing weekly XLSX rows
+    because TitanGPS sometimes recomputes events server-side after the weekly snapshot.
+    Returns None if the file can't be parsed into a month.
+    """
+    fname = os.path.basename(path)
+    # Pull month name + year from filename, e.g. "Driver Statistics Report( May 2026 ).xlsx"
+    m = re.search(r"\(\s*(\w+)\s+(20\d{2})\s*\)", fname)
+    if not m:
+        return None
+    mname = m.group(1).strip().lower()
+    yr = int(m.group(2))
+    mo = MONTH_NAME_TO_NUM.get(mname)
+    if not mo:
+        return None
+
+    wb = openpyxl.load_workbook(path, data_only=True)
+    ws = wb[wb.sheetnames[0]]
+    rows = list(ws.iter_rows(values_only=True))
+
+    # Find header row
+    header_row_idx = None
+    for i, r in enumerate(rows):
+        if r and r[0] and str(r[0]).strip().lower() == "driver name":
+            header_row_idx = i
+            break
+    if header_row_idx is None:
+        return None
+
+    cmap = header_index(rows[header_row_idx])
+
+    drivers = {}
+    for r in rows[header_row_idx+1:]:
+        if not r or not r[0]: continue
+        nm = str(r[0]).strip()
+        if nm.lower() in ("total", "unknown driver", ""):
+            continue
+        if nm not in NAME_MAP:
+            continue
+        did = NAME_MAP[nm]
+        rec = {
+            "name": nm,
+            "minutes":          to_int(r[cmap["minutes"]]) if "minutes" in cmap else 0,
+            "score":            to_int(r[cmap["score_xlsx"]], default=None) if "score_xlsx" in cmap else None,
+            "avg_fd_sec":       to_float(r[cmap["avg_fd_sec"]]) if "avg_fd_sec" in cmap else None,
+            "sign_violations":  to_int(r[cmap["sign_violations"]]) if "sign_violations" in cmap else 0,
+            "traffic_lights":   to_int(r[cmap["traffic_lights"]]) if "traffic_lights" in cmap else 0,
+            "hard_brake":       to_int(r[cmap["hard_brake"]]) if "hard_brake" in cmap else 0,
+            "hard_accel":       to_int(r[cmap["hard_accel"]]) if "hard_accel" in cmap else 0,
+            "following_close":  to_int(r[cmap["following_close"]]) if "following_close" in cmap else 0,
+            "speeding":         to_int(r[cmap["speeding"]]) if "speeding" in cmap else 0,
+            "stars":            to_int(r[cmap["stars"]]) if "stars" in cmap else 0,
+        }
+        # If score is 0 and minutes is 0, it's a stub row (driver didn't drive that month)
+        if rec["minutes"] == 0 and rec["score"] in (None, 0):
+            continue
+        # If multiple aliases map to same did (e.g. Raj+Paddy = d5), keep the one with data
+        if did in drivers and rec["minutes"] <= drivers[did]["minutes"]:
+            continue
+        drivers[did] = rec
+
+    return {"year": yr, "month": mo, "source_file": fname, "drivers": drivers}
+
+def load_monthly_stats_xlsx_index():
+    """Returns {(year,month): parsed_dict}"""
+    monthly_dir = os.path.join(BASE, "monthly reports")
+    out = {}
+    if not os.path.isdir(monthly_dir):
+        return out
+    for p in sorted(glob.glob(os.path.join(monthly_dir, "*.xlsx"))):
+        parsed = parse_monthly_stats_xlsx(p)
+        if parsed:
+            out[(parsed["year"], parsed["month"])] = parsed
+    return out
 
 def load_pdf_index():
     p = os.path.join(WEEKS_DIR, "_parsed_index.json")
@@ -260,14 +344,17 @@ def merge():
                     sd = date.fromisoformat(mp["period"]["start_iso"])
                     monthly_pdfs_by_ym[(sd.year, sd.month)] = mp
 
+    # Load any monthly Driver Statistics XLSX files (TitanGPS-canonical per-driver totals)
+    monthly_stats_by_ym = load_monthly_stats_xlsx_index()
+
     # Discover all (year, month) pairs that have at least one week of data
     months_with_data = sorted({
         (date.fromisoformat(w["start_iso"]).year,
          date.fromisoformat(w["start_iso"]).month)
         for w in weeks
     })
-    # Also include months that have a PDF but no week (defensive)
-    for ym in monthly_pdfs_by_ym.keys():
+    # Also include months that have a PDF or monthly XLSX but no weekly data (defensive)
+    for ym in list(monthly_pdfs_by_ym.keys()) + list(monthly_stats_by_ym.keys()):
         if ym not in months_with_data:
             months_with_data.append(ym)
     months_with_data = sorted(set(months_with_data))
@@ -313,6 +400,30 @@ def merge():
                     for k, v in (dd.get("infractions") or {}).items():
                         pd["infractions"][k] = pd["infractions"].get(k, 0) + (v or 0)
 
+        # If a monthly Driver Statistics XLSX is present, it is TitanGPS-canonical for
+        # the whole month — override the weekly-summed minutes/stars/infractions/avg_fd
+        # with its values. (Weekly snapshots can miss late-week events that TitanGPS
+        # backfills after the fact.)
+        mstats = monthly_stats_by_ym.get((yr, mo))
+        if mstats:
+            for did, mrec in mstats["drivers"].items():
+                if did not in per_driver: continue
+                pd = per_driver[did]
+                pd["minutes"]    = mrec["minutes"]
+                pd["stars"]      = mrec["stars"]
+                pd["avg_fd_sec"] = mrec["avg_fd_sec"]
+                pd["infractions"] = {
+                    "sign_violations": mrec["sign_violations"],
+                    "following_close": mrec["following_close"],
+                    "hard_accel":      mrec["hard_accel"],
+                    "hard_brake":      mrec["hard_brake"],
+                    "speeding":        mrec["speeding"],
+                    "traffic_lights":  mrec["traffic_lights"],
+                }
+                # XLSX score is a useful fallback if no PDF is present.
+                if mrec["score"] is not None and pd["score"] is None:
+                    pd["score"] = mrec["score"]
+
         # Score: prefer monthly PDF (canonical); fall back to minutes-weighted avg of weekly
         if mp:
             for p in mp.get("driver_performance", []):
@@ -329,7 +440,8 @@ def merge():
                 total_min = sum(m for _, m in samples)
                 if total_min > 0:
                     pd["score"] = round(sum(s * m for s, m in samples) / total_min)
-            if fd_samples:
+            # Only fall back to weekly FD average if monthly XLSX didn't already set it
+            if fd_samples and pd["avg_fd_sec"] is None:
                 pd["avg_fd_sec"] = round(sum(fd_samples) / len(fd_samples), 2)
 
         # Fleet average for the month: prefer PDF, else weighted avg of weekly fleet averages
@@ -362,11 +474,12 @@ def merge():
             "fleet_average_score": fleet_avg,
             "drivers_with_score": (mp or {}).get("drivers_with_greenzone_score"),
             "drivers": per_driver,
-            # In progress only if the month isn't finished yet AND there's no monthly PDF.
-            # Past months without a PDF are treated as final (weekly-aggregated is canonical).
-            "is_provisional": mp is None and last.isoformat() >= date.today().isoformat(),
+            # In progress only if the month isn't finished yet AND there's no monthly
+            # snapshot (PDF or XLSX). Once any monthly snapshot lands the month is final.
+            "is_provisional": (mp is None and mstats is None) and last.isoformat() >= date.today().isoformat(),
             "sources": {
                 "fleet_pdf": mp.get("source_file") if mp else None,
+                "monthly_xlsx": mstats["source_file"] if mstats else None,
                 "weekly_aggregated": [w["sources"]["stats_xlsx"] for w in weeks_in_month],
             },
         })
