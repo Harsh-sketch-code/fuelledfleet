@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Fuelled — Fleet Safety Dashboard</title>
+<script>(function(){try{var t=localStorage.getItem('fuelled-theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})()</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -166,6 +167,37 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .spinner{width:28px;height:28px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-txt{font-size:12px;color:var(--text3);font-family:var(--mono)}
+
+/* THEME TOGGLE BUTTON */
+.theme-toggle{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:7px 11px;cursor:pointer;font-size:15px;line-height:1;color:var(--text2);transition:background .12s,color .12s;flex-shrink:0}
+.theme-toggle:hover{background:var(--border);color:var(--text)}
+
+/* DARK MODE */
+[data-theme="dark"]{
+  --bg:#111110;--bg2:#1A1A18;--bg3:#222220;--border:#2C2C2A;--border2:#3C3C39;
+  --text:#EEECEA;--text2:#A8A49E;--text3:#5A5754;
+  --accent:#F06030;--accent-light:#28180C;--accent-border:#4A2010;
+  --green:#2DBE7C;--green-bg:#0A1F14;
+  --blue:#5B9EF5;--blue-bg:#0C1A30;
+  --amber:#E8A020;--amber-bg:#1E1608;
+  --red:#E85555;--red-bg:#1E0A0A;
+  --shadow:0 1px 3px rgba(0,0,0,.35),0 1px 2px rgba(0,0,0,.25);
+  --shadow-md:0 4px 12px rgba(0,0,0,.55),0 2px 4px rgba(0,0,0,.35);
+}
+/* Status pills – override hardcoded light-mode bg/text */
+[data-theme="dark"] .s-excellent{background:#0A1F14;color:#2DBE7C}
+[data-theme="dark"] .s-good{background:#0C1A30;color:#5B9EF5}
+[data-theme="dark"] .s-fair{background:#1E1608;color:#E8A020}
+[data-theme="dark"] .s-risk{background:#1E0A0A;color:#E85555}
+/* Feedback category pills */
+[data-theme="dark"] .fb-cat.positive{background:#0A1F14;color:#2DBE7C}
+[data-theme="dark"] .fb-cat.coaching{background:#1E1608;color:#E8A020}
+[data-theme="dark"] .fb-cat.warning{background:#1E0A0A;color:#E85555}
+[data-theme="dark"] .fb-cat.general{background:#252522;color:#A8A49E}
+/* Misc hardcoded borders */
+[data-theme="dark"] .star-badge{border-color:#4A3A10}
+[data-theme="dark"] .progress-banner{border-color:#4A3A10}
+[data-theme="dark"] .period-select{color-scheme:dark}
 </style>
 </head>
 <body>
@@ -179,6 +211,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="nav-divider"></div>
     <div class="nav-sub" id="navSub">Loading…</div>
   </div>
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode"><span id="themeIcon">☾</span></button>
 </div>
 
 <div class="page" id="loadingScreen">
@@ -289,6 +322,13 @@ const AV = [
   {bg:'#FEE2E2',tx:'#991B1B'},{bg:'#EDE9FE',tx:'#5B21B6'},
   {bg:'#FEF9C3',tx:'#854D0E'},{bg:'#FCE7F3',tx:'#9D174D'},
 ];
+const AV_DARK = [
+  {bg:'#162640',tx:'#7EB3FF'},{bg:'#0C2018',tx:'#3DBF7C'},
+  {bg:'#2A0E0E',tx:'#FF7070'},{bg:'#1C1233',tx:'#A87EFF'},
+  {bg:'#221A00',tx:'#E8A020'},{bg:'#280E1C',tx:'#FF7EB8'},
+];
+function isDarkMode(){return document.documentElement.getAttribute('data-theme')==='dark';}
+function getAV(idx){return(isDarkMode()?AV_DARK:AV)[idx%AV.length];}
 
 let view = 'weekly';            // 'weekly' or 'monthly'
 let selPeriodIso = null;        // start_iso of selected week or month
@@ -319,11 +359,12 @@ function tier(s){
   return ['s-risk','At risk'];
 }
 function ringColor(s){
-  if(s == null) return '#9A9690';
-  if(s >= 950) return '#1A8C5E';
-  if(s >= 900) return '#2266CC';
-  if(s >= 850) return '#9A6200';
-  return '#CC2222';
+  const dk=isDarkMode();
+  if(s==null) return dk?'#5A5754':'#9A9690';
+  if(s>=950)  return dk?'#2DBE7C':'#1A8C5E';
+  if(s>=900)  return dk?'#5B9EF5':'#2266CC';
+  if(s>=850)  return dk?'#E8A020':'#9A6200';
+  return dk?'#E85555':'#CC2222';
 }
 function metricCls(v){
   if(v >= 5) return 'bad';
@@ -336,6 +377,17 @@ function fmtDelta(d, isNew){
   if(d === 0)  return `<span class="delta-flat">— no change</span>`;
   if(d > 0)    return `<span class="delta-up">↑ ${d}</span>`;
   return `<span class="delta-down">↓ ${Math.abs(d)}</span>`;
+}
+
+// ===== THEME =====
+function toggleTheme(){setTheme(isDarkMode()?'light':'dark');}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  const icon=document.getElementById('themeIcon');
+  if(icon)icon.textContent=t==='dark'?'☀':'☾';
+  try{localStorage.setItem('fuelled-theme',t);}catch(e){}
+  const app=document.getElementById('app');
+  if(app&&app.style.display!=='none')render();
 }
 
 // ===== INIT =====
@@ -399,6 +451,10 @@ function init(){
 
   // Default feedback driver = first roster member
   selFbDriver = ROSTER[0].id;
+
+  // Sync theme toggle icon with persisted or system preference
+  const themeIcon=document.getElementById('themeIcon');
+  if(themeIcon)themeIcon.textContent=isDarkMode()?'☀':'☾';
 
   document.getElementById('loadingScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
@@ -540,7 +596,7 @@ function renderCards(w){
   })?.id;
 
   document.getElementById('driverGrid').innerHTML = ordered.map((r, idx) => {
-    const av = AV[idx % AV.length];
+    const av = getAV(idx);
     const d = w.drivers[r.id];
     const displayName = nameAt(r, selPeriodIso);
     if(!d || d.score == null){
@@ -722,7 +778,7 @@ function renderLeaderboard(w){
     </div>
   `;
   const rowsHTML = ranked.map((r, i) => {
-    const av = AV[ROSTER.findIndex(x => x.id === r.id) % AV.length];
+    const av = getAV(ROSTER.findIndex(x => x.id === r.id));
     const fillColor = ringColor(r.score);
     const widthPct = Math.max(5, Math.min(100, ((r.score - 600) / 500) * 100));
     const isNew = r.score === r.delta;
@@ -752,7 +808,7 @@ function renderLeaderboard(w){
     <div style="padding:10px 18px;border-top:1px solid var(--border);background:var(--bg3)">
       <div class="lb-hcell" style="margin-bottom:6px">Not eligible for monthly winner <span style="font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">— minimum 900 driving minutes required</span></div>
       ${ineligible.map(r => {
-        const av = AV[ROSTER.findIndex(x => x.id === r.id) % AV.length];
+        const av = getAV(ROSTER.findIndex(x => x.id === r.id));
         const fillColor = ringColor(r.score);
         const lbDisplayName = nameAt(r, selPeriodIso);
         const infr = totalInfractions(r);
@@ -801,7 +857,7 @@ function renderFeedback(){
     const fbName = nameAt(r, null);  // current name for this slot
     return `
       <div class="fb-sidebar-item ${r.id === selFbDriver ? 'active' : ''}" onclick="setFbDriver('${r.id}')">
-        <div class="avatar" style="background:${AV[ROSTER.findIndex(x=>x.id===r.id) % AV.length].bg};color:${AV[ROSTER.findIndex(x=>x.id===r.id) % AV.length].tx};width:30px;height:30px;font-size:11px">${ini(fbName)}</div>
+        <div class="avatar" style="background:${getAV(ROSTER.findIndex(x=>x.id===r.id)).bg};color:${getAV(ROSTER.findIndex(x=>x.id===r.id)).tx};width:30px;height:30px;font-size:11px">${ini(fbName)}</div>
         <div class="fb-sidebar-name">${fbName}</div>
         <div class="fb-sidebar-count">${count}</div>
       </div>
