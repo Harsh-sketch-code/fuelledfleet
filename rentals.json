@@ -1,0 +1,14 @@
+{
+  "_comment": "Garmin Dash Cam Live trips in rental vehicles. Maintained manually — after each rental, review clips in the Garmin Drive app, then add an entry below. The dashboard reads this file as-is.",
+  "_format": "Each trip: { id, date (YYYY-MM-DD), driver_id (optional roster slot like 'd4') OR driver_name (free-text for non-roster), vehicle, mileage (number), incidents (count), notes }",
+  "_example": {
+    "id": "rt-2026-06-15",
+    "date": "2026-06-15",
+    "driver_id": "d4",
+    "vehicle": "2025 Ford F-150 (Enterprise, Denver)",
+    "mileage": 320,
+    "incidents": 1,
+    "notes": "One hard-brake event near downtown intersection; clip reviewed in Garmin Vault — OK, no follow-up needed."
+  },
+  "trips": []
+}

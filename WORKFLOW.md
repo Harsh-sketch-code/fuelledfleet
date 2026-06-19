@@ -80,6 +80,31 @@ If your existing repo at `harsh-sketch-code.github.io/fuelledfleet/` is what you
 
 If you want it on a fresh repo, create one called `fuelledfleet` (or whatever), copy this folder's contents in, and enable Pages in repo settings → Pages → Deploy from branch → `main`.
 
+## Rentals — Garmin Dash Cam Live
+
+Rental vehicles (US trips) use Garmin Dash Cam Live cameras instead of TitanGPS. Garmin doesn't produce a Greenzone-style score or weekly XLSX report, so rental data is tracked separately from the fleet leaderboard.
+
+**To log a rental trip:**
+
+1. After the rental, open the Garmin Drive app and review any event clips in the Vault (hard brakes, hard accels, collisions).
+2. Edit `rentals.json` and append a trip entry to the `trips` array:
+   ```json
+   {
+     "id": "rt-2026-06-15",
+     "date": "2026-06-15",
+     "driver_id": "d4",
+     "vehicle": "2025 Ford F-150 (Enterprise, Denver)",
+     "mileage": 320,
+     "incidents": 1,
+     "notes": "One hard-brake event near downtown intersection; clip reviewed — OK."
+   }
+   ```
+   - Use `driver_id` (e.g. `d4`) when an existing roster driver took the rental — display name auto-resolves and respects `name_history`.
+   - Use `driver_name` (free-text string) instead when a non-roster person drove.
+3. Run `python3 build.py` and push.
+
+**Why this is separate:** Rental trips don't feed the monthly winner leaderboard, the per-driver fleet cards, or any TitanGPS aggregates. They live in their own "Rentals" tab so an occasional rental incident doesn't drag down a driver's TitanGPS score (and the small sample wouldn't be statistically meaningful anyway).
+
 ## Roster changes
 
 If a driver leaves or joins, edit the `ROSTER` array in two places (kept simple — no central config yet):

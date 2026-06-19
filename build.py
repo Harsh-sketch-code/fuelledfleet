@@ -31,10 +31,11 @@ def main():
     # Step 3: parse XLSX + merge into weeks.json
     run([sys.executable, "parse_stats.py"])
 
-    # Step 4+5: load weeks.json + feedback.json, inject into index.html
-    weeks_path = os.path.join(BASE, "weeks.json")
-    fb_path    = os.path.join(BASE, "feedback.json")
-    html_path  = os.path.join(BASE, "index.html")
+    # Step 4+5: load weeks.json + feedback.json + rentals.json, inject into index.html
+    weeks_path   = os.path.join(BASE, "weeks.json")
+    fb_path      = os.path.join(BASE, "feedback.json")
+    rentals_path = os.path.join(BASE, "rentals.json")
+    html_path    = os.path.join(BASE, "index.html")
 
     if not os.path.exists(weeks_path):
         print(f"  ✗ {weeks_path} not found"); sys.exit(1)
@@ -47,6 +48,14 @@ def main():
     with open(fb_path)    as f: fb    = json.load(f)
     fb = {k: v for k, v in fb.items() if not k.startswith("_") and isinstance(v, list)}
 
+    # Rentals are optional — if rentals.json doesn't exist yet, default to an empty list
+    # so old setups don't break. Only the "trips" array is consumed by the dashboard.
+    if os.path.exists(rentals_path):
+        with open(rentals_path) as f: rentals_raw = json.load(f)
+        rentals = {"trips": rentals_raw.get("trips", []) if isinstance(rentals_raw, dict) else []}
+    else:
+        rentals = {"trips": []}
+
     # Stamp the build with a refresh timestamp so the dashboard can tell the team how fresh the data is.
     from datetime import datetime
     weeks["last_refreshed_iso"] = datetime.now().isoformat(timespec="minutes")
@@ -58,10 +67,12 @@ def main():
     # cause early termination. Lambda replacement avoids regex backref interpretation of
     # JSON escape sequences (\u, \\, etc.).
     import re
-    data_js     = "const DATA = "     + json.dumps(weeks, separators=(',',':'), ensure_ascii=False) + ";"
-    feedback_js = "const FEEDBACK = " + json.dumps(fb,    separators=(',',':'), ensure_ascii=False) + ";"
+    data_js     = "const DATA = "     + json.dumps(weeks,   separators=(',',':'), ensure_ascii=False) + ";"
+    feedback_js = "const FEEDBACK = " + json.dumps(fb,      separators=(',',':'), ensure_ascii=False) + ";"
+    rentals_js  = "const RENTALS = "  + json.dumps(rentals, separators=(',',':'), ensure_ascii=False) + ";"
     html = re.sub(r"^const DATA = .*$",     lambda m: data_js,     html, count=1, flags=re.M)
     html = re.sub(r"^const FEEDBACK = .*$", lambda m: feedback_js, html, count=1, flags=re.M)
+    html = re.sub(r"^const RENTALS = .*$",  lambda m: rentals_js,  html, count=1, flags=re.M)
 
     with open(html_path, "w") as f:
         f.write(html)
@@ -70,6 +81,7 @@ def main():
     print(f"  weeks:  {len(weeks.get('weeks',[]))}")
     print(f"  months: {len(weeks.get('months',[]))}")
     print(f"  feedback notes: {sum(len(v) for v in fb.values())}")
+    print(f"  rental trips: {len(rentals['trips'])}")
     print(f"  index.html: {len(html):,} bytes")
     print(f"\nNext: commit + push index.html to your GitHub Pages repo.")
 
