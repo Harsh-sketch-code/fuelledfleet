@@ -30,7 +30,9 @@
     { "id": "fb-d1-w-2026-06-07", "date": "2026-06-07", "category": "warning",
       "note": "Week of Jun 1 - Jun 7: No driving data — seventh consecutive week without logged activity (Apr 20 - Jun 7). Status remains unresolved." },
     { "id": "fb-d1-w-2026-06-14", "date": "2026-06-14", "category": "positive",
-      "note": "Week of Jun 8 - Jun 14: Score 994 (↑ return) · 223 min · ⭐0 · clean. Back on the truck after eight consecutive weeks off the road (Apr 20 - Jun 7). First week back is clean across all six infraction categories and scores in the high 990s — strong re-entry." }
+      "note": "Week of Jun 8 - Jun 14: Score 994 (↑ return) · 223 min · ⭐0 · clean. Back on the truck after eight consecutive weeks off the road (Apr 20 - Jun 7). First week back is clean across all six infraction categories and scores in the high 990s — strong re-entry." },
+    { "id": "fb-d1-w-2026-06-21", "date": "2026-06-21", "category": "positive",
+      "note": "Week of Jun 15 - Jun 21: Score 999 (↑5) · 458 min · ⭐0 · clean. Third clean week back in a row, highest individual score on the fleet for the week, mileage doubled vs prior week. Pattern is fully restored." }
   ],
 
   "d2": [
@@ -59,7 +61,9 @@
     { "id": "fb-d2-w-2026-06-07", "date": "2026-06-07", "category": "warning",
       "note": "Week of Jun 1 - Jun 7: Score 889 (↓63) · 417 min · ⭐1 · 1 hard brake. Biggest single-week regression on the fleet — score dropped 63 points off the back of one hard-brake event. Worth a check-in to understand what happened; one rough event shouldn't swing the score this hard unless conditions were unusual." },
     { "id": "fb-d2-w-2026-06-14", "date": "2026-06-14", "category": "positive",
-      "note": "Week of Jun 8 - Jun 14: Score 987 (↑98) · 483 min · ⭐1 · clean. Full recovery from last week's 889 — clean across all six categories and 98 points gained in a single week. Pattern reversed cleanly." }
+      "note": "Week of Jun 8 - Jun 14: Score 987 (↑98) · 483 min · ⭐1 · clean. Full recovery from last week's 889 — clean across all six categories and 98 points gained in a single week. Pattern reversed cleanly." },
+    { "id": "fb-d2-w-2026-06-21", "date": "2026-06-21", "category": "general",
+      "note": "Week of Jun 15 - Jun 21: Score 964 (↓23) · 965 min · ⭐2 · 1 hard brake. Highest mileage on the fleet for the week and two driver stars earned. Score eased 23 points off a single hard-brake event — third week in four with a hard-brake hit. Worth a quick check-in on approach speeds at job sites." }
   ],
 
   "d3": [
@@ -88,7 +92,9 @@
     { "id": "fb-d3-w-2026-06-07", "date": "2026-06-07", "category": "positive",
       "note": "Week of Jun 1 - Jun 7: Score 1000 (↑27) · 524 min · ⭐0 · clean. Back at the 1000 ceiling with a strong recovery from last week's 974. Zero infractions and an FD average of 3.6 — opens June in form." },
     { "id": "fb-d3-w-2026-06-14", "date": "2026-06-14", "category": "general",
-      "note": "Week of Jun 8 - Jun 14: Score 968 (↓32) · 618 min · ⭐1 · clean. Score eased from last week's 1000 ceiling but the week is clean — solid mileage, driver star earned, no infractions." }
+      "note": "Week of Jun 8 - Jun 14: Score 968 (↓32) · 618 min · ⭐1 · clean. Score eased from last week's 1000 ceiling but the week is clean — solid mileage, driver star earned, no infractions." },
+    { "id": "fb-d3-w-2026-06-21", "date": "2026-06-21", "category": "positive",
+      "note": "Week of Jun 15 - Jun 21: Score 984 (↑16) · 844 min · ⭐1 · clean. Strong mileage week, clean across all six categories, driver star earned. Currently leading the June monthly aggregate." }
   ],
 
   "d4": [
@@ -109,7 +115,9 @@
     { "id": "fb-d4-w-2026-06-07", "date": "2026-06-07", "category": "positive",
       "note": "Week of Jun 1 - Jun 7: Score 987 (↓2) · 597 min · ⭐1 · clean. Score essentially flat, driver star earned, zero infractions. Cleanest profile holding through into June." },
     { "id": "fb-d4-w-2026-06-14", "date": "2026-06-14", "category": "positive",
-      "note": "Week of Jun 8 - Jun 14: Score 996 (↑9) · 647 min · ⭐1 · clean. Top of the weekly leaderboard, highest mileage week to date in June, zero infractions. Fourth consecutive clean week — profile stays locked in at the top of the fleet." }
+      "note": "Week of Jun 8 - Jun 14: Score 996 (↑9) · 647 min · ⭐1 · clean. Top of the weekly leaderboard, highest mileage week to date in June, zero infractions. Fourth consecutive clean week — profile stays locked in at the top of the fleet." },
+    { "id": "fb-d4-w-2026-06-21", "date": "2026-06-21", "category": "coaching",
+      "note": "Week of Jun 15 - Jun 21: Score 970 (↓26) · 626 min · ⭐1 · 1 hard accel. Score eased off a single hard-accel event — first infraction of any kind on Austin's record. Driver star still earned and four out of five weeks remain clean. Quick reminder on throttle control would close the loop." }
   ],
 
   "d5": [
@@ -136,7 +144,9 @@
     { "id": "fb-d5-w-2026-06-07", "date": "2026-06-07", "category": "positive",
       "note": "Week of Jun 1 - Jun 7 (Paddy): Score 998 (↑8) · 1,509 min · ⭐1 · clean. Highest single-week mileage on the fleet (1,509 min) and still scored 998 with a driver star — fully eligible for June's monthly winner spot already this early in the month. Cleanest profile across both Paddy's weeks on the truck." },
     { "id": "fb-d5-w-2026-06-14", "date": "2026-06-14", "category": "coaching",
-      "note": "Week of Jun 8 - Jun 14 (Paddy): Score 934 (↓64) · 1,236 min · ⭐1 · 1 hard accel. Big mileage week — second highest on the fleet — and the score drop is entirely driven by a single hard-accel event. Worth flagging throttle control on departures and merges; everything else stayed clean." }
+      "note": "Week of Jun 8 - Jun 14 (Paddy): Score 934 (↓64) · 1,236 min · ⭐1 · 1 hard accel. Big mileage week — second highest on the fleet — and the score drop is entirely driven by a single hard-accel event. Worth flagging throttle control on departures and merges; everything else stayed clean." },
+    { "id": "fb-d5-w-2026-06-21", "date": "2026-06-21", "category": "general",
+      "note": "Week of Jun 15 - Jun 21 (Paddy): Score 993 (↑59) · 101 min · ⭐0 · clean. Score recovered 59 points from last week's hard-accel dip, week is clean across all categories. Mileage was very low (101 min) — likely a light schedule." }
   ],
 
   "d6": [
@@ -161,6 +171,8 @@
     { "id": "fb-d6-w-2026-06-07", "date": "2026-06-07", "category": "general",
       "note": "Week of Jun 1 - Jun 7: Score 998 (↑3) · 109 min · ⭐0 · clean. Very low mileage week — only 109 min logged. Score stayed clean but small sample. Light schedule worth noting going into the rest of June." },
     { "id": "fb-d6-w-2026-06-14", "date": "2026-06-14", "category": "positive",
-      "note": "Week of Jun 8 - Jun 14: Score 988 (↓10) · 693 min · ⭐3 · clean. Big rebound in mileage from last week's 109 min, three driver stars earned, zero infractions. Score held in the high 980s — clean and consistent." }
+      "note": "Week of Jun 8 - Jun 14: Score 988 (↓10) · 693 min · ⭐3 · clean. Big rebound in mileage from last week's 109 min, three driver stars earned, zero infractions. Score held in the high 980s — clean and consistent." },
+    { "id": "fb-d6-w-2026-06-21", "date": "2026-06-21", "category": "positive",
+      "note": "Week of Jun 15 - Jun 21: Score 984 (↓4) · 592 min · ⭐0 · clean. Sixth consecutive clean week, score effectively flat in the high 980s. The pattern of zero infractions across all six categories continues to be the cleanest profile on the fleet." }
   ]
 }
