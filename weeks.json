@@ -1328,8 +1328,8 @@
       "start_iso": "2026-06-29",
       "end_iso": "2026-07-05",
       "fleet_average_score": {
-        "score": 986,
-        "delta": 1
+        "score": 981,
+        "delta": -4
       },
       "drivers_with_score": {
         "count": 6,
@@ -1338,9 +1338,9 @@
       "drivers": {
         "d5": {
           "name": "Patrick",
-          "score": 1001,
-          "minutes": 600,
-          "avg_fd_sec": 3.9,
+          "score": 994,
+          "minutes": 719,
+          "avg_fd_sec": 3.8,
           "stars": 1,
           "infractions": {
             "sign_violations": 0,
@@ -1350,12 +1350,12 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": 11.0
+          "delta": 4.0
         },
         "d2": {
           "name": "Willem",
-          "score": 965,
-          "minutes": 307,
+          "score": 967,
+          "minutes": 440,
           "avg_fd_sec": 3.6,
           "stars": 3,
           "infractions": {
@@ -1366,44 +1366,44 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": -18.0
+          "delta": -16.0
         },
         "d4": {
           "name": "Austin",
-          "score": 996,
-          "minutes": 312,
-          "avg_fd_sec": 3.8,
+          "score": 999,
+          "minutes": 744,
+          "avg_fd_sec": 3.9,
           "stars": 1,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
             "hard_accel": 0,
             "hard_brake": 0,
-            "speeding": 0,
+            "speeding": 1,
             "traffic_lights": 0
           },
-          "delta": 6.0
+          "delta": 9.0
         },
         "d1": {
           "name": "Dylan",
-          "score": 992,
-          "minutes": 649,
+          "score": 956,
+          "minutes": 1205,
           "avg_fd_sec": 3.8,
-          "stars": 1,
+          "stars": 2,
           "infractions": {
             "sign_violations": 0,
-            "following_close": 0,
-            "hard_accel": 0,
+            "following_close": 1,
+            "hard_accel": 1,
             "hard_brake": 0,
             "speeding": 0,
-            "traffic_lights": 0
+            "traffic_lights": 1
           },
-          "delta": 75.0
+          "delta": 39.0
         },
         "d6": {
           "name": "Harsh",
-          "score": 1001,
-          "minutes": 379,
+          "score": 998,
+          "minutes": 667,
           "avg_fd_sec": 3.9,
           "stars": 0,
           "infractions": {
@@ -1414,14 +1414,14 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": 5.0
+          "delta": 2.0
         },
         "d3": {
           "name": "Jackson",
-          "score": 970,
-          "minutes": 1188,
-          "avg_fd_sec": 3.9,
-          "stars": 1,
+          "score": 983,
+          "minutes": 1586,
+          "avg_fd_sec": 3.8,
+          "stars": 2,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
@@ -1430,15 +1430,14 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": -24.0
+          "delta": -11.0
         }
       },
       "sources": {
-        "stats_xlsx": "Driver Statistics Report ( 29 Jun 2026 - 05 Jul 2026 ).xlsx",
-        "fleet_pdf": "Fleet Report ( 29 Jun 2026 - 05 Jul 2026 ).pdf"
+        "stats_xlsx": "Driver Statistics Report(29 Jun 2026 - 05 Jul 2026).xlsx",
+        "fleet_pdf": "Fleet Report(29 Jun 2026 - 05 Jul 2026).pdf"
       },
-      "is_partial": true,
-      "partial_through_iso": "2026-07-03"
+      "is_partial": false
     }
   ],
   "months": [
@@ -1973,7 +1972,7 @@
           "Driver Statistics Report(08 Jun 2026 - 14 Jun 2026).xlsx",
           "Driver Statistics Report(15 Jun 2026 - 21 Jun 2026).xlsx",
           "Driver Statistics Report(22 Jun 2026 - 28 Jun 2026).xlsx",
-          "Driver Statistics Report ( 29 Jun 2026 - 05 Jul 2026 ).xlsx"
+          "Driver Statistics Report(29 Jun 2026 - 05 Jul 2026).xlsx"
         ]
       }
     }
