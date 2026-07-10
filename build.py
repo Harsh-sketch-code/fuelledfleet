@@ -50,11 +50,16 @@ def main():
 
     # Rentals are optional — if rentals.json doesn't exist yet, default to an empty list
     # so old setups don't break. Only the "trips" array is consumed by the dashboard.
+    # Wrap the read in try/except so a transient filesystem lock (iCloud/Dropbox sync,
+    # editor lock, Time Machine snapshot) doesn't kill the whole build.
+    rentals = {"trips": []}
     if os.path.exists(rentals_path):
-        with open(rentals_path) as f: rentals_raw = json.load(f)
-        rentals = {"trips": rentals_raw.get("trips", []) if isinstance(rentals_raw, dict) else []}
-    else:
-        rentals = {"trips": []}
+        try:
+            with open(rentals_path) as f: rentals_raw = json.load(f)
+            if isinstance(rentals_raw, dict):
+                rentals = {"trips": rentals_raw.get("trips", [])}
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"  ⚠ could not read rentals.json ({e}); using empty list")
 
     # Stamp the build with a refresh timestamp so the dashboard can tell the team how fresh the data is.
     from datetime import datetime
