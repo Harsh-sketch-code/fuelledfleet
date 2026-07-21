@@ -40,7 +40,9 @@
     { "id": "fb-d1-w-2026-07-05", "date": "2026-07-05", "category": "coaching",
       "note": "Week of Jun 29 - Jul 5: Score 956 (↑39) · 1,205 min · ⭐2 · 3 infractions (1 FD, 1 hard accel, 1 traffic-light). Mileage more than doubled to 1,205 min but the clean-profile streak from May-June ended — first week with multiple infractions since coming back. Two stars still earned. Worth checking whether the higher workload is the driver or a specific route change." },
     { "id": "fb-d1-w-2026-07-12", "date": "2026-07-12", "category": "positive",
-      "note": "Week of Jul 6 - Jul 12: Score 943 (↓13) · 664 min · ⭐1 · clean. Score eased but the profile returned to clean across all six categories after last week's 3-infraction dip. One driver star earned. Positive correction." }
+      "note": "Week of Jul 6 - Jul 12: Score 943 (↓13) · 664 min · ⭐1 · clean. Score eased but the profile returned to clean across all six categories after last week's 3-infraction dip. One driver star earned. Positive correction." },
+    { "id": "fb-d1-w-2026-07-19", "date": "2026-07-19", "category": "positive",
+      "note": "Week of Jul 13 - Jul 19: Score 973 (↑30) · 408 min · ⭐0 · clean. Second consecutive clean week and +30 score bounce back. Clean profile is fully restored after the early-July dip." }
   ],
 
   "d2": [
@@ -79,7 +81,9 @@
     { "id": "fb-d2-w-2026-07-05", "date": "2026-07-05", "category": "positive",
       "note": "Week of Jun 29 - Jul 5: Score 967 (↓16) · 440 min · ⭐3 · clean. Three driver stars — highest weekly star count of Willem's year — and zero infractions across all six categories. Score eased slightly but the hard-brake pattern appears broken this week. Positive signal after the June coaching flag." },
     { "id": "fb-d2-w-2026-07-12", "date": "2026-07-12", "category": "coaching",
-      "note": "Week of Jul 6 - Jul 12: Score 974 (↑7) · 2,039 min · ⭐2 · 1 hard brake, 1 traffic-light. HIGHEST single-week mileage on Willem's record by a wide margin (2,039 min, more than double any prior week). Two stars earned. Hard-brake event returns after a clean prior week — worth watching to see if it correlates with the higher workload." }
+      "note": "Week of Jul 6 - Jul 12: Score 974 (↑7) · 2,039 min · ⭐2 · 1 hard brake, 1 traffic-light. HIGHEST single-week mileage on Willem's record by a wide margin (2,039 min, more than double any prior week). Two stars earned. Hard-brake event returns after a clean prior week — worth watching to see if it correlates with the higher workload." },
+    { "id": "fb-d2-w-2026-07-19", "date": "2026-07-19", "category": "general",
+      "note": "Week of Jul 13 - Jul 19: Score 981 (↑7) · 317 min · ⭐1 · 1 traffic-light. Mileage dropped sharply from last week's 2,039 min back to a normal level. Hard-brake pattern stayed away this week — only a minor traffic-light event. Positive direction after the July 6-12 workload spike." }
   ],
 
   "d3": [
@@ -118,7 +122,9 @@
     { "id": "fb-d3-w-2026-07-05", "date": "2026-07-05", "category": "general",
       "note": "Week of Jun 29 - Jul 5: Score 983 (↓11) · 1,586 min · ⭐2 · 1 hard accel. Highest single-week mileage of the year at 1,586 min. Score eased 11 points off a single hard-accel event — normal ratio for that workload. Two driver stars earned." },
     { "id": "fb-d3-w-2026-07-12", "date": "2026-07-12", "category": "general",
-      "note": "Week of Jul 6 - Jul 12: Score 959 (↓24) · 476 min · ⭐0 · clean. Mileage dropped sharply from last week's 1,586 min but score eased more than usual. Zero infractions across all six categories — probably a lighter-schedule week." }
+      "note": "Week of Jul 6 - Jul 12: Score 959 (↓24) · 476 min · ⭐0 · clean. Mileage dropped sharply from last week's 1,586 min but score eased more than usual. Zero infractions across all six categories — probably a lighter-schedule week." },
+    { "id": "fb-d3-w-2026-07-19", "date": "2026-07-19", "category": "positive",
+      "note": "Week of Jul 13 - Jul 19: Score 974 (↑15) · 589 min · ⭐2 · clean. Two driver stars earned, zero infractions across all six categories. Score climbing back into normal range." }
   ],
 
   "d4": [
@@ -149,7 +155,9 @@
     { "id": "fb-d4-w-2026-07-05", "date": "2026-07-05", "category": "coaching",
       "note": "Week of Jun 29 - Jul 5: Score 999 (↑9) · 744 min · ⭐1 · 1 speeding event. Top score on the fleet for the week but the first-ever speeding flag on Austin's record — worth a quick heads-up on freeway speed limits. Otherwise clean across the other five categories and one driver star." },
     { "id": "fb-d4-w-2026-07-12", "date": "2026-07-12", "category": "positive",
-      "note": "Week of Jul 6 - Jul 12: Score 993 (↓6) · 680 min · ⭐1 · clean. Speeding event from last week did not repeat — profile fully clean across all six categories. Top score on the fleet for the week and one driver star earned." }
+      "note": "Week of Jul 6 - Jul 12: Score 993 (↓6) · 680 min · ⭐1 · clean. Speeding event from last week did not repeat — profile fully clean across all six categories. Top score on the fleet for the week and one driver star earned." },
+    { "id": "fb-d4-w-2026-07-19", "date": "2026-07-19", "category": "positive",
+      "note": "Week of Jul 13 - Jul 19: Score 1,000 (↑7) · 942 min · ⭐1 · clean. Hit the 1000 ceiling exactly, driver star earned, zero infractions across all six categories. Third consecutive clean week with the top score on the fleet." }
   ],
 
   "d5": [
@@ -186,7 +194,9 @@
     { "id": "fb-d5-w-2026-07-05", "date": "2026-07-05", "category": "positive",
       "note": "Week of Jun 29 - Jul 5 (Paddy): Score 994 (↑4) · 719 min · ⭐1 · clean. Score climbed to 994, driver star earned, zero infractions across all six categories. Clean profile carrying from June into July." },
     { "id": "fb-d5-w-2026-07-12", "date": "2026-07-12", "category": "general",
-      "note": "Week of Jul 6 - Jul 12 (Paddy): Score 981 (↓13) · 1,470 min · ⭐3 · 1 hard accel. Big mileage week (1,470 min) and three driver stars — highest weekly star count of Paddy's tenure so far. Score eased off a single hard-accel event; otherwise clean." }
+      "note": "Week of Jul 6 - Jul 12 (Paddy): Score 981 (↓13) · 1,470 min · ⭐3 · 1 hard accel. Big mileage week (1,470 min) and three driver stars — highest weekly star count of Paddy's tenure so far. Score eased off a single hard-accel event; otherwise clean." },
+    { "id": "fb-d5-w-2026-07-19", "date": "2026-07-19", "category": "positive",
+      "note": "Week of Jul 13 - Jul 19 (Paddy): Score 996 (↑15) · 559 min · ⭐0 · clean. Score bounced back to 996, zero infractions across all six categories after last week's hard-accel event. Clean profile restored." }
   ],
 
   "d6": [
@@ -221,6 +231,8 @@
     { "id": "fb-d6-w-2026-07-05", "date": "2026-07-05", "category": "positive",
       "note": "Week of Jun 29 - Jul 5: Score 998 (↑2) · 667 min · ⭐0 · clean. Eighth consecutive clean week across all six categories. The streak that defined June continues seamlessly into July." },
     { "id": "fb-d6-w-2026-07-12", "date": "2026-07-12", "category": "positive",
-      "note": "Week of Jul 6 - Jul 12: Score 985 (↓13) · 645 min · ⭐0 · clean. NINTH consecutive clean week — the streak keeps going. Score eased slightly but zero infractions across all six categories again. Longest clean run on the fleet by far." }
+      "note": "Week of Jul 6 - Jul 12: Score 985 (↓13) · 645 min · ⭐0 · clean. NINTH consecutive clean week — the streak keeps going. Score eased slightly but zero infractions across all six categories again. Longest clean run on the fleet by far." },
+    { "id": "fb-d6-w-2026-07-19", "date": "2026-07-19", "category": "positive",
+      "note": "Week of Jul 13 - Jul 19: Score 981 (↓4) · 623 min · ⭐1 · clean. TENTH consecutive clean week — the streak keeps going strong. One driver star earned, zero infractions across all six categories yet again. 10 straight weeks now spanning from mid-May through mid-July." }
   ]
 }

@@ -1562,8 +1562,8 @@
       "start_iso": "2026-07-13",
       "end_iso": "2026-07-19",
       "fleet_average_score": {
-        "score": 980,
-        "delta": 5
+        "score": 986,
+        "delta": 11
       },
       "drivers_with_score": {
         "count": 6,
@@ -1572,8 +1572,8 @@
       "drivers": {
         "d5": {
           "name": "Patrick",
-          "score": 1001,
-          "minutes": 436,
+          "score": 996,
+          "minutes": 559,
           "avg_fd_sec": 3.8,
           "stars": 0,
           "infractions": {
@@ -1584,12 +1584,12 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": 20.0
+          "delta": 15.0
         },
         "d2": {
           "name": "Willem",
-          "score": 979,
-          "minutes": 250,
+          "score": 981,
+          "minutes": 317,
           "avg_fd_sec": 3.8,
           "stars": 1,
           "infractions": {
@@ -1600,45 +1600,13 @@
             "speeding": 0,
             "traffic_lights": 1
           },
-          "delta": 5.0
+          "delta": 7.0
         },
         "d4": {
           "name": "Austin",
-          "score": 984,
-          "minutes": 303,
-          "avg_fd_sec": 3.8,
-          "stars": 0,
-          "infractions": {
-            "sign_violations": 0,
-            "following_close": 0,
-            "hard_accel": 0,
-            "hard_brake": 0,
-            "speeding": 0,
-            "traffic_lights": 0
-          },
-          "delta": -9.0
-        },
-        "d1": {
-          "name": "Dylan",
-          "score": 968,
-          "minutes": 267,
-          "avg_fd_sec": 3.6,
-          "stars": 0,
-          "infractions": {
-            "sign_violations": 0,
-            "following_close": 0,
-            "hard_accel": 0,
-            "hard_brake": 0,
-            "speeding": 0,
-            "traffic_lights": 0
-          },
-          "delta": 25.0
-        },
-        "d6": {
-          "name": "Harsh",
-          "score": 967,
-          "minutes": 385,
-          "avg_fd_sec": 3.7,
+          "score": 1000,
+          "minutes": 942,
+          "avg_fd_sec": 3.9,
           "stars": 1,
           "infractions": {
             "sign_violations": 0,
@@ -1648,13 +1616,45 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "delta": -18.0
+          "delta": 7.0
+        },
+        "d1": {
+          "name": "Dylan",
+          "score": 973,
+          "minutes": 408,
+          "avg_fd_sec": 3.7,
+          "stars": 0,
+          "infractions": {
+            "sign_violations": 0,
+            "following_close": 0,
+            "hard_accel": 0,
+            "hard_brake": 0,
+            "speeding": 0,
+            "traffic_lights": 0
+          },
+          "delta": 30.0
+        },
+        "d6": {
+          "name": "Harsh",
+          "score": 981,
+          "minutes": 623,
+          "avg_fd_sec": 3.8,
+          "stars": 1,
+          "infractions": {
+            "sign_violations": 0,
+            "following_close": 0,
+            "hard_accel": 0,
+            "hard_brake": 0,
+            "speeding": 0,
+            "traffic_lights": 0
+          },
+          "delta": -4.0
         },
         "d3": {
           "name": "Jackson",
           "score": 974,
-          "minutes": 320,
-          "avg_fd_sec": 3.7,
+          "minutes": 589,
+          "avg_fd_sec": 3.6,
           "stars": 2,
           "infractions": {
             "sign_violations": 0,
@@ -1668,11 +1668,10 @@
         }
       },
       "sources": {
-        "stats_xlsx": "Driver Statistics Report ( 13 Jul 2026 - 19 Jul 2026 ).xlsx",
-        "fleet_pdf": "Fleet Report ( 13 Jul 2026 - 19 Jul 2026 ).pdf"
+        "stats_xlsx": "Driver Statistics Report(13 Jul 2026 - 19 Jul 2026).xlsx",
+        "fleet_pdf": "Fleet Report(13 Jul 2026 - 19 Jul 2026).pdf"
       },
-      "is_partial": true,
-      "partial_through_iso": "2026-07-17"
+      "is_partial": false
     }
   ],
   "months": [
@@ -2217,18 +2216,18 @@
       "start_iso": "2026-07-01",
       "end_iso": "2026-07-31",
       "fleet_average_score": {
-        "score": 978,
+        "score": 980,
         "delta": null
       },
       "drivers_with_score": null,
       "drivers": {
         "d1": {
           "name": "Dylan",
-          "score": 950,
+          "score": 954,
           "delta": null,
-          "minutes": 931,
+          "minutes": 1072,
           "stars": 1,
-          "avg_fd_sec": 3.5,
+          "avg_fd_sec": 3.55,
           "active_weeks": 2,
           "infractions": {
             "sign_violations": 0,
@@ -2244,7 +2243,7 @@
           "name": "Willem",
           "score": 975,
           "delta": null,
-          "minutes": 2289,
+          "minutes": 2356,
           "stars": 3,
           "avg_fd_sec": 3.75,
           "active_weeks": 2,
@@ -2260,11 +2259,11 @@
         },
         "d3": {
           "name": "Jackson",
-          "score": 965,
+          "score": 967,
           "delta": null,
-          "minutes": 796,
+          "minutes": 1065,
           "stars": 2,
-          "avg_fd_sec": 3.65,
+          "avg_fd_sec": 3.6,
           "active_weeks": 2,
           "infractions": {
             "sign_violations": 0,
@@ -2274,15 +2273,15 @@
             "speeding": 0,
             "traffic_lights": 0
           },
-          "eligible": false
+          "eligible": true
         },
         "d4": {
           "name": "Austin",
-          "score": 990,
+          "score": 997,
           "delta": null,
-          "minutes": 983,
-          "stars": 1,
-          "avg_fd_sec": 3.85,
+          "minutes": 1622,
+          "stars": 2,
+          "avg_fd_sec": 3.9,
           "active_weeks": 2,
           "infractions": {
             "sign_violations": 0,
@@ -2296,9 +2295,9 @@
         },
         "d5": {
           "name": "Paddy",
-          "score": 986,
+          "score": 985,
           "delta": null,
-          "minutes": 1906,
+          "minutes": 2029,
           "stars": 3,
           "avg_fd_sec": 3.85,
           "active_weeks": 2,
@@ -2314,11 +2313,11 @@
         },
         "d6": {
           "name": "Harsh",
-          "score": 978,
+          "score": 983,
           "delta": null,
-          "minutes": 1030,
+          "minutes": 1268,
           "stars": 1,
-          "avg_fd_sec": 3.75,
+          "avg_fd_sec": 3.8,
           "active_weeks": 2,
           "infractions": {
             "sign_violations": 0,
@@ -2337,7 +2336,7 @@
         "monthly_xlsx": null,
         "weekly_aggregated": [
           "Driver Statistics Report(06 Jul 2026 - 12 Jul 2026).xlsx",
-          "Driver Statistics Report ( 13 Jul 2026 - 19 Jul 2026 ).xlsx"
+          "Driver Statistics Report(13 Jul 2026 - 19 Jul 2026).xlsx"
         ]
       }
     }
