@@ -24,17 +24,18 @@ NAME_MAP = {
 }
 
 ROSTER = [
-    {"id":"d1", "name":"Dylan",   "truck":"001 - Toyota Tundra"},
-    {"id":"d2", "name":"Willem",  "truck":"002 - Toyota Tundra"},
-    {"id":"d3", "name":"Jackson", "truck":"003 - Toyota Tundra"},
+    {"id":"d1", "name":"Dylan",   "truck":"023 - Canyon AT4X"},
+    {"id":"d2", "name":"Willem",  "truck":"022 - Canyon AT4X"},
+    {"id":"d3", "name":"Jackson", "truck":"021 - Canyon AT4X"},
     {"id":"d4", "name":"Austin",  "truck":"004 - Ford F150"},
-    # Truck 005: Raj drove through April 2026 only; Paddy takes over starting May 1, 2026.
-    {"id":"d5", "name":"Paddy",   "truck":"005 - Ford F150",
+    # Truck 020 (Canyon AT4X, formerly 005 Ford F150): Raj drove through April 2026 only;
+    # Paddy takes over starting May 1, 2026 and moved to the new Canyon in August 2026.
+    {"id":"d5", "name":"Paddy",   "truck":"020 - Canyon AT4X",
      "name_history": [
         {"from_iso": "2000-01-01", "name": "Raj"},
         {"from_iso": "2026-05-01", "name": "Paddy"},
      ]},
-    {"id":"d6", "name":"Harsh",   "truck":"006 - Ford F150"},
+    {"id":"d6", "name":"Harsh",   "truck":"019 - Canyon AT4X"},
 ]
 
 # Column header (case-insensitive contains) -> our key
