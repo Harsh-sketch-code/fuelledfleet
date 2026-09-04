@@ -54,7 +54,11 @@
     { "id": "fb-d1-w-2026-08-16", "date": "2026-08-16", "category": "general",
       "note": "Week of Aug 10 - Aug 16: Score 987 (↑6) · 1,250 min · ⭐1 · 1 hard accel. Biggest mileage week of Dylan's post-return period (1,250 min). Score stayed strong at 987 despite a single hard-accel event, driver star earned. Notable that Dylan handled the fleet-wide rough week better than most — most drivers dropped 65+ points while Dylan actually gained." },
     { "id": "fb-d1-w-2026-08-23", "date": "2026-08-23", "category": "coaching",
-      "note": "Week of Aug 17 - Aug 23: Score 938 (↓49) · 1,091 min · ⭐2 · 3 hard accel, 1 hard brake. Second big mileage week in a row (1,091 min), but the clean profile from last week is gone — 4 infractions total. Hard-accel pattern jumped from 1 to 3 events. Given the timing overlaps with the Canyon AT4X truck transition and the fleet-wide pattern of hard-accel/hard-brake events showing up on the new trucks, worth including in the truck-behavior conversation. Two stars still earned across the week." }
+      "note": "Week of Aug 17 - Aug 23: Score 938 (↓49) · 1,091 min · ⭐2 · 3 hard accel, 1 hard brake. Second big mileage week in a row (1,091 min), but the clean profile from last week is gone — 4 infractions total. Hard-accel pattern jumped from 1 to 3 events. Given the timing overlaps with the Canyon AT4X truck transition and the fleet-wide pattern of hard-accel/hard-brake events showing up on the new trucks, worth including in the truck-behavior conversation. Two stars still earned across the week." },
+    { "id": "fb-d1-w-2026-08-30", "date": "2026-08-30", "category": "coaching",
+      "note": "Week of Aug 24 - Aug 30: Score 933 (↓16) · 1,565 min · ⭐5 · 1 hard accel, 1 hard brake. Third consecutive high-mileage week (1,565 min — highest of the year for Dylan) and third consecutive week with hard-accel + hard-brake events. Score keeps eroding. Five driver stars still earned. The pattern is becoming persistent — worth a direct conversation about driving smoothness on the Canyon AT4X." },
+    { "id": "fb-d1-m-2026-08", "date": "2026-08-31", "category": "coaching",
+      "note": "Month of August 2026: Score 964 (↓2 vs July, essentially flat) · 4,585 min · ⭐11 · 6 infractions (4 hard accel, 2 hard brake). 11 driver stars — HIGHEST star count on the fleet this month. But the hard-accel pattern was persistent (4 events across 4 different weeks). Mileage nearly doubled from July (4,585 vs 2,395), so more driving = more exposure, but the event rate is still worth addressing. Coaching focus for September: smoother throttle and braking transitions." }
   ],
 
   "d2": [
@@ -107,7 +111,11 @@
     { "id": "fb-d2-w-2026-08-16", "date": "2026-08-16", "category": "coaching",
       "note": "Week of Aug 10 - Aug 16: Score 899 (↓86) · 340 min · ⭐1 · 1 hard brake. Biggest single-week drop of Willem's year — score down to 899, the lowest since his May recovery. Hard-brake pattern returned after 4 clean weeks (breaks the June coaching progress). Worth revisiting the coaching conversation, and worth checking whether the new Canyon AT4X truck (received recently) has different braking behavior than the old Toyota Tundra." },
     { "id": "fb-d2-w-2026-08-23", "date": "2026-08-23", "category": "general",
-      "note": "Week of Aug 17 - Aug 23: No driving data. First no-data week in months. Confirm scheduled time off vs a status change." }
+      "note": "Week of Aug 17 - Aug 23: No driving data. First no-data week in months. Confirm scheduled time off vs a status change." },
+    { "id": "fb-d2-w-2026-08-30", "date": "2026-08-30", "category": "positive",
+      "note": "Week of Aug 24 - Aug 30: Score 989 (↑ return) · 119 min · ⭐0 · clean. Back on the truck after 2 no-data weeks. Very low mileage (119 min) but a clean re-entry with a strong score in the high 980s. Good sign." },
+    { "id": "fb-d2-m-2026-08", "date": "2026-08-31", "category": "general",
+      "note": "Month of August 2026: Score 963 (↑23 over July) · 1,136 min · ⭐3 · 1 hard brake. Score up meaningfully from July (940 → 963) and hard-brake count dropped from 1 to 1 (flat). Low mileage month (1,136 min — lowest since May) — Willem missed two weeks. Not enough driving to draw firm conclusions but the small sample was clean apart from the single hard brake." }
   ],
 
   "d3": [
@@ -160,7 +168,11 @@
     { "id": "fb-d3-w-2026-08-16", "date": "2026-08-16", "category": "warning",
       "note": "Week of Aug 10 - Aug 16: Score 928 (↓77) · 266 min · ⭐0 · 1 traffic-light. Biggest single-week drop of Jackson's year — 77 points off just one traffic-light event on 266 min of driving. Ends a strong 2-week run in the 1000s. The score-per-event ratio is unusually harsh — possibly a specific incident worth reviewing, and worth checking whether the new Canyon AT4X truck contributed." },
     { "id": "fb-d3-w-2026-08-23", "date": "2026-08-23", "category": "positive",
-      "note": "Week of Aug 17 - Aug 23: Score 946 (↑18) · 670 min · ⭐0 · 1 sign violation. Score recovering from last week's 928 dip. One minor sign-violation the only blemish, and mileage back to a healthy 670 min. Trending in the right direction." }
+      "note": "Week of Aug 17 - Aug 23: Score 946 (↑18) · 670 min · ⭐0 · 1 sign violation. Score recovering from last week's 928 dip. One minor sign-violation the only blemish, and mileage back to a healthy 670 min. Trending in the right direction." },
+    { "id": "fb-d3-w-2026-08-30", "date": "2026-08-30", "category": "general",
+      "note": "Week of Aug 24 - Aug 30: Score 934 (↓12) · 1,420 min · ⭐1 · 1 hard brake, 1 speeding. High mileage (1,420 min) with two different infraction types — score eased. Star still earned. Mixed pattern for Jackson across the month; worth checking in on the Canyon AT4X familiarity." },
+    { "id": "fb-d3-m-2026-08", "date": "2026-08-31", "category": "coaching",
+      "note": "Month of August 2026: Score 971 (↓10 vs July) · 5,041 min · ⭐5 · 4 infractions (1 sign, 1 hard brake, 1 speeding, 1 traffic-light). Second-highest mileage on the fleet (5,041 min). Score eased slightly but the infraction spread is unusual — 4 different categories in one month is broader than his June-July profile (usually 1-2 categories). Suggests general adjustment period on the new truck rather than a specific behavior; worth reinforcing that one clean pattern this month came in the mid-August window." }
   ],
 
   "d4": [
@@ -205,7 +217,11 @@
     { "id": "fb-d4-w-2026-08-16", "date": "2026-08-16", "category": "positive",
       "note": "Week of Aug 10 - Aug 16: Score 994 (↑18) · 627 min · ⭐0 · clean. Seventh consecutive clean week. Score climbed back near the 1000 ceiling in a week where most of the fleet took big hits — Austin's profile held steady while others dropped 60-86 points." },
     { "id": "fb-d4-w-2026-08-23", "date": "2026-08-23", "category": "general",
-      "note": "Week of Aug 17 - Aug 23: Score 989 (↓5) · 536 min · ⭐1 · 1 sign violation. Ends a 7-week clean streak but only just — one sign violation the only blemish, score barely moved, driver star still earned. Least affected driver on the fleet through the rough two-week stretch." }
+      "note": "Week of Aug 17 - Aug 23: Score 989 (↓5) · 536 min · ⭐1 · 1 sign violation. Ends a 7-week clean streak but only just — one sign violation the only blemish, score barely moved, driver star still earned. Least affected driver on the fleet through the rough two-week stretch." },
+    { "id": "fb-d4-w-2026-08-30", "date": "2026-08-30", "category": "positive",
+      "note": "Week of Aug 24 - Aug 30: Score 995 (↑6) · 389 min · ⭐1 · clean. Back to clean, score back near the 1000 ceiling. Austin remains the steadiest hand on the fleet through August's rough patch." },
+    { "id": "fb-d4-m-2026-08", "date": "2026-08-31", "category": "positive",
+      "note": "Month of August 2026: Score 987 (↓14 vs July) · 1,907 min · ⭐5 · 1 sign violation. 🏆 MONTHLY WINNER — third consecutive month leading the fleet (and Austin's third monthly win overall: May, July, August). Only one infraction the entire month across 1,907 min. The cleanest profile beat the highest-volume drivers in a month where most of the fleet had multi-event weeks. Austin's F-150 is unchanged from the Canyon transition; his stability may partly reflect that." }
   ],
 
   "d5": [
@@ -256,7 +272,11 @@
     { "id": "fb-d5-w-2026-08-16", "date": "2026-08-16", "category": "positive",
       "note": "Week of Aug 10 - Aug 16 (Paddy): Score 999 (↑4) · 755 min · ⭐1 · clean. Held the top of the fleet in a week where 3 of 6 drivers took 65-86 point drops. Zero infractions across all six categories, driver star earned. Very steady performance." },
     { "id": "fb-d5-w-2026-08-23", "date": "2026-08-23", "category": "warning",
-      "note": "Week of Aug 17 - Aug 23 (Paddy): Score 982 (↓17) · 1,518 min · ⭐1 · 1 hard accel, 🚨 8 HARD BRAKES. The 8 hard-brakes is the highest single-week hard-brake count on ANY driver's record all year — by a wide margin. On 1,518 min of high-mileage driving. Given the timing (right after the Canyon AT4X transition) and the fleet-wide hard-brake pattern showing up on the new trucks, this looks less like a driver behavior change and more like a truck sensor / calibration issue. Strongly recommend checking whether the Canyon's factory-set hard-brake threshold is more sensitive than the old F-150 — TitanGPS may be flagging normal stops as hard brakes on the new fleet." }
+      "note": "Week of Aug 17 - Aug 23 (Paddy): Score 982 (↓17) · 1,518 min · ⭐1 · 1 hard accel, 🚨 8 HARD BRAKES. The 8 hard-brakes is the highest single-week hard-brake count on ANY driver's record all year — by a wide margin. On 1,518 min of high-mileage driving. Given the timing (right after the Canyon AT4X transition) and the fleet-wide hard-brake pattern showing up on the new trucks, this looks less like a driver behavior change and more like a truck sensor / calibration issue. Strongly recommend checking whether the Canyon's factory-set hard-brake threshold is more sensitive than the old F-150 — TitanGPS may be flagging normal stops as hard brakes on the new fleet." },
+    { "id": "fb-d5-w-2026-08-30", "date": "2026-08-30", "category": "coaching",
+      "note": "Week of Aug 24 - Aug 30 (Paddy): Score 956 (↓26) · 1,335 min · ⭐1 · 1 hard accel, 1 hard brake, 1 speeding. Hard-brake count dropped from 8 to 1 (huge improvement — suggests the prior week was a specific route/incident rather than a lasting pattern). But three different infraction types this week. Score down but the hard-brake pattern is normalizing." },
+    { "id": "fb-d5-m-2026-08", "date": "2026-08-31", "category": "coaching",
+      "note": "Month of August 2026 (Paddy): Score 984 (↓9 vs July) · 5,888 min · ⭐6 · 13 infractions (9 hard brake, 2 hard accel, 1 speeding, 1 traffic-light). HIGHEST driving minutes on the fleet by a wide margin (5,888 min — 850 more than #2). Six driver stars but 13 infractions — most on the fleet by far, driven almost entirely by the 8 hard brakes in the Aug 17-23 week. Strong recommendation: check with TitanGPS whether the Canyon AT4X's hard-brake threshold needs recalibration for the new fleet. Paddy's driving pattern otherwise looks similar to July when he had only 1 infraction on 4,212 min." }
   ],
 
   "d6": [
@@ -305,6 +325,10 @@
     { "id": "fb-d6-w-2026-08-16", "date": "2026-08-16", "category": "warning",
       "note": "Week of Aug 10 - Aug 16: Score 930 (↓65) · 1,190 min · ⭐1 · 1 hard brake, 3 SPEEDING events. 🚨 THIRTEEN-WEEK CLEAN STREAK ENDS. First infractions of ANY kind since mid-May, and 4 infractions in a single week is the most Harsh has ever had. Three speeding events specifically is a new pattern — no prior speeding on record. Given the timing (right after the new Canyon AT4X truck transition), worth checking whether the new truck's speed feel is different from the old F-150. Direct conversation recommended." },
     { "id": "fb-d6-w-2026-08-23", "date": "2026-08-23", "category": "positive",
-      "note": "Week of Aug 17 - Aug 23: Score 949 (↑19) · 583 min · ⭐2 · clean. Full recovery this week — zero infractions across all six categories after last week's 4-event dip. Two driver stars earned. Suggests last week's speeding events were possibly a one-time adjustment period to the new Canyon AT4X rather than a lasting pattern change. Positive signal." }
+      "note": "Week of Aug 17 - Aug 23: Score 949 (↑19) · 583 min · ⭐2 · clean. Full recovery this week — zero infractions across all six categories after last week's 4-event dip. Two driver stars earned. Suggests last week's speeding events were possibly a one-time adjustment period to the new Canyon AT4X rather than a lasting pattern change. Positive signal." },
+    { "id": "fb-d6-w-2026-08-30", "date": "2026-08-30", "category": "coaching",
+      "note": "Week of Aug 24 - Aug 30: Score 955 (↑6) · 1,243 min · ⭐3 · 2 sign violations. Three driver stars but two sign violations — a new pattern this month for Harsh (had zero prior). Combined with the 3 speeding events earlier in August, the profile has clearly changed since the Canyon AT4X transition. Worth a check-in — the Aug 17-23 clean week suggests it's not baked in, but the pattern keeps recurring." },
+    { "id": "fb-d6-m-2026-08", "date": "2026-08-31", "category": "coaching",
+      "note": "Month of August 2026: Score 955 (↓35 vs July, biggest single-month drop of Harsh's year) · 3,913 min · ⭐8 · 6 infractions (3 speeding, 2 sign, 1 hard brake). Ends the 3-month clean streak (May, June, July all zero infractions) — a significant break from the standout pattern. Three speeding events across the month is entirely new (zero prior on record). Eight driver stars earned. Given the fleet-wide pattern break on the new Canyon AT4X trucks, direct conversation recommended to understand whether the truck's speedometer/feel is different from the F-150 — Harsh may not realize he's exceeding speed limits on the new vehicle." }
   ]
 }

@@ -1,0 +1,232 @@
+{
+  "source_file": "Fleet Report(24 Aug 2026 - 30 Aug 2026).pdf",
+  "report_type": "weekly_fleet",
+  "period": {
+    "raw": "(24 Aug) 12:00 AM (MDT) - Mon (31 Aug)",
+    "start_iso": "2026-08-24",
+    "end_iso": "2026-08-31",
+    "label": "Aug 24-Aug 31, 2026",
+    "type": "weekly"
+  },
+  "fleet_average_score": {
+    "score": 948,
+    "delta": -17
+  },
+  "drivers_with_greenzone_score": {
+    "count": 6,
+    "delta": 1
+  },
+  "driver_performance": [
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "score": 995,
+      "delta": 6.0
+    },
+    {
+      "name": "Willem",
+      "driver_id": "d2",
+      "score": 989,
+      "delta": 989.0
+    },
+    {
+      "name": "Patrick",
+      "driver_id": "d5",
+      "score": 956,
+      "delta": -26.0
+    },
+    {
+      "name": "Harsh",
+      "driver_id": "d6",
+      "score": 955,
+      "delta": 6.0
+    },
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "score": 934,
+      "delta": -12.0
+    },
+    {
+      "name": "Dylan",
+      "driver_id": "d1",
+      "score": 933,
+      "delta": -16.0
+    }
+  ],
+  "risk_profile": [
+    {
+      "metric": "Accelerations",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 3606,
+        "pct": 99.94
+      },
+      "moderate": {
+        "count": 2,
+        "pct": 0.06
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Brakings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 5848,
+        "pct": 99.95
+      },
+      "moderate": {
+        "count": 2,
+        "pct": 0.03
+      },
+      "severe": {
+        "count": 1,
+        "pct": 0.02
+      }
+    },
+    {
+      "metric": "Turns",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 3015,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Traffic Lights",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 1277,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Stoppings",
+      "unit": "alerts",
+      "below_threshold": {
+        "count": 173,
+        "pct": 98.86
+      },
+      "moderate": {
+        "count": 1,
+        "pct": 0.57
+      },
+      "severe": {
+        "count": 1,
+        "pct": 0.57
+      }
+    },
+    {
+      "metric": "Speeding",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 6069,
+        "pct": 99.97
+      },
+      "moderate": {
+        "count": 2,
+        "pct": 0.03
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    {
+      "metric": "Driver Distraction",
+      "unit": "Minutes",
+      "below_threshold": {
+        "count": 6071,
+        "pct": 100.0
+      },
+      "moderate": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "severe": {
+        "count": 0,
+        "pct": 0.0
+      }
+    }
+  ],
+  "following_distance_per_driver": [
+    {
+      "name": "Jackson",
+      "driver_id": "d3",
+      "driving_minutes": 1420,
+      "avg_fd_seconds": 3.5,
+      "congestion_light_min": 42.37,
+      "congestion_medium_min": 47.85,
+      "congestion_heavy_min": 16.49
+    },
+    {
+      "name": "Patrick",
+      "driver_id": "d5",
+      "driving_minutes": 1335,
+      "avg_fd_seconds": 3.6,
+      "congestion_light_min": 44.13,
+      "congestion_medium_min": 20.76,
+      "congestion_heavy_min": 9.29
+    },
+    {
+      "name": "Harsh",
+      "driver_id": "d6",
+      "driving_minutes": 1243,
+      "avg_fd_seconds": 3.7,
+      "congestion_light_min": 32.53,
+      "congestion_medium_min": 53.48,
+      "congestion_heavy_min": 33.34
+    },
+    {
+      "name": "Dylan",
+      "driver_id": "d1",
+      "driving_minutes": 1565,
+      "avg_fd_seconds": 3.8,
+      "congestion_light_min": 32.03,
+      "congestion_medium_min": 33.76,
+      "congestion_heavy_min": 29.3
+    },
+    {
+      "name": "Austin",
+      "driver_id": "d4",
+      "driving_minutes": 389,
+      "avg_fd_seconds": 3.8,
+      "congestion_light_min": 20.24,
+      "congestion_medium_min": 15.62,
+      "congestion_heavy_min": 9.03
+    }
+  ],
+  "most_severe_fd_alerts": [
+    {
+      "name": "Harsh",
+      "driver_id": "d6",
+      "alert_id": "6400833620",
+      "closest_fd_sec": 19.24,
+      "duration_sec": 9.32
+    }
+  ],
+  "driver_stars_awarded": 11,
+  "data_unavailable_sections": [
+    "Most severe hard braking alerts",
+    "Most severe speeding alerts"
+  ]
+}
