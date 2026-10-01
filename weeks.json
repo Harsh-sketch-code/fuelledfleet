@@ -2793,8 +2793,7 @@
         "stats_xlsx": "Driver Statistics Report ( 21 Sep 2026 - 27 Sep 2026 ).xlsx",
         "fleet_pdf": "Fleet Report ( 21 Sep 2026 - 27 Sep 2026 ).pdf"
       },
-      "is_partial": true,
-      "partial_through_iso": "2026-09-25"
+      "is_partial": false
     }
   ],
   "months": [
@@ -3610,17 +3609,20 @@
       "start_iso": "2026-09-01",
       "end_iso": "2026-09-30",
       "fleet_average_score": {
-        "score": 956,
-        "delta": null
+        "score": 960,
+        "delta": -9
       },
-      "drivers_with_score": null,
+      "drivers_with_score": {
+        "count": 6,
+        "delta": 0
+      },
       "drivers": {
         "d1": {
           "name": "Dylan",
-          "score": 963,
-          "delta": null,
-          "minutes": 2736,
-          "stars": 5,
+          "score": 965,
+          "delta": 1.0,
+          "minutes": 4335,
+          "stars": 7,
           "avg_fd_sec": 3.7,
           "active_weeks": 3,
           "infractions": {
@@ -3635,35 +3637,35 @@
         },
         "d2": {
           "name": "Willem",
-          "score": 972,
-          "delta": null,
-          "minutes": 1244,
-          "stars": 1,
-          "avg_fd_sec": 3.67,
+          "score": 945,
+          "delta": -18.0,
+          "minutes": 2963,
+          "stars": 2,
+          "avg_fd_sec": 3.7,
           "active_weeks": 3,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
-            "hard_accel": 0,
-            "hard_brake": 0,
+            "hard_accel": 1,
+            "hard_brake": 1,
             "speeding": 0,
-            "traffic_lights": 0
+            "traffic_lights": 4
           },
           "eligible": true
         },
         "d3": {
           "name": "Jackson",
-          "score": 967,
-          "delta": null,
-          "minutes": 2542,
-          "stars": 2,
-          "avg_fd_sec": 3.65,
+          "score": 972,
+          "delta": 1.0,
+          "minutes": 3890,
+          "stars": 4,
+          "avg_fd_sec": 3.7,
           "active_weeks": 2,
           "infractions": {
             "sign_violations": 0,
             "following_close": 0,
             "hard_accel": 0,
-            "hard_brake": 0,
+            "hard_brake": 1,
             "speeding": 1,
             "traffic_lights": 1
           },
@@ -3671,11 +3673,11 @@
         },
         "d4": {
           "name": "Austin",
-          "score": 984,
-          "delta": null,
-          "minutes": 1668,
-          "stars": 4,
-          "avg_fd_sec": 3.77,
+          "score": 983,
+          "delta": -4.0,
+          "minutes": 2288,
+          "stars": 7,
+          "avg_fd_sec": 3.8,
           "active_weeks": 3,
           "infractions": {
             "sign_violations": 1,
@@ -3689,11 +3691,11 @@
         },
         "d5": {
           "name": "Paddy",
-          "score": 895,
-          "delta": null,
-          "minutes": 2287,
-          "stars": 1,
-          "avg_fd_sec": 3.6,
+          "score": 929,
+          "delta": -55.0,
+          "minutes": 3255,
+          "stars": 4,
+          "avg_fd_sec": 3.7,
           "active_weeks": 3,
           "infractions": {
             "sign_violations": 0,
@@ -3707,10 +3709,10 @@
         },
         "d6": {
           "name": "Harsh",
-          "score": 977,
-          "delta": null,
-          "minutes": 1657,
-          "stars": 7,
+          "score": 970,
+          "delta": 15.0,
+          "minutes": 2645,
+          "stars": 10,
           "avg_fd_sec": 3.7,
           "active_weeks": 3,
           "infractions": {
@@ -3724,10 +3726,10 @@
           "eligible": true
         }
       },
-      "is_provisional": true,
+      "is_provisional": false,
       "sources": {
-        "fleet_pdf": null,
-        "monthly_xlsx": null,
+        "fleet_pdf": "Fleet Report ( September 2026 ).pdf",
+        "monthly_xlsx": "Driver Statistics Report ( September 2026 ).xlsx",
         "weekly_aggregated": [
           "Driver Statistics Report(07 Sep 2026 - 13 Sep 2026).xlsx",
           "Driver Statistics Report(14 Sep 2026 - 20 Sep 2026).xlsx",
