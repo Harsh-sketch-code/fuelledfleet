@@ -68,7 +68,9 @@
     { "id": "fb-d1-w-2026-09-27", "date": "2026-09-27", "category": "coaching",
       "note": "Week of Sep 21 - Sep 27: Score 961 (↓13) · 826 min · ⭐1 · 1 hard accel. Hard-accel event continues — 7 of the last 8 weeks now. Driver star still earned. The pattern is persistent and narrow (just hard accel), which makes it coachable. Specific focus: throttle smoothness from a stop and when merging." },
     { "id": "fb-d1-m-2026-09", "date": "2026-09-30", "category": "coaching",
-      "note": "Month of September 2026: Score 965 (+1 vs August, flat) · 4,335 min · ⭐7 · 4 infractions (3 hard accel, 1 hard brake). Highest mileage on the fleet (4,335 min — nearly 500 more than #2 Jackson). Seven stars but the hard-accel pattern persisted — 3 events across the month. Score basically flat vs August. Coaching focus for October: throttle smoothness. The pattern has narrowed from mixed events to just hard accel, which makes it addressable." }
+      "note": "Month of September 2026: Score 965 (+1 vs August, flat) · 4,335 min · ⭐7 · 4 infractions (3 hard accel, 1 hard brake). Highest mileage on the fleet (4,335 min — nearly 500 more than #2 Jackson). Seven stars but the hard-accel pattern persisted — 3 events across the month. Score basically flat vs August. Coaching focus for October: throttle smoothness. The pattern has narrowed from mixed events to just hard accel, which makes it addressable." },
+    { "id": "fb-d1-w-2026-10-04", "date": "2026-10-04", "category": "positive",
+      "note": "Week of Sep 28 - Oct 4: Score 956 (↑11) · 230 min · ⭐0 · clean. 🎯 HARD-ACCEL PATTERN BROKEN — first clean week in 8 attempts (going back to late August). Low mileage week helped but the key signal is zero hard-accel events for the first time in nearly 2 months. Positive sign that the coaching flag is landing." }
   ],
 
   "d2": [
@@ -135,7 +137,9 @@
     { "id": "fb-d2-w-2026-09-27", "date": "2026-09-27", "category": "positive",
       "note": "Week of Sep 21 - Sep 27: Score 982 (↑20) · 620 min · ⭐0 · clean. Third consecutive clean week, score climbed back into the 980s. Sixth consecutive week without a hard brake. The pattern is fully reversed." },
     { "id": "fb-d2-m-2026-09", "date": "2026-09-30", "category": "coaching",
-      "note": "Month of September 2026: Score 945 (↓18 vs August) · 2,963 min · ⭐2 · 6 infractions (1 hard accel, 1 hard brake, 4 traffic lights). Score eased and infraction count climbed from 1 to 6. Hard-brake stayed down (1 vs 1) but a new pattern emerged: 4 traffic-light events — the most in any single category of any driver this month. Worth a coaching focus on yellow-light decisions and timing at intersections going into October." }
+      "note": "Month of September 2026: Score 945 (↓18 vs August) · 2,963 min · ⭐2 · 6 infractions (1 hard accel, 1 hard brake, 4 traffic lights). Score eased and infraction count climbed from 1 to 6. Hard-brake stayed down (1 vs 1) but a new pattern emerged: 4 traffic-light events — the most in any single category of any driver this month. Worth a coaching focus on yellow-light decisions and timing at intersections going into October." },
+    { "id": "fb-d2-w-2026-10-04", "date": "2026-10-04", "category": "coaching",
+      "note": "Week of Sep 28 - Oct 4: Score 948 (↑3) · 1,167 min · ⭐1 · 1 hard brake, 2 traffic-light. Heavy mileage week (1,167 min). The traffic-light pattern from September continues (2 more this week on top of 4 in September). Combined with a returning hard brake, score eased despite the one star. Worth reinforcing the yellow-light coaching from the September monthly note — the pattern is persisting into October." }
   ],
 
   "d3": [
@@ -202,7 +206,9 @@
     { "id": "fb-d3-w-2026-09-27", "date": "2026-09-27", "category": "general",
       "note": "Week of Sep 21 - Sep 27: No weekly driving data captured — monthly aggregate shows the full-month totals via the canonical TitanGPS XLSX, but this week's XLSX snapshot didn't include Jackson. Likely light schedule combined with the snapshot timing. Monthly numbers are correct." },
     { "id": "fb-d3-m-2026-09", "date": "2026-09-30", "category": "positive",
-      "note": "Month of September 2026: Score 972 (+1 over August) · 3,890 min · ⭐4 · 3 infractions (1 hard brake, 1 speeding, 1 traffic-light). Second-highest mileage on the fleet (3,890 min). Four stars, three events spread across different categories. Second-place monthly finish behind Austin — tight race (11-point gap). Consistent." }
+      "note": "Month of September 2026: Score 972 (+1 over August) · 3,890 min · ⭐4 · 3 infractions (1 hard brake, 1 speeding, 1 traffic-light). Second-highest mileage on the fleet (3,890 min). Four stars, three events spread across different categories. Second-place monthly finish behind Austin — tight race (11-point gap). Consistent." },
+    { "id": "fb-d3-w-2026-10-04", "date": "2026-10-04", "category": "general",
+      "note": "Week of Sep 28 - Oct 4: Score 943 (↓19) · 450 min · ⭐1 · 1 hard brake, 1 traffic-light. Score eased on moderate mileage with two different event types. One star still earned. Mixed week — neither clean nor concerning in isolation." }
   ],
 
   "d4": [
@@ -261,7 +267,9 @@
     { "id": "fb-d4-w-2026-09-27", "date": "2026-09-27", "category": "general",
       "note": "Week of Sep 21 - Sep 27: Score 987 (↓5) · 535 min · ⭐3 · 1 traffic-light. Three driver stars — highest weekly star count of Austin's year. One minor traffic-light event the only blemish. Score effectively flat. Leading the fleet." },
     { "id": "fb-d4-m-2026-09", "date": "2026-09-30", "category": "positive",
-      "note": "Month of September 2026: Score 983 (↓4 vs August, essentially flat) · 2,288 min · ⭐7 · 3 infractions (1 sign, 2 traffic lights). 🏆 MONTHLY WINNER — FOURTH monthly win (May, July, August, September) and FOURTH consecutive month leading the fleet. Seven stars (highest star count of Austin's tenure). The sign-violation pattern from early September only showed up once. Austin's F-150 continues to deliver the most consistent profile on the fleet." }
+      "note": "Month of September 2026: Score 983 (↓4 vs August, essentially flat) · 2,288 min · ⭐7 · 3 infractions (1 sign, 2 traffic lights). 🏆 MONTHLY WINNER — FOURTH monthly win (May, July, August, September) and FOURTH consecutive month leading the fleet. Seven stars (highest star count of Austin's tenure). The sign-violation pattern from early September only showed up once. Austin's F-150 continues to deliver the most consistent profile on the fleet." },
+    { "id": "fb-d4-w-2026-10-04", "date": "2026-10-04", "category": "positive",
+      "note": "Week of Sep 28 - Oct 4: Score 989 (↑2) · 503 min · ⭐0 · clean. Fifth consecutive clean week. Score effectively flat near the 990 mark. The consistent-leader profile continues into October." }
   ],
 
   "d5": [
@@ -326,7 +334,9 @@
     { "id": "fb-d5-w-2026-09-27", "date": "2026-09-27", "category": "warning",
       "note": "Week of Sep 21 - Sep 27 (Paddy): Score 847 (↓62) · 1,315 min · ⭐1 · 4 following-close, 1 hard accel. 🚨 FIRST FOLLOWING-DISTANCE SPIKE on Paddy's record — 4 FD events in a single week is a genuinely new pattern (previously had zero FD events all year). Combined with the hard-brake issues earlier this quarter, Paddy's profile has clearly shifted since July. Direct conversation strongly recommended on following distances." },
     { "id": "fb-d5-m-2026-09", "date": "2026-09-30", "category": "warning",
-      "note": "Month of September 2026 (Paddy): Score 929 (↓55 vs August, biggest single-month drop of Paddy's tenure) · 3,255 min · ⭐4 · 8 infractions (4 FD, 3 hard accel, 1 hard brake). Mileage dropped by ~2,500 min vs August's 5,888 min. Four Following-Distance events is entirely new (zero in June-August). The score has eroded for three consecutive months now (July 993 → August 984 → September 929). Clearest coaching priority for October: following distance and smoother throttle/braking." }
+      "note": "Month of September 2026 (Paddy): Score 929 (↓55 vs August, biggest single-month drop of Paddy's tenure) · 3,255 min · ⭐4 · 8 infractions (4 FD, 3 hard accel, 1 hard brake). Mileage dropped by ~2,500 min vs August's 5,888 min. Four Following-Distance events is entirely new (zero in June-August). The score has eroded for three consecutive months now (July 993 → August 984 → September 929). Clearest coaching priority for October: following distance and smoother throttle/braking." },
+    { "id": "fb-d5-w-2026-10-04", "date": "2026-10-04", "category": "positive",
+      "note": "Week of Sep 28 - Oct 4 (Paddy): Score 991 (↑101) · 289 min · ⭐1 · clean. 🎯 BIGGEST SINGLE-WEEK SCORE GAIN of the dataset (+101 points). FD events from last week are gone — zero infractions across all six categories. Low mileage (289 min) made the recovery possible, but the key signal is that the coaching conversation on following distance looks to be landing immediately." }
   ],
 
   "d6": [
@@ -389,6 +399,8 @@
     { "id": "fb-d6-w-2026-09-27", "date": "2026-09-27", "category": "positive",
       "note": "Week of Sep 21 - Sep 27: Score 975 (↓9) · 446 min · ⭐0 · clean. FOURTH consecutive clean week — no infractions across all six categories for four weeks running. Score eased slightly on lower mileage but the clean profile continues." },
     { "id": "fb-d6-m-2026-09", "date": "2026-09-30", "category": "positive",
-      "note": "Month of September 2026: Score 970 (↑15 over August) · 2,645 min · ⭐10 · ZERO infractions. 🏆 ANOTHER CLEAN MONTH — this is now 4 clean months out of 5 since May (May, June, July, September — only August broke the streak). TEN driver stars — highest star count of Harsh's year. Full recovery from the August dip. Genuinely remarkable consistency on the Canyon AT4X; worth highlighting at a team moment." }
+      "note": "Month of September 2026: Score 970 (↑15 over August) · 2,645 min · ⭐10 · ZERO infractions. 🏆 ANOTHER CLEAN MONTH — this is now 4 clean months out of 5 since May (May, June, July, September — only August broke the streak). TEN driver stars — highest star count of Harsh's year. Full recovery from the August dip. Genuinely remarkable consistency on the Canyon AT4X; worth highlighting at a team moment." },
+    { "id": "fb-d6-w-2026-10-04", "date": "2026-10-04", "category": "positive",
+      "note": "Week of Sep 28 - Oct 4: Score 955 (↓13) · 742 min · ⭐1 · clean. FIFTH consecutive clean week — the streak that defined September continues into October. Driver star earned. Score eased slightly but the clean profile is intact." }
   ]
 }
