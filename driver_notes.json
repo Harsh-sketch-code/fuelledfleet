@@ -1,0 +1,23 @@
+{
+  "_comment": "Per-week substitute driver notes. When someone other than the regular driver was behind the wheel for a week (truck swap, field work, loan, etc.), add an entry here so the dashboard shows a 'Driven by X' badge on the driver card and leaderboard row for that specific week.",
+  "_format": "Keyed by driver_id → week_id → { label: short tag shown on card, note: longer explanation shown as tooltip }",
+  "_example": {
+    "d6": {
+      "w_2026-10-19": { "label": "Kaveh", "note": "Harsh lent his truck to Kaveh for field work this week — infractions are from Kaveh, not Harsh." }
+    }
+  },
+  "notes": {
+    "d5": {
+      "w_2026-10-19": {
+        "label": "Raj",
+        "note": "Paddy swapped trucks with Raj through Mon Oct 26 — infractions this week are from Raj, not Paddy."
+      }
+    },
+    "d6": {
+      "w_2026-10-19": {
+        "label": "Kaveh",
+        "note": "Harsh lent his truck to Kaveh for field work — infractions this week (31 speeding events) are from Kaveh, not Harsh."
+      }
+    }
+  }
+}

@@ -35,6 +35,7 @@ def main():
     weeks_path   = os.path.join(BASE, "weeks.json")
     fb_path      = os.path.join(BASE, "feedback.json")
     rentals_path = os.path.join(BASE, "rentals.json")
+    notes_path   = os.path.join(BASE, "driver_notes.json")
     html_path    = os.path.join(BASE, "index.html")
 
     if not os.path.exists(weeks_path):
@@ -61,6 +62,16 @@ def main():
         except (OSError, json.JSONDecodeError) as e:
             print(f"  ⚠ could not read rentals.json ({e}); using empty list")
 
+    # Driver notes (substitute drivers for specific weeks) — optional, same resilient pattern.
+    driver_notes = {}
+    if os.path.exists(notes_path):
+        try:
+            with open(notes_path) as f: notes_raw = json.load(f)
+            if isinstance(notes_raw, dict):
+                driver_notes = notes_raw.get("notes", {}) if "notes" in notes_raw else {k: v for k, v in notes_raw.items() if not k.startswith("_")}
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"  ⚠ could not read driver_notes.json ({e}); using empty dict")
+
     # Stamp the build with a refresh timestamp so the dashboard can tell the team how fresh the data is.
     from datetime import datetime
     weeks["last_refreshed_iso"] = datetime.now().isoformat(timespec="minutes")
@@ -72,12 +83,14 @@ def main():
     # cause early termination. Lambda replacement avoids regex backref interpretation of
     # JSON escape sequences (\u, \\, etc.).
     import re
-    data_js     = "const DATA = "     + json.dumps(weeks,   separators=(',',':'), ensure_ascii=False) + ";"
-    feedback_js = "const FEEDBACK = " + json.dumps(fb,      separators=(',',':'), ensure_ascii=False) + ";"
-    rentals_js  = "const RENTALS = "  + json.dumps(rentals, separators=(',',':'), ensure_ascii=False) + ";"
-    html = re.sub(r"^const DATA = .*$",     lambda m: data_js,     html, count=1, flags=re.M)
-    html = re.sub(r"^const FEEDBACK = .*$", lambda m: feedback_js, html, count=1, flags=re.M)
-    html = re.sub(r"^const RENTALS = .*$",  lambda m: rentals_js,  html, count=1, flags=re.M)
+    data_js      = "const DATA = "          + json.dumps(weeks,        separators=(',',':'), ensure_ascii=False) + ";"
+    feedback_js  = "const FEEDBACK = "      + json.dumps(fb,           separators=(',',':'), ensure_ascii=False) + ";"
+    rentals_js   = "const RENTALS = "       + json.dumps(rentals,      separators=(',',':'), ensure_ascii=False) + ";"
+    notes_js     = "const DRIVER_NOTES = "  + json.dumps(driver_notes, separators=(',',':'), ensure_ascii=False) + ";"
+    html = re.sub(r"^const DATA = .*$",          lambda m: data_js,     html, count=1, flags=re.M)
+    html = re.sub(r"^const FEEDBACK = .*$",      lambda m: feedback_js, html, count=1, flags=re.M)
+    html = re.sub(r"^const RENTALS = .*$",       lambda m: rentals_js,  html, count=1, flags=re.M)
+    html = re.sub(r"^const DRIVER_NOTES = .*$",  lambda m: notes_js,    html, count=1, flags=re.M)
 
     with open(html_path, "w") as f:
         f.write(html)
@@ -87,6 +100,7 @@ def main():
     print(f"  months: {len(weeks.get('months',[]))}")
     print(f"  feedback notes: {sum(len(v) for v in fb.values())}")
     print(f"  rental trips: {len(rentals['trips'])}")
+    print(f"  driver sub notes: {sum(len(v) for v in driver_notes.values()) if driver_notes else 0}")
     print(f"  index.html: {len(html):,} bytes")
     print(f"\nNext: commit + push index.html to your GitHub Pages repo.")
 
